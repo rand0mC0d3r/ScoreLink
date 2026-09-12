@@ -9,8 +9,6 @@ type ReflowPreviewSelection = {
 
 type ReflowPreviewProps = {
   pageNumber: number;
-  pageWidth: number;
-  pageHeight: number;
   selections: ReflowPreviewSelection[];
 };
 
@@ -26,16 +24,17 @@ type ReflowPreviewSegment = {
   cropEnd?: number;
 };
 
-const previewWidth = 88;
+const previewWidth = 188;
 
-export default function ReflowPreviewPdf({ pageNumber, pageWidth, pageHeight, selections }: ReflowPreviewProps) {
+export default function ReflowPreviewPdf({ pageNumber, selections }: ReflowPreviewProps) {
   const scorePages = useSettingsStoreSelector((s) => s.scorePages)
   const librettoPages = useSettingsStoreSelector((s) => s.librettoPages)
   const scorePage = scorePages.find((page) => page.pageNumber === pageNumber)
 
-  const previewPageHeight = pageHeight * previewWidth / pageWidth;
   const scoreGapHeight = (startPosition: number, endPosition: number) => (
-    pageHeight * (endPosition - startPosition) / 100
+    scorePage
+      ? scorePage.heightPx * previewWidth / scorePage.widthPx * (endPosition - startPosition) / 100
+      : 0
   );
   const segments = selections.flatMap((selection, index) => {
     const startPosition = index === 0 ? 0 : selections[index - 1].scoreScrollPosition;
@@ -57,7 +56,7 @@ export default function ReflowPreviewPdf({ pageNumber, pageWidth, pageHeight, se
         type: 'libretto' as const,
         height: librettoPage
           ? librettoPage.heightPx * previewWidth / librettoPage.widthPx * (selection.librettoSelection[1] - selection.librettoSelection[0]) / 100
-          : previewPageHeight * (selection.librettoSelection[1] - selection.librettoSelection[0]) / 100,
+          : 0,
         ariaLabel: `Libretto selection ${index + 1} for score page ${pageNumber}`,
         caption: `Libretto page ${selection.librettoPageNumber}`,
         pageUrl: librettoPage?.url,
@@ -84,11 +83,8 @@ export default function ReflowPreviewPdf({ pageNumber, pageWidth, pageHeight, se
     });
   }
 
-  const naturalHeight = segments.reduce((total, segment) => total + segment.height, 0);
-  const scale = naturalHeight > pageHeight ? pageHeight / naturalHeight : 1;
-
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180, maxHeight: pageHeight, overflow: 'hidden' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180, alignItems: 'flex-start' }}>
       {[...segments].map((segment: ReflowPreviewSegment, index) => (
         <Box key={`${segment.type}-${index}`} sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'flex-start' }}>
           <Box
@@ -96,7 +92,7 @@ export default function ReflowPreviewPdf({ pageNumber, pageWidth, pageHeight, se
             sx={{
               position: 'relative',
               width: previewWidth,
-              height: segment.height * scale,
+              height: segment.height,
               overflow: 'hidden',
               boxSizing: 'border-box',
               border: 2,
@@ -120,14 +116,13 @@ export default function ReflowPreviewPdf({ pageNumber, pageWidth, pageHeight, se
                   src={`${segment.pageUrl}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
                   sx={{
                     position: 'absolute',
-                    top: `${-(segment.type === 'score' ? segment.cropStart : 100 - segment.cropEnd) * (segment.pageHeight * previewWidth / segment.pageWidth) * scale / 100}px`,
+                    top: `${-(segment.type === 'score' ? segment.cropStart : 100 - segment.cropEnd) * (segment.pageHeight * previewWidth / segment.pageWidth) / 100}px`,
                     left: 0,
                     display: 'block',
                     width: previewWidth,
                     height: segment.pageHeight * previewWidth / segment.pageWidth,
                     border: 0,
                     pointerEvents: 'none',
-                    transform: `scale(${scale})`,
                     transformOrigin: 'top left',
                     opacity: 0.72,
                   }}
