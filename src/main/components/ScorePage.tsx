@@ -65,12 +65,12 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
               <Slider
                 aria-label={`Scroll position for page ${page.pageNumber}`}
                 orientation="vertical"
-                value={scrollPosition}
+                value={100 - scrollPosition}
                 min={0}
                 max={100}
                 onChange={(_, value) => {
                   if (typeof value === 'number') {
-                    setSetting((settings) => ({ ...settings, activePageScrollPosition: value }));
+                    setSetting((settings) => ({ ...settings, activePageScrollPosition: 100 - value }));
                   }
                 }}
                 color="secondary"

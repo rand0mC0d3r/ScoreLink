@@ -61,7 +61,7 @@ export default function ReflowPreview({ pageNumber, pageWidth, pageHeight, selec
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180, maxHeight: pageHeight, overflow: 'hidden' }}>
-      {[...segments].reverse().map((segment: ReflowPreviewSegment, index) => (
+      {[...segments].map((segment: ReflowPreviewSegment, index) => (
         <Box key={`${segment.type}-${index}`} sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'flex-start' }}>
           <Box
             aria-label={segment.ariaLabel}
