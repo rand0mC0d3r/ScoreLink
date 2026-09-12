@@ -38,7 +38,7 @@ function PdfPreview({ label, file, onChange, color }: PdfPreviewProps & { color:
           component="iframe"
           title={`${label} preview`}
           src={previewUrl}
-          sx={{ width: '100%', minHeight: 560, flex: 1, border: 0, borderRadius: 2, overflow: 'hidden', backgroundColor: 'background.default' }}
+          sx={{ width: '100%', height: '900px', flex: 1, border: 0, borderRadius: 2, overflow: 'hidden', backgroundColor: 'background.default' }}
         />
       ) : (
         <Box
