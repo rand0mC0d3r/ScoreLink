@@ -1,56 +1,11 @@
-import { useSettingsStoreSelector } from '@/context/settingsStore';
 import LibrettoPicker from '@/main/components/LibrettoPicker';
-import PanelWrapper from '@/main/components/PanelWrapper';
-import PDFPreviewPage, { type ExtractedPage } from '@/main/components/PDFPreviewPage';
+import ScorePicker from '@/main/components/ScorePicker';
 import { Box } from '@mui/material';
 
-type PdfPreviewProps = {
-  label: string;
-  file: File | null;
-  pages: ExtractedPage[];
-  color: 'primary' | 'secondary';
-};
-
-function ScorePdfPreview({ label, file, pages: storedPages, color }: PdfPreviewProps) {
-
-  return (<>
-    <PanelWrapper
-      label={label}
-      file={file}
-      color={color}
-      sx={{flex: color === 'secondary' ? 1 : 0.5 }}
-    >
-      {(storedPages.length > 0) && (
-        <Box sx={{ display: 'flex', gap: 1.5, flexDirection: 'column' }}>
-          {(storedPages)
-            .slice(0, 15)
-            .map((page) => (
-              <PDFPreviewPage
-                key={page.pageNumber}
-                label={label}
-                page={page}
-                scale={1}
-              />
-            ))}
-        </Box>
-      )}
-    </PanelWrapper>
-  </>);
-}
-
 export default function ThirdStage() {
-  const scorePDF = useSettingsStoreSelector((s) => s.scorePDF)
-  const scorePages = useSettingsStoreSelector((s) => s.scorePages)
-
   return (
     <Box sx={{ display: 'flex', flex: 1, minHeight: 0, gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-
-      <ScorePdfPreview
-        label="Score"
-        file={scorePDF ?? null}
-        pages={scorePages}
-        color="secondary"
-      />
+      <ScorePicker />
       <LibrettoPicker />
     </Box>
   );

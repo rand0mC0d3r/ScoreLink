@@ -31,7 +31,7 @@ export default function PDFPreviewPage({ label, page, scale = 1 }: { label: stri
         component="iframe"
         title={`${label} page ${page.pageNumber}`}
         src={`${page.url}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
-        sx={{ width: page.widthPx / scale, height: page.heightPx / scale, border: 0, backgroundColor: 'background.default' }}
+        sx={{ width: page.widthPx / scale, height: page.heightPx / scale, border: 0, backgroundColor: 'background.default', borderRadius: 2, overflow: 'hidden' }}
       />
     </Box>
   );

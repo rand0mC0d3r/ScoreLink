@@ -71,10 +71,6 @@ export default function LibrettoPicker() {
   const librettoPages = useSettingsStoreSelector((s) => s.librettoPages)
 
   return (<>
-
-
-
-
     <PanelWrapper
       label="Libretto"
       file={librettoPDF ?? null}
