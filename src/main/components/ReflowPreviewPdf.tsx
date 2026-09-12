@@ -22,7 +22,7 @@ type ReflowPreviewSegment = {
 
 const previewWidth = 88;
 
-export default function ReflowPreview({ pageNumber, pageWidth, pageHeight, selections }: ReflowPreviewProps) {
+export default function ReflowPreviewPdf({ pageNumber, pageWidth, pageHeight, selections }: ReflowPreviewProps) {
   const previewPageHeight = pageHeight * previewWidth / pageWidth;
   const scoreGapHeight = (startPosition: number, endPosition: number) => (
     pageHeight * (endPosition - startPosition) / 100

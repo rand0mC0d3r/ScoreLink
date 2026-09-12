@@ -1,4 +1,5 @@
 import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
+import ReflowPreviewPdf from '@/main/components/ReflowPreviewPdf';
 import { Box, Button, Slider, Typography } from '@mui/material';
 import ReflowPreview from './ReflowPreview';
 
@@ -79,6 +80,12 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
           </Box>
         </Box>
         <ReflowPreview
+          pageNumber={page.pageNumber}
+          pageWidth={pageWidth}
+          pageHeight={pageHeight}
+          selections={sortedPageReflowSelections}
+        />
+        <ReflowPreviewPdf
           pageNumber={page.pageNumber}
           pageWidth={pageWidth}
           pageHeight={pageHeight}
