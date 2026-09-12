@@ -28,6 +28,7 @@ function ScorePdfPreview({ label, file, pages: storedPages, color }: PdfPreviewP
                 key={page.pageNumber}
                 label={label}
                 page={page}
+                scale={1}
               />
             ))}
         </Box>
@@ -54,6 +55,7 @@ function LibrettoPdfPreview({ label, file, pages: storedPages, color }: PdfPrevi
                 key={page.pageNumber}
                 label={label}
                 page={page}
+                scale={2}
               />
             ))}
         </Box>
