@@ -55,6 +55,7 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
       caption: `${lastSelection.scoreScrollPosition}% - 100%`,
     });
   }
+
   const reflowPreviewNaturalHeight = reflowPreviewSegments.reduce((total, segment) => total + segment.height, 0);
   const reflowPreviewScale = reflowPreviewNaturalHeight > pageHeight
     ? pageHeight / reflowPreviewNaturalHeight
@@ -116,7 +117,7 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
           </Box>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180, maxHeight: pageHeight, overflow: 'hidden' }}>
-          {reflowPreviewSegments.map((segment, index) => (
+          {reflowPreviewSegments.reverse().map((segment, index) => (
             <Box key={`${segment.type}-${index}`} sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'flex-start' }}>
               <Box
                 aria-label={segment.ariaLabel}
