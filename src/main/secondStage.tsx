@@ -1,5 +1,6 @@
 import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
-import { alpha, Box, Paper, Typography } from '@mui/material';
+import PanelWrapper from '@/main/components/PanelWrapper';
+import { Box, Typography } from '@mui/material';
 import { PDFDocument } from 'pdf-lib';
 import { useEffect } from 'react';
 
@@ -17,31 +18,12 @@ type PdfPreviewProps = {
 
 function PdfPreview({ label, file, pages: storedPages, color }: PdfPreviewProps) {
 
-  return (
-    <Paper
-      variant="outlined"
-      sx={{
-        display: 'flex',
-        flex: 1,
-        minWidth: 0,
-        flexDirection: 'column',
-        gap: 1.5,
-        overflow: 'auto',
-        bgcolor: theme => alpha(theme.palette[color].main, 0.15),
-        p: 2,
-      }}
+  return (<>
+    <PanelWrapper
+      label={label}
+      file={file}
+      color={color}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
-        <Typography component="h2" variant="h6">
-          {label}
-        </Typography>
-        {file && (
-          <Typography noWrap color="text.secondary" variant="body2" title={file.name}>
-            {file.name}
-          </Typography>
-        )}
-      </Box>
-
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
         {(storedPages.length > 0) && (
           <Box sx={{ display: 'grid', gap: 1.5, gridTemplateColumns: { xs: '1fr', lg: 'repeat(2, minmax(0, 1fr))' } }}>
@@ -73,8 +55,8 @@ function PdfPreview({ label, file, pages: storedPages, color }: PdfPreviewProps)
           </Box>
         )}
       </Box>
-    </Paper>
-  );
+    </PanelWrapper>
+  </>);
 }
 
 async function extractPdfPages(file: File): Promise<ExtractedPage[]> {
@@ -138,17 +120,18 @@ export default function SecondStage() {
   return (
     <Box sx={{ display: 'flex', flex: 1, minHeight: 0, gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
       <PdfPreview
-        label="Libretto"
-        file={librettoPDF ?? null}
-        pages={librettoPages}
-        color="primary"
-      />
-      <PdfPreview
         label="Score"
         file={scorePDF ?? null}
         pages={scorePages}
         color="secondary"
       />
+      <PdfPreview
+        label="Libretto"
+        file={librettoPDF ?? null}
+        pages={librettoPages}
+        color="primary"
+      />
+
     </Box>
   );
 }

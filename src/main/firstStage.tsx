@@ -1,5 +1,6 @@
 import { persistPdfFile, useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
-import { alpha, Box, Button, Paper, Typography } from '@mui/material';
+import PanelWrapper from '@/main/components/PanelWrapper';
+import { Box, Button, Typography } from '@mui/material';
 import { useEffect, useState, type ChangeEvent } from 'react';
 
 type ExtractedPage = {
@@ -20,34 +21,18 @@ function PdfPreview({ label, file, onChange, color }: PdfPreviewProps & { color:
     onChange(event);
   };
 
-  return (
-    <Paper
-      variant="outlined"
-      sx={{
-        display: 'flex',
-        flex: 1,
-        minWidth: 0,
-        flexDirection: 'column',
-        gap: 1.5,
-        p: 2,
-        bgcolor: theme => alpha(theme.palette[color].main, 0.15)
-      }}
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
-        <Typography component="h2" variant="h6">
-          {label}
-        </Typography>
-        {file && (
-          <Typography noWrap color="text.secondary" variant="body2" title={file.name}>
-            {file.name}
-          </Typography>
-        )}
+  return (<>
+    <PanelWrapper
+      label={label}
+      file={file}
+      color={color}
+      tools={<>
         <Button component="label" variant="contained" color={color}>
           Upload PDF
           <input hidden type="file" accept="application/pdf,.pdf" onChange={handleFileChange} />
         </Button>
-      </Box>
-
+      </>}
+    >
       {previewUrl ? (
         <Box
           component="iframe"
@@ -70,8 +55,8 @@ function PdfPreview({ label, file, onChange, color }: PdfPreviewProps & { color:
           <Typography color="text.secondary">Choose a PDF to preview it here.</Typography>
         </Box>
       )}
-    </Paper>
-  );
+    </PanelWrapper>
+  </>);
 }
 
 function usePdfPreviewUrl(file: File | null) {
@@ -111,8 +96,8 @@ export default function FirstStage() {
 
   return (
     <Box sx={{ display: 'flex', flex: 1, minHeight: 0, gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-      <PdfPreview label="Libretto" file={librettoPDF ?? null} onChange={handleLibrettoChange} color="primary" />
       <PdfPreview label="Score" file={scorePDF ?? null} onChange={handleScoreChange} color="secondary" />
+      <PdfPreview label="Libretto" file={librettoPDF ?? null} onChange={handleLibrettoChange} color="primary" />
     </Box>
   );
 }

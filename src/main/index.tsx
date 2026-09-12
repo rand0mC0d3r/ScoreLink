@@ -1,7 +1,8 @@
+import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import SecondStage from '@/main/secondStage';
+import ThirdStage from '@/main/thirdStage';
 import { Box, Button, Step, StepLabel, Stepper } from '@mui/material';
 import { ChevronLeft, ChevronsRight, CircleX } from 'lucide-react';
-import { useState } from 'react';
 import FirstStage from './firstStage';
 
 const steps = [
@@ -13,7 +14,8 @@ const steps = [
 ];
 
 export default function MainApp() {
-  const [onboardingStep, setOnboardingStep] = useState(0);
+  const { setSetting } = useSettings()
+  const pipelineStep = useSettingsStoreSelector((s) => s.pipelineStep)
 
   return (
     <Box sx={{
@@ -37,7 +39,7 @@ export default function MainApp() {
         justifyContent: 'space-between',
         gap: 1,
       }}>
-        <Stepper activeStep={onboardingStep} alternativeLabel nonLinear={true} >
+        <Stepper activeStep={pipelineStep} alternativeLabel nonLinear={true} >
           {steps.map((label) => (
             <Step key={label}
               sx={{
@@ -52,33 +54,33 @@ export default function MainApp() {
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, alignItems: 'stretch' }}>
           <Button
             size="large"
-            disabled={onboardingStep === 0}
+            disabled={pipelineStep === 0}
             onClick={() => {
-              if (onboardingStep > 0) {
-                setOnboardingStep(prev => prev - 1)
+              if (pipelineStep > 0) {
+                setSetting(prev => ({ ...prev, pipelineStep: prev.pipelineStep - 1 }))
               }
             } } variant="outlined">
             <ChevronLeft size={16} />
           </Button>
           <Button
             size="large"
-            disabled={onboardingStep === 4}
+            disabled={pipelineStep === 4}
             onClick={() => {
-              if (onboardingStep < steps.length - 1) {
-                setOnboardingStep(prev => prev + 1)
+              if (pipelineStep < steps.length - 1) {
+                setSetting(prev => ({ ...prev, pipelineStep: prev.pipelineStep + 1 }))
               }
             }}
             variant="contained">
-            { onboardingStep === steps.length - 1 ? <CircleX size={16} /> : <ChevronsRight size={16} /> }
+            { pipelineStep === steps.length - 1 ? <CircleX size={16} /> : <ChevronsRight size={16} /> }
           </Button>
         </Box>
       </Box>
 
-      {onboardingStep === 0 && <FirstStage />}
-      {onboardingStep === 1 && <SecondStage />}
-      {onboardingStep === 2 && <FirstStage />}
-      {onboardingStep === 3 && <FirstStage />}
-      {onboardingStep === 4 && <FirstStage />}
+      {pipelineStep === 0 && <FirstStage />}
+      {pipelineStep === 1 && <SecondStage />}
+      {pipelineStep === 2 && <ThirdStage />}
+      {pipelineStep === 3 && <FirstStage />}
+      {pipelineStep === 4 && <FirstStage />}
     </Box>
   )
 }
