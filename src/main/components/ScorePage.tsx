@@ -18,7 +18,7 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
   const pageWidth = page.widthPx / scale;
   const pageHeight = page.heightPx / scale;
   const reflowPreviewWidth = 88;
-  const reflowPreviewHeight = pageHeight * reflowPreviewWidth / pageWidth;
+  const reflowPreviewPageHeight = pageHeight * reflowPreviewWidth / pageWidth;
   const isActive = activePage === page.pageNumber;
   const pageReflowSelections = librettoReflowSelections.filter(
     (selection) => selection.scorePageNumber === page.pageNumber,
@@ -88,28 +88,15 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
               <Box
                 aria-label={`Libretto selection ${index + 1} for score page ${page.pageNumber}`}
                 sx={{
-                  position: 'relative',
                   width: reflowPreviewWidth,
-                  height: reflowPreviewHeight,
+                  height: reflowPreviewPageHeight * (selection.librettoSelection[1] - selection.librettoSelection[0]) / 100,
                   border: 1,
-                  borderRadius: 2,
-                  borderColor: 'divider',
-                  backgroundColor: 'background.paper',
+                  borderRadius: 1,
+                  borderColor: 'primary.main',
+                  backgroundColor: 'primary.main',
+                  opacity: 0.42,
                 }}
-              >
-                <Box
-                  aria-hidden
-                  sx={{
-                    position: 'absolute',
-                    top: `${100 - selection.librettoSelection[1]}%`,
-                    right: 0,
-                    left: 0,
-                    height: `${selection.librettoSelection[1] - selection.librettoSelection[0]}%`,
-                    backgroundColor: 'primary.main',
-                    opacity: 0.42,
-                  }}
-                />
-              </Box>
+              />
             </Box>
           ))}
         </Box>
