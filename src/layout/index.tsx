@@ -2,6 +2,7 @@ import AiLoadingBar from '@/components/AiLoadingBar';
 import LoadingBar from '@/components/LoadingBar';
 import StatusBar from '@/components/StatusBar';
 import MainDriver from '@/components/tutorial/MainDriver';
+import MainApp from '@/main/index';
 import Header from '@/middleware/windows/Header';
 import NewVersionWindow from '@/middleware/windows/NewVersionWindow';
 import OnboardingWindow from '@/middleware/windows/OnboardingWindow';
@@ -25,8 +26,7 @@ export default function AppLayout() {
         pipelines={[]}
         loadPipeline={() => {}}
       />
-      dddd
-
+      <MainApp />
 
       <Box
         id="status-bar"
