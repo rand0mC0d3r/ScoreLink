@@ -98,28 +98,42 @@ export default function ReflowPreviewPdf({ pageNumber, pageWidth, pageHeight, se
               width: previewWidth,
               height: segment.height * scale,
               overflow: 'hidden',
-              border: 1,
+              boxSizing: 'border-box',
+              border: 2,
               borderRadius: 1,
               borderColor: segment.type === 'score' ? 'secondary.main' : 'primary.main',
+              backgroundColor: 'background.paper',
             }}
           >
-            {segment.pageUrl && segment.pageWidth && segment.pageHeight && segment.cropStart !== undefined && segment.cropEnd !== undefined && (
-              <Box
-                component="iframe"
-                title={segment.ariaLabel}
-                src={`${segment.pageUrl}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
-                sx={{
-                  position: 'absolute',
-                  top: `${-(100 - segment.cropEnd) * (segment.pageHeight * previewWidth / segment.pageWidth) / 100}px`,
-                  left: 0,
-                  width: previewWidth,
-                  height: segment.pageHeight * previewWidth / segment.pageWidth,
-                  border: 0,
-                  transformOrigin: 'top left',
-                  opacity: 0.72,
-                }}
-              />
-            )}
+            <Box
+              sx={{
+                position: 'absolute',
+                inset: 2,
+                overflow: 'hidden',
+                clipPath: 'inset(0)',
+              }}
+            >
+              {segment.pageUrl && segment.pageWidth && segment.pageHeight && segment.cropStart !== undefined && segment.cropEnd !== undefined && (
+                <Box
+                  component="iframe"
+                  title={segment.ariaLabel}
+                  src={`${segment.pageUrl}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
+                  sx={{
+                    position: 'absolute',
+                    top: `${-(segment.type === 'score' ? segment.cropStart : 100 - segment.cropEnd) * (segment.pageHeight * previewWidth / segment.pageWidth) * scale / 100}px`,
+                    left: 0,
+                    display: 'block',
+                    width: previewWidth,
+                    height: segment.pageHeight * previewWidth / segment.pageWidth,
+                    border: 0,
+                    pointerEvents: 'none',
+                    transform: `scale(${scale})`,
+                    transformOrigin: 'top left',
+                    opacity: 0.72,
+                  }}
+                />
+              )}
+            </Box>
           </Box>
           <Typography variant="caption" color="text.secondary">
             {segment.caption}
