@@ -3,7 +3,6 @@ import LoadingBar from '@/components/LoadingBar';
 import StatusBar from '@/components/StatusBar';
 import MainDriver from '@/components/tutorial/MainDriver';
 import Header from '@/middleware/windows/Header';
-import LightboxWindow from '@/middleware/windows/LightboxWindow';
 import NewVersionWindow from '@/middleware/windows/NewVersionWindow';
 import OnboardingWindow from '@/middleware/windows/OnboardingWindow';
 import SettingsWindow from '@/middleware/windows/SettingsWindow';
@@ -13,7 +12,6 @@ export default function AppLayout() {
 
   return (
     <>
-      <LightboxWindow />
       <NewVersionWindow />
       <OnboardingWindow />
       <SettingsWindow />
