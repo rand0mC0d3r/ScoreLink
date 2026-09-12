@@ -1,5 +1,6 @@
 import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import { Box, Button, Slider, Typography } from '@mui/material';
+import { Fragment } from 'react';
 
 export type ExtractedPage = {
   pageNumber: number;
@@ -80,8 +81,22 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
           </Box>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180 }}>
-          {pageReflowSelections.map((selection, index) => (
-            <Box key={`${selection.librettoPageNumber}-${selection.librettoSelection[0]}-${selection.librettoSelection[1]}-${index}`}>
+          {pageReflowSelections.map((selection, index) => (<Fragment key={`${selection.librettoPageNumber}-${selection.librettoSelection[0]}-${selection.librettoSelection[1]}-${index}`}>
+            <Box>
+              <Box
+                aria-label={`Libretto selection ${index + 1} for score page ${page.pageNumber}`}
+                sx={{
+                  width: reflowPreviewWidth,
+                  height: '100px',
+                  border: 1,
+                  borderRadius: 1,
+                  borderColor: 'primary.main',
+                  backgroundColor: 'secondary.main',
+                  opacity: 0.42,
+                }}
+              />
+            </Box>
+            <Box>
               <Typography variant="caption" color="text.secondary">
                 Libretto page {selection.librettoPageNumber}: {selection.librettoSelection[1] - selection.librettoSelection[0]}%
               </Typography>
@@ -98,7 +113,23 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
                 }}
               />
             </Box>
-          ))}
+            {index === pageReflowSelections.length - 1 && (
+              <Box>
+                <Box
+                  aria-label={`Libretto selection ${index + 1} for score page ${page.pageNumber}`}
+                  sx={{
+                    width: reflowPreviewWidth,
+                    height: '100px',
+                    border: 1,
+                    borderRadius: 1,
+                    borderColor: 'primary.main',
+                    backgroundColor: 'secondary.main',
+                    opacity: 0.42,
+                  }}
+                />
+              </Box>
+            )}
+          </Fragment>))}
         </Box>
       </Box>
     </Box>
