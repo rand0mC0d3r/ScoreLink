@@ -10,8 +10,8 @@ type SettingsStore = {
   librettoPDF: File | undefined,
   scorePDF: File | undefined,
 
-  librettoImages: ImageArray,
-  scoreImages: ImageArray,
+  librettoPages: any[],
+  scorePages: any[],
 
 
   onboarding: boolean,
@@ -46,8 +46,8 @@ const defaults: SettingsStore = {
   librettoPDF: undefined,
   scorePDF: undefined,
 
-  librettoImages: [],
-  scoreImages: [],
+  librettoPages: [],
+  scorePages: [],
 
 
   onboarding: true,

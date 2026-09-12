@@ -1,7 +1,7 @@
-import { persistPdfFile, useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
+import { alpha, Box, Paper, Typography } from '@mui/material';
 import { PDFDocument } from 'pdf-lib';
-import { useEffect, useState, type ChangeEvent } from 'react';
+import { useEffect } from 'react';
 
 type ExtractedPage = {
   pageNumber: number;
@@ -11,45 +11,11 @@ type ExtractedPage = {
 type PdfPreviewProps = {
   label: string;
   file: File | null;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  pages: ExtractedPage[];
+  color: 'primary' | 'secondary';
 };
 
-function PdfPreview({ label, file, onChange }: PdfPreviewProps) {
-  const previewUrl = usePdfPreviewUrl(file);
-  const [pages, setPages] = useState<ExtractedPage[]>([]);
-  const [isExtracting, setIsExtracting] = useState(false);
-  const [extractionError, setExtractionError] = useState<string | null>(null);
-
-  useEffect(() => {
-    return () => pages.forEach((page) => URL.revokeObjectURL(page.url));
-  }, [pages]);
-
-  const clearPages = () => {
-    setPages([]);
-    setExtractionError(null);
-  };
-
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    clearPages();
-    onChange(event);
-  };
-
-  const handleExtract = async () => {
-    if (!file) return;
-
-    clearPages();
-    setIsExtracting(true);
-    setExtractionError(null);
-
-    try {
-      const extractedPages = await extractPdfPages(file);
-      setPages(extractedPages);
-    } catch {
-      setExtractionError('This file could not be read as a PDF.');
-    } finally {
-      setIsExtracting(false);
-    }
-  };
+function PdfPreview({ label, file, pages: storedPages, color }: PdfPreviewProps) {
 
   return (
     <Paper
@@ -60,6 +26,8 @@ function PdfPreview({ label, file, onChange }: PdfPreviewProps) {
         minWidth: 0,
         flexDirection: 'column',
         gap: 1.5,
+        overflow: 'auto',
+        bgcolor: theme => alpha(theme.palette[color].main, 0.15),
         p: 2,
       }}
     >
@@ -67,57 +35,18 @@ function PdfPreview({ label, file, onChange }: PdfPreviewProps) {
         <Typography component="h2" variant="h6">
           {label}
         </Typography>
-        <Button component="label" variant="contained">
-          Upload PDF
-          <input hidden type="file" accept="application/pdf,.pdf" onChange={handleFileChange} />
-        </Button>
+        {file && (
+          <Typography noWrap color="text.secondary" variant="body2" title={file.name}>
+            {file.name}
+          </Typography>
+        )}
       </Box>
 
-      {previewUrl ? (
-        <Box
-          component="iframe"
-          title={`${label} preview`}
-          src={previewUrl}
-          sx={{ width: '100%', minHeight: 560, flex: 1, border: 0, backgroundColor: 'background.default' }}
-        />
-      ) : (
-        <Box
-          sx={{
-            display: 'grid',
-            minHeight: 560,
-            flex: 1,
-            placeItems: 'center',
-            border: 1,
-            borderColor: 'divider',
-            backgroundColor: 'background.default',
-          }}
-        >
-          <Typography color="text.secondary">Choose a PDF to preview it here.</Typography>
-        </Box>
-      )}
-
-      {file && (
-        <Typography noWrap color="text.secondary" variant="body2" title={file.name}>
-          {file.name}
-        </Typography>
-      )}
-
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, borderTop: 1, borderColor: 'divider', pt: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
-          <Typography component="h3" variant="subtitle1">
-            Extracted pages
-          </Typography>
-          <Button variant="outlined" disabled={!file || isExtracting} onClick={handleExtract}>
-            {isExtracting ? 'Extracting...' : 'Extract PDF'}
-          </Button>
-        </Box>
-
-        {extractionError && <Typography color="error" variant="body2">{extractionError}</Typography>}
-
-        {pages.length > 0 && (
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+        {(storedPages.length > 0) && (
           <Box sx={{ display: 'grid', gap: 1.5, gridTemplateColumns: { xs: '1fr', lg: 'repeat(2, minmax(0, 1fr))' } }}>
-            {pages
-              .filter((_, i) => i < 5) // Example filter: only include even-indexed pages
+            {(storedPages)
+              .slice(0, 5)
               .map((page) => (
                 <Box
                   key={page.pageNumber}
@@ -137,7 +66,7 @@ function PdfPreview({ label, file, onChange }: PdfPreviewProps) {
                     component="iframe"
                     title={`${label} page ${page.pageNumber}`}
                     src={`${page.url}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
-                    sx={{ width: '100%', height: 360, border: 0, backgroundColor: 'common.white' }}
+                    sx={{ width: '100%', height: 750, border: 0, backgroundColor: 'common.white' }}
                   />
                 </Box>
               ))}
@@ -172,45 +101,54 @@ async function extractPdfPages(file: File): Promise<ExtractedPage[]> {
   return pages;
 }
 
-function usePdfPreviewUrl(file: File | null) {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!file) {
-      setPreviewUrl(null);
-      return;
-    }
-
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
-
-    return () => URL.revokeObjectURL(url);
-  }, [file]);
-
-  return previewUrl;
-}
-
 export default function SecondStage() {
   const { setSetting } = useSettings()
   const scorePDF = useSettingsStoreSelector((s) => s.scorePDF)
   const librettoPDF = useSettingsStoreSelector((s) => s.librettoPDF)
+  const scorePages = useSettingsStoreSelector((s) => s.scorePages)
+  const librettoPages = useSettingsStoreSelector((s) => s.librettoPages)
 
-  const handleScoreChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    persistPdfFile('scorePDF', file);
-    setSetting(prev => ({ ...prev, scorePDF: file }));
-  };
+  useEffect(() => {
+    let cancelled = false;
 
-  const handleLibrettoChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    persistPdfFile('librettoPDF', file);
-    setSetting(prev => ({ ...prev, librettoPDF: file }));
-  };
+    const extractOrEmpty = async (file: File | undefined) => {
+      if (!file) return [];
+
+      try {
+        return await extractPdfPages(file);
+      } catch {
+        return [];
+      }
+    };
+
+    void Promise.all([extractOrEmpty(librettoPDF), extractOrEmpty(scorePDF)]).then(([librettoPages, scorePages]) => {
+      if (cancelled) {
+        [...librettoPages, ...scorePages].forEach((page) => URL.revokeObjectURL(page.url));
+        return;
+      }
+
+      setSetting(prev => ({ ...prev, librettoPages, scorePages }));
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [librettoPDF, scorePDF, setSetting]);
 
   return (
     <Box sx={{ display: 'flex', flex: 1, minHeight: 0, gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-      <PdfPreview label="Libretto" file={librettoPDF ?? null} onChange={handleLibrettoChange} color="primary" />
-      <PdfPreview label="Score" file={scorePDF ?? null} onChange={handleScoreChange} color="secondary" />
+      <PdfPreview
+        label="Libretto"
+        file={librettoPDF ?? null}
+        pages={librettoPages}
+        color="primary"
+      />
+      <PdfPreview
+        label="Score"
+        file={scorePDF ?? null}
+        pages={scorePages}
+        color="secondary"
+      />
     </Box>
   );
 }
