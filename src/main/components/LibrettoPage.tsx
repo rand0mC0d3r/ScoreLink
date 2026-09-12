@@ -1,6 +1,6 @@
 import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
-import { Box, Button, Slider, Typography } from '@mui/material';
-import { Save } from 'lucide-react';
+import { Box, Button, IconButton, Slider, Tooltip, Typography } from '@mui/material';
+import { RotateCcw, Save, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 export type ExtractedPage = {
@@ -30,6 +30,22 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
         [page.pageNumber]: [...(settings.librettoPageSelections[page.pageNumber] ?? []), selection],
       },
     }));
+  };
+
+  const deleteSelection = (index: number) => {
+    setSetting((settings) => {
+      const pageSelections = [...(settings.librettoPageSelections[page.pageNumber] ?? [])];
+      pageSelections.splice(index, 1);
+
+      const librettoPageSelections = { ...settings.librettoPageSelections };
+      if (pageSelections.length > 0) {
+        librettoPageSelections[page.pageNumber] = pageSelections;
+      } else {
+        delete librettoPageSelections[page.pageNumber];
+      }
+
+      return { ...settings, librettoPageSelections };
+    });
   };
 
   const renderSelectionOverlay = (selected: [number, number]) => (
@@ -118,6 +134,26 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
                   }}
                 >
                   {renderSelectionOverlay(savedSelection)}
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 0.25 }}>
+                  <Tooltip title="Load selection">
+                    <IconButton
+                      aria-label={`Load saved selection ${index + 1} for page ${page.pageNumber}`}
+                      size="small"
+                      onClick={() => setSelection([savedSelection[0], savedSelection[1]])}
+                    >
+                      <RotateCcw size={14} />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete selection">
+                    <IconButton
+                      aria-label={`Delete saved selection ${index + 1} for page ${page.pageNumber}`}
+                      size="small"
+                      onClick={() => deleteSelection(index)}
+                    >
+                      <Trash2 size={14} />
+                    </IconButton>
+                  </Tooltip>
                 </Box>
               </Box>
             ))}
