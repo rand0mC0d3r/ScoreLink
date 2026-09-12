@@ -25,8 +25,8 @@ async function composePdf(
     ? await PDFDocument.load(await librettoPDF.arrayBuffer())
     : undefined;
   const output = await PDFDocument.create();
-  let outputPage = output.addPage([A4_WIDTH, A4_HEIGHT]);
-  let cursorY = A4_HEIGHT;
+  let outputPage: ReturnType<typeof output.addPage> | undefined;
+  let cursorY = 0;
 
   const startNewPage = () => {
     outputPage = output.addPage([A4_WIDTH, A4_HEIGHT]);
@@ -35,6 +35,19 @@ async function composePdf(
 
   for (const scorePage of scorePages) {
     const segments = getReflowPreviewSegments(scorePage.pageNumber);
+
+    if (
+      segments.length === 1
+      && segments[0].type === 'score'
+      && segments[0].cropStart === 0
+      && segments[0].cropEnd === 100
+    ) {
+      outputPage = undefined;
+      const [originalPage] = await output.copyPages(scoreSource, [scorePage.pageNumber - 1]);
+      output.addPage(originalPage);
+      continue;
+    }
+
     for (const segment of segments) {
       const sourcePage = segment.type === 'score'
         ? scorePage
@@ -52,7 +65,7 @@ async function composePdf(
       const segmentBottom = sourceHeight * (1 - segment.cropEnd / 100);
 
       while (cropTop - segmentBottom > 0) {
-        if (cursorY === 0) startNewPage();
+        if (!outputPage || cursorY <= 0) startNewPage();
 
         const availableHeight = cursorY;
         const remainingHeight = (cropTop - segmentBottom) * A4_WIDTH / sourceWidth;
@@ -75,12 +88,14 @@ async function composePdf(
         });
         cropTop = cropBottom;
 
-        if (cursorY === 0) startNewPage();
+        if (cursorY <= 0) {
+          outputPage = undefined;
+          cursorY = 0;
+        }
       }
     }
   }
 
-  if (cursorY === A4_HEIGHT) output.removePage(output.getPageCount() - 1);
   return output.save();
 }
 
