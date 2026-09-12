@@ -1,5 +1,4 @@
 import { getReflowPreviewSegments, useSettingsStoreSelector } from '@/context/settingsStore';
-import ComposePDFPage from '@/main/components/ComposePDFPage';
 import PanelWrapper from '@/main/components/PanelWrapper';
 import { Alert, Box, CircularProgress } from '@mui/material';
 import { PDFDocument } from 'pdf-lib';
@@ -107,14 +106,14 @@ export default function PDFComposer() {
       label="Composer"
       file={scorePDF ?? null}
       color="secondary"
-      sx={{ flex: 1 }}
+      sx={{ flex: 0.6 }}
     >
       {composedPdfUrl && (
         <Box
           component="iframe"
           title="Composed score PDF"
           src={`${composedPdfUrl}#toolbar=1&navpanes=0&scrollbar=1`}
-          sx={{ width: '100%', minHeight: 720, border: 0, backgroundColor: 'background.default' }}
+          sx={{ width: '100%', minHeight: 920, border: 0, backgroundColor: 'background.default' }}
         />
       )}
       {!composedPdfUrl && !composeError && scorePages.length > 0 && (
@@ -123,19 +122,6 @@ export default function PDFComposer() {
         </Box>
       )}
       {composeError && <Alert severity="error">The composed PDF could not be created.</Alert>}
-      {(scorePages.length > 0) && (
-        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
-          {(scorePages)
-            .slice(0, 15)
-            .map((page) => (
-              <ComposePDFPage
-                key={page.pageNumber}
-                pageNumber={page.pageNumber}
-                previewWidth={288}
-              />
-            ))}
-        </Box>
-      )}
     </PanelWrapper>
   </>);
 }

@@ -11,7 +11,6 @@ const steps = [
   "Split In page",
   "Add Libretto",
   "Review",
-  "Export",
 ];
 
 export default function MainApp() {
@@ -87,7 +86,6 @@ export default function MainApp() {
         {pipelineStep === 1 && <SecondStage />}
         {pipelineStep === 2 && <ThirdStage />}
         {pipelineStep === 3 && <FourthStage />}
-        {pipelineStep === 4 && <FirstStage />}
       </Box>
     </Box>
   )
