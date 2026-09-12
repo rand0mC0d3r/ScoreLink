@@ -1,14 +1,9 @@
 import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import PanelWrapper from '@/main/components/PanelWrapper';
-import PDFPreviewPage from '@/main/components/PDFPreviewPage';
+import PDFPreviewPage, { type ExtractedPage } from '@/main/components/PDFPreviewPage';
 import { Box } from '@mui/material';
 import { PDFDocument } from 'pdf-lib';
 import { useEffect } from 'react';
-
-type ExtractedPage = {
-  pageNumber: number;
-  url: string;
-};
 
 type PdfPreviewProps = {
   label: string;
@@ -35,6 +30,7 @@ function PdfPreview({ label, file, pages: storedPages, color }: PdfPreviewProps)
                   key={page.pageNumber}
                   label={label}
                   page={page}
+                  scale={2}
                 />
               ))}
           </Box>
@@ -54,9 +50,13 @@ async function extractPdfPages(file: File): Promise<ExtractedPage[]> {
       const [page] = await pageDocument.copyPages(sourceDocument, [pageNumber]);
       pageDocument.addPage(page);
       const bytes = await pageDocument.save();
+      const { width, height } = page.getSize();
 
       pages.push({
         pageNumber: pageNumber + 1,
+        sizeKb: bytes.byteLength / 1024,
+        widthPx: Math.round(width * 96 / 72),
+        heightPx: Math.round(height * 96 / 72),
         url: URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' })),
       });
     }

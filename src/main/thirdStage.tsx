@@ -1,12 +1,7 @@
 import { useSettingsStoreSelector } from '@/context/settingsStore';
 import PanelWrapper from '@/main/components/PanelWrapper';
-import PDFPreviewPage from '@/main/components/PDFPreviewPage';
+import PDFPreviewPage, { type ExtractedPage } from '@/main/components/PDFPreviewPage';
 import { Box } from '@mui/material';
-
-type ExtractedPage = {
-  pageNumber: number;
-  url: string;
-};
 
 type PdfPreviewProps = {
   label: string;
@@ -27,7 +22,7 @@ function ScorePdfPreview({ label, file, pages: storedPages, color }: PdfPreviewP
       {(storedPages.length > 0) && (
         <Box sx={{ display: 'flex', gap: 1.5, flexDirection: 'column' }}>
           {(storedPages)
-            .slice(0, 5)
+            .slice(0, 15)
             .map((page) => (
               <PDFPreviewPage
                 key={page.pageNumber}
@@ -53,7 +48,7 @@ function LibrettoPdfPreview({ label, file, pages: storedPages, color }: PdfPrevi
       {(storedPages.length > 0) && (
         <Box sx={{ display: 'flex', gap: 1.5, flexDirection: 'column' }}>
           {(storedPages)
-            .slice(0, 5)
+            .slice(0, 15)
             .map((page) => (
               <PDFPreviewPage
                 key={page.pageNumber}

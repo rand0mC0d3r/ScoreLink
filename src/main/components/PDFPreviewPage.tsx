@@ -1,6 +1,14 @@
 import { Box, Typography } from '@mui/material';
 
-export default function PDFPreviewPage({label, page}: {label: string, page: { pageNumber: number; url: string }}) {
+export type ExtractedPage = {
+  pageNumber: number;
+  url: string;
+  sizeKb: number;
+  widthPx: number;
+  heightPx: number;
+};
+
+export default function PDFPreviewPage({ label, page, scale = 1 }: { label: string; page: ExtractedPage; scale: number }) {
   return (
     <Box
       key={page.pageNumber}
@@ -17,11 +25,13 @@ export default function PDFPreviewPage({label, page}: {label: string, page: { pa
       }}
     >
       <Typography variant="body2">Page {page.pageNumber}</Typography>
+      <Typography variant="body2">Size: {page.sizeKb} KB</Typography>
+      <Typography variant="body2">Dimensions: {page.widthPx} x {page.heightPx} px</Typography>
       <Box
         component="iframe"
         title={`${label} page ${page.pageNumber}`}
         src={`${page.url}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
-        sx={{ width: '100%', height: 730, border: 0, backgroundColor: 'background.default' }}
+        sx={{ width: page.widthPx / scale, height: page.heightPx / scale, border: 0, backgroundColor: 'background.default' }}
       />
     </Box>
   );
