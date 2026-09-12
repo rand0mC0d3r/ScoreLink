@@ -1,3 +1,4 @@
+import SolidChip from '@/components/SolidChip';
 import { alpha, Box, Paper, Typography } from '@mui/material';
 
 type PanelWrapperProps = {
@@ -20,22 +21,30 @@ export default function PanelWrapper({ label, file, color, children, tools, sx }
         minWidth: 0,
         flexDirection: 'column',
         gap: 1.5,
-        p: 2,
+        p: 2.5,
+        borderRadius: 4,
+        boxShadow: 2,
         overflow: 'auto',
-        bgcolor: theme => alpha(theme.palette[color].main, 0.15),
+        bgcolor: theme => alpha(theme.palette[color].main, 0.1),
         ...sx,
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
-        <Typography component="h2" variant="h6">
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
+        <Typography component="h2" variant="h6" color="textPrimary">
           {label}
         </Typography>
         {file && (
-          <Typography noWrap color="text.secondary" variant="body2" title={file.name}>
-            {file.name}
-          </Typography>
+          <SolidChip
+            fontSize={14}
+            height={28}
+            minWidth={300}
+            label={file.name}
+            variant="header"
+          />
         )}
-        {tools}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1, justifyContent: 'flex-end' }}>
+          {tools}
+        </Box>
       </Box>
       {children}
     </Paper>

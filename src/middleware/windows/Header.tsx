@@ -9,9 +9,11 @@ import ExtendedMenu from '@/middleware/tools/PopoverTools/ExtendedMenu';
 
 export default function Header() {
   return (
-    <Box sx={{ px: 2, pr: 1.5, py: 1.5, bgcolor: 'background.paper', display: 'flex', flexDirection: 'row', justifyContent: 'space-between',
-      boxShadow: theme => `0px 4px 4px -2px ${theme.palette.divider}`,
-      zIndex: 10 }}>
+    <Box sx={{
+      px: 4, py: 1.5, bgcolor: 'background.paper', display: 'flex',
+      flexDirection: 'row', justifyContent: 'space-between',
+      zIndex: 10
+    }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <img
           src="./couchLogoMini.png"

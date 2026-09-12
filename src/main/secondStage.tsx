@@ -1,3 +1,4 @@
+import SolidChip from '@/components/SolidChip';
 import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import PanelWrapper from '@/main/components/PanelWrapper';
 import PDFPreviewPage, { type ExtractedPage } from '@/main/components/PDFPreviewPage';
@@ -19,6 +20,7 @@ function PdfPreview({ label, file, pages: storedPages, color }: PdfPreviewProps)
       label={label}
       file={file}
       color={color}
+      tools={<SolidChip label={storedPages.length > 0 ? `${storedPages.length} pages` : ''} variant="header" />}
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
         {(storedPages.length > 0) && (

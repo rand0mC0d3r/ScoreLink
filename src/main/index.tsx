@@ -22,65 +22,72 @@ export default function MainApp() {
       display: 'flex',
       flex: 1,
       minHeight: 0,
-      backgroundColor: 'background.default',
+      backgroundColor: 'background.paper',
       flexDirection: 'column',
-      gap: 2,
-      py: 4,
-      px: { xs: 2, md: 4 },
+      p: 4,
       overflow: 'auto',
     }}>
       <Box sx={{
-        px: 1,
-        pr: 3,
         display: 'flex',
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 1,
+        flex: 1,
+        minHeight: 0,
+        flexDirection: 'column',
+        gap: 2,
+        p: 0.5,
+        overflow: 'auto',
       }}>
-        <Stepper activeStep={pipelineStep} alternativeLabel nonLinear={true} >
-          {steps.map((label) => (
-            <Step key={label}
-              sx={{
-                width: '140px'
+        <Box sx={{
+          px: 1,
+          display: 'flex',
+          width: '100%',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 1,
+        }}>
+          <Stepper activeStep={pipelineStep} alternativeLabel nonLinear={true} >
+            {steps.map((label) => (
+              <Step key={label}
+                sx={{
+                  width: '150px'
+                }}
+              >
+                <StepLabel >{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, alignItems: 'stretch' }}>
+            <Button
+              size="large"
+              disabled={pipelineStep === 0}
+              onClick={() => {
+                if (pipelineStep > 0) {
+                  setSetting(prev => ({ ...prev, pipelineStep: prev.pipelineStep - 1 }))
+                }
+              } } variant="outlined">
+              <ChevronLeft size={16} />
+            </Button>
+            <Button
+              size="large"
+              disabled={pipelineStep === 4}
+              onClick={() => {
+                if (pipelineStep < steps.length - 1) {
+                  setSetting(prev => ({ ...prev, pipelineStep: prev.pipelineStep + 1 }))
+                }
               }}
-            >
-              <StepLabel >{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, alignItems: 'stretch' }}>
-          <Button
-            size="large"
-            disabled={pipelineStep === 0}
-            onClick={() => {
-              if (pipelineStep > 0) {
-                setSetting(prev => ({ ...prev, pipelineStep: prev.pipelineStep - 1 }))
-              }
-            } } variant="outlined">
-            <ChevronLeft size={16} />
-          </Button>
-          <Button
-            size="large"
-            disabled={pipelineStep === 4}
-            onClick={() => {
-              if (pipelineStep < steps.length - 1) {
-                setSetting(prev => ({ ...prev, pipelineStep: prev.pipelineStep + 1 }))
-              }
-            }}
-            variant="contained">
-            { pipelineStep === steps.length - 1 ? <CircleX size={16} /> : <ChevronsRight size={16} /> }
-          </Button>
+              variant="contained">
+              { pipelineStep === steps.length - 1 ? <CircleX size={16} /> : <ChevronsRight size={16} /> }
+            </Button>
+          </Box>
         </Box>
-      </Box>
 
-      {pipelineStep === 0 && <FirstStage />}
-      {pipelineStep === 1 && <SecondStage />}
-      {pipelineStep === 2 && <ThirdStage />}
-      {pipelineStep === 3 && <FirstStage />}
-      {pipelineStep === 4 && <FirstStage />}
+        {pipelineStep === 0 && <FirstStage />}
+        {pipelineStep === 1 && <SecondStage />}
+        {pipelineStep === 2 && <ThirdStage />}
+        {pipelineStep === 3 && <FirstStage />}
+        {pipelineStep === 4 && <FirstStage />}
+      </Box>
     </Box>
   )
 }
