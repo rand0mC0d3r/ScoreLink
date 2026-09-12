@@ -1,0 +1,34 @@
+{
+  "name": "Couch Editor",
+  "short_name": "Couch Editor",
+  "description": "Build reusable photo-editing recipes on a visual canvas and export them as .cep pipeline files.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "fullscreen",
+  "display_override": [
+    "window-controls-overlay",
+    "fullscreen",
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "any",
+  "background_color": "#0b1118",
+  "theme_color": "#0b1118",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": [
+    "photo",
+    "productivity",
+    "design"
+  ],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/couchLogoMini.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
