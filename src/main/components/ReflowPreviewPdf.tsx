@@ -3,11 +3,12 @@ import { Box, Typography } from '@mui/material';
 
 type ReflowPreviewProps = {
   pageNumber: number;
+  previewWidth?: number;
 };
 
-const previewWidth = 288;
+// const previewWidth = 288;
 
-export default function ReflowPreviewPdf({ pageNumber }: ReflowPreviewProps) {
+export default function ReflowPreviewPdf({ pageNumber, previewWidth = 288 }: ReflowPreviewProps) {
   useSettingsStoreSelector((settings) => settings);
   const segments = getReflowPreviewSegments(pageNumber);
 

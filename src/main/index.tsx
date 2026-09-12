@@ -1,4 +1,5 @@
 import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
+import FourthStage from '@/main/fourthStage';
 import SecondStage from '@/main/secondStage';
 import ThirdStage from '@/main/thirdStage';
 import { Box, Button, Step, StepLabel, Stepper } from '@mui/material';
@@ -85,7 +86,7 @@ export default function MainApp() {
         {pipelineStep === 0 && <FirstStage />}
         {pipelineStep === 1 && <SecondStage />}
         {pipelineStep === 2 && <ThirdStage />}
-        {pipelineStep === 3 && <FirstStage />}
+        {pipelineStep === 3 && <FourthStage />}
         {pipelineStep === 4 && <FirstStage />}
       </Box>
     </Box>
