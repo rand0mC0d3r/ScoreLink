@@ -1,5 +1,6 @@
 import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import { Box, Button, Slider, Typography } from '@mui/material';
+import ReflowPreview from './ReflowPreview';
 
 export type ExtractedPage = {
   pageNumber: number;
@@ -17,50 +18,11 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
   const librettoReflowSelections = useSettingsStoreSelector((settings) => settings.librettoReflowSelections);
   const pageWidth = page.widthPx / scale;
   const pageHeight = page.heightPx / scale;
-  const reflowPreviewWidth = 88;
-  const reflowPreviewPageHeight = pageHeight * reflowPreviewWidth / pageWidth;
   const isActive = activePage === page.pageNumber;
   const pageReflowSelections = librettoReflowSelections.filter(
     (selection) => selection.scorePageNumber === page.pageNumber,
   );
   const sortedPageReflowSelections = [...pageReflowSelections].sort((a, b) => a.scoreScrollPosition - b.scoreScrollPosition);
-  const scoreGapHeight = (startPosition: number, endPosition: number) => (
-    pageHeight * (endPosition - startPosition) / 100
-  );
-  const reflowPreviewSegments = sortedPageReflowSelections.flatMap((selection, index) => {
-    const startPosition = index === 0 ? 0 : sortedPageReflowSelections[index - 1].scoreScrollPosition;
-
-    return [
-      {
-        type: 'score' as const,
-        height: scoreGapHeight(startPosition, selection.scoreScrollPosition),
-        ariaLabel: `Score gap ${index + 1} for score page ${page.pageNumber}`,
-        caption: `${startPosition}% - ${selection.scoreScrollPosition}%`,
-      },
-      {
-        type: 'libretto' as const,
-        height: reflowPreviewPageHeight * (selection.librettoSelection[1] - selection.librettoSelection[0]) / 100,
-        ariaLabel: `Libretto selection ${index + 1} for score page ${page.pageNumber}`,
-        caption: `Libretto page ${selection.librettoPageNumber}`,
-      },
-    ];
-  });
-
-  if (sortedPageReflowSelections.length > 0) {
-    const lastSelection = sortedPageReflowSelections[sortedPageReflowSelections.length - 1];
-    reflowPreviewSegments.push({
-      type: 'score',
-      height: scoreGapHeight(lastSelection.scoreScrollPosition, 100),
-      ariaLabel: `Score gap after selection ${sortedPageReflowSelections.length} for score page ${page.pageNumber}`,
-      caption: `${lastSelection.scoreScrollPosition}% - 100%`,
-    });
-  }
-
-  const reflowPreviewNaturalHeight = reflowPreviewSegments.reduce((total, segment) => total + segment.height, 0);
-  const reflowPreviewScale = reflowPreviewNaturalHeight > pageHeight
-    ? pageHeight / reflowPreviewNaturalHeight
-    : 1;
-
   const activatePage = () => {
     setSetting((settings) => ({ ...settings, activePage: page.pageNumber }));
   };
@@ -116,27 +78,12 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
             )}
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180, maxHeight: pageHeight, overflow: 'hidden' }}>
-          {reflowPreviewSegments.reverse().map((segment, index) => (
-            <Box key={`${segment.type}-${index}`} sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'flex-start' }}>
-              <Box
-                aria-label={segment.ariaLabel}
-                sx={{
-                  width: reflowPreviewWidth,
-                  height: segment.height * reflowPreviewScale,
-                  border: 1,
-                  borderRadius: 1,
-                  borderColor: segment.type === 'score' ? 'secondary.main' : 'primary.main',
-                  backgroundColor: segment.type === 'score' ? 'secondary.main' : 'primary.main',
-                  opacity: 0.42,
-                }}
-              />
-              <Typography variant="caption" color="text.secondary">
-                {segment.caption}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
+        <ReflowPreview
+          pageNumber={page.pageNumber}
+          pageWidth={pageWidth}
+          pageHeight={pageHeight}
+          selections={sortedPageReflowSelections}
+        />
       </Box>
     </Box>
   );
