@@ -38,6 +38,11 @@ function PdfPreview({ label, file, onChange, color }: PdfPreviewProps & { color:
         <Typography component="h2" variant="h6">
           {label}
         </Typography>
+        {file && (
+          <Typography noWrap color="text.secondary" variant="body2" title={file.name}>
+            {file.name}
+          </Typography>
+        )}
         <Button component="label" variant="contained" color={color}>
           Upload PDF
           <input hidden type="file" accept="application/pdf,.pdf" onChange={handleFileChange} />
@@ -65,12 +70,6 @@ function PdfPreview({ label, file, onChange, color }: PdfPreviewProps & { color:
         >
           <Typography color="text.secondary">Choose a PDF to preview it here.</Typography>
         </Box>
-      )}
-
-      {file && (
-        <Typography noWrap color="text.secondary" variant="body2" title={file.name}>
-          {file.name}
-        </Typography>
       )}
     </Paper>
   );

@@ -1,3 +1,4 @@
+import SecondStage from '@/main/secondStage';
 import { Box, Button, Step, StepLabel, Stepper } from '@mui/material';
 import { ChevronLeft, ChevronsRight, CircleX } from 'lucide-react';
 import { useState } from 'react';
@@ -10,7 +11,6 @@ const steps = [
   "Review",
   "Export",
 ];
-
 
 export default function MainApp() {
   const [onboardingStep, setOnboardingStep] = useState(0);
@@ -62,13 +62,10 @@ export default function MainApp() {
           </Button>
           <Button
             size="large"
-            disabled={onboardingStep === 2 && !serverOnline}
+            disabled={onboardingStep === 4}
             onClick={() => {
               if (onboardingStep < steps.length - 1) {
                 setOnboardingStep(prev => prev + 1)
-              }
-              if (onboardingStep === steps.length - 1) {
-                setSetting(prev => ({ ...prev, onboarding: false }))
               }
             }}
             variant="contained">
@@ -76,7 +73,12 @@ export default function MainApp() {
           </Button>
         </Box>
       </Box>
-      <FirstStage />
+
+      {onboardingStep === 0 && <FirstStage />}
+      {onboardingStep === 1 && <SecondStage />}
+      {onboardingStep === 2 && <FirstStage />}
+      {onboardingStep === 3 && <FirstStage />}
+      {onboardingStep === 4 && <FirstStage />}
     </Box>
   )
 }

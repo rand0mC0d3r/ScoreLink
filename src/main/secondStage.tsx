@@ -187,7 +187,7 @@ function usePdfPreviewUrl(file: File | null) {
   return previewUrl;
 }
 
-export default function FirstStage() {
+export default function SecondStage() {
   const [pdf1, setPdf1] = useState<File | null>(null);
   const [pdf2, setPdf2] = useState<File | null>(null);
 
