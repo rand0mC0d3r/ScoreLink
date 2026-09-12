@@ -20,7 +20,7 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
   const activePageScrollPosition = useSettingsStoreSelector((settings) => settings.activePageScrollPosition);
   const [selection, setSelection] = useState<[number, number]>([20, 80]);
   const savedSelections = useSettingsStoreSelector((settings) => settings.librettoPageSelections[page.pageNumber] ?? EMPTY_SAVED_SELECTIONS);
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(true);
   const pageWidth = page.widthPx / scale;
   const pageHeight = page.heightPx / scale;
   const dummyWidth = 88;
