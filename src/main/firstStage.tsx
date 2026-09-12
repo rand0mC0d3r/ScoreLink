@@ -1,3 +1,4 @@
+import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import { alpha, Box, Button, Paper, Typography } from '@mui/material';
 import { useEffect, useState, type ChangeEvent } from 'react';
 
@@ -18,8 +19,6 @@ function PdfPreview({ label, file, onChange, color }: PdfPreviewProps & { color:
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(event);
   };
-
-
 
   return (
     <Paper
@@ -94,19 +93,22 @@ function usePdfPreviewUrl(file: File | null) {
 }
 
 export default function FirstStage() {
-  const [pdf1, setPdf1] = useState<File | null>(null);
-  const [pdf2, setPdf2] = useState<File | null>(null);
+  const { setSetting } = useSettings()
+  const scorePDF = useSettingsStoreSelector((s) => s.scorePDF)
+  const librettoPDF = useSettingsStoreSelector((s) => s.librettoPDF)
 
-  const handleFileChange =
-      (setFile: (file: File | null) => void) =>
-        (event: ChangeEvent<HTMLInputElement>) => {
-          setFile(event.target.files?.[0] ?? null);
-        };
+  const handleScoreChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSetting(prev => ({ ...prev, scorePDF: event.target.files?.[0] ?? undefined }));
+  };
+
+  const handleLibrettoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSetting(prev => ({ ...prev, librettoPDF: event.target.files?.[0] ?? undefined }));
+  };
 
   return (
     <Box sx={{ display: 'flex', flex: 1, minHeight: 0, gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-      <PdfPreview label="Libretto" file={pdf1} onChange={handleFileChange(setPdf1)} color="primary" />
-      <PdfPreview label="Score" file={pdf2} onChange={handleFileChange(setPdf2)} color="secondary" />
+      <PdfPreview label="Libretto" file={librettoPDF ?? null} onChange={handleLibrettoChange} color="primary" />
+      <PdfPreview label="Score" file={scorePDF ?? null} onChange={handleScoreChange} color="secondary" />
     </Box>
   );
 }

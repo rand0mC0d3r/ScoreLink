@@ -5,8 +5,8 @@ import { ImageArray } from '@/middleware/windows/pipeline/types';
 type SettingsStore = {
   pipelineStep: number,
 
-  librettoPDF: string | undefined,
-  scorePDF: string | undefined,
+  librettoPDF: File | undefined,
+  scorePDF: File | undefined,
 
   librettoImages: ImageArray,
   scoreImages: ImageArray,
