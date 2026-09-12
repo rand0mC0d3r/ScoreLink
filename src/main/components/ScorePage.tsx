@@ -24,10 +24,15 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
   const pageReflowSelections = librettoReflowSelections.filter(
     (selection) => selection.scorePageNumber === page.pageNumber,
   );
+  const scoreGapHeight = (startPosition: number, endPosition: number) => (
+    reflowPreviewPageHeight * (endPosition - startPosition) / 100
+  );
 
   const activatePage = () => {
     setSetting((settings) => ({ ...settings, activePage: page.pageNumber }));
   };
+
+  const sortedPageReflowSelections = [...pageReflowSelections].sort((a, b) => a.scoreScrollPosition - b.scoreScrollPosition);
 
   return (
     <Box
@@ -81,25 +86,29 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
           </Box>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180 }}>
-          {pageReflowSelections.map((selection, index) => (<Fragment key={`${selection.librettoPageNumber}-${selection.librettoSelection[0]}-${selection.librettoSelection[1]}-${index}`}>
-            <Box>
+          {sortedPageReflowSelections.map((selection, index) => (<Fragment key={`${selection.librettoPageNumber}-${selection.librettoSelection[0]}-${selection.librettoSelection[1]}-${index}`}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'start' }}>
               <Box
-                aria-label={`Libretto selection ${index + 1} for score page ${page.pageNumber}`}
+                aria-label={`Score selection ${index + 1} for score page ${page.pageNumber}`}
                 sx={{
                   width: reflowPreviewWidth,
-                  height: '100px',
+                  height: scoreGapHeight(
+                    index === 0 ? 0 : sortedPageReflowSelections[index - 1].scoreScrollPosition,
+                    selection.scoreScrollPosition,
+                  ),
                   border: 1,
                   borderRadius: 1,
-                  borderColor: 'primary.main',
+                  borderColor: 'secondary.main',
                   backgroundColor: 'secondary.main',
                   opacity: 0.42,
                 }}
               />
-            </Box>
-            <Box>
               <Typography variant="caption" color="text.secondary">
-                Libretto page {selection.librettoPageNumber}: {selection.librettoSelection[1] - selection.librettoSelection[0]}%
+                [({index === 0 ? 0 : sortedPageReflowSelections[index - 1].scoreScrollPosition}% - {selection.scoreScrollPosition}%)]
               </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'start' }}>
+
               <Box
                 aria-label={`Libretto selection ${index + 1} for score page ${page.pageNumber}`}
                 sx={{
@@ -112,14 +121,17 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
                   opacity: 0.42,
                 }}
               />
+              <Typography variant="caption" color="text.secondary">
+                Libretto: {selection.scoreScrollPosition} %
+              </Typography>
             </Box>
-            {index === pageReflowSelections.length - 1 && (
+            {index === sortedPageReflowSelections.length - 1 && (
               <Box>
                 <Box
                   aria-label={`Libretto selection ${index + 1} for score page ${page.pageNumber}`}
                   sx={{
                     width: reflowPreviewWidth,
-                    height: '100px',
+                    height: scoreGapHeight(selection.scoreScrollPosition, 100),
                     border: 1,
                     borderRadius: 1,
                     borderColor: 'primary.main',
