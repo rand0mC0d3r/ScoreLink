@@ -63,6 +63,21 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
     />
   );
 
+  const renderSummarySelectionOverlay = (selected: [number, number]) => (
+    <Box
+      aria-hidden
+      sx={{
+        position: 'absolute',
+        top: `${100 - selected[1]}%`,
+        right: 0,
+        left: 0,
+        height: `${selected[1] - selected[0]}%`,
+        backgroundColor: 'primary.main',
+        opacity: 0.42,
+      }}
+    />
+  );
+
   return (
     <Box
       key={page.pageNumber}
@@ -92,6 +107,9 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
               />
               <Box sx={{ pointerEvents: 'none' }}>
                 {renderSelectionOverlay(selection)}
+              </Box>
+              <Box sx={{ pointerEvents: 'none' }}>
+                {renderSummarySelectionOverlay(selection)}
               </Box>
             </Box>
             <Slider
