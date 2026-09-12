@@ -133,6 +133,21 @@ export const getReflowPreviewSegments = (pageNumber: number): ReflowPreviewSegme
       ? scorePage.heightPx * previewWidth / scorePage.widthPx * (endPosition - startPosition) / 100
       : 0
   )
+
+  if (selections.length === 0) {
+    return [{
+      type: 'score',
+      height: scoreGapHeight(0, 100),
+      ariaLabel: `Score page ${pageNumber}`,
+      caption: '0% - 100%',
+      pageUrl: scorePage?.url,
+      pageWidth: scorePage?.widthPx,
+      pageHeight: scorePage?.heightPx,
+      cropStart: 0,
+      cropEnd: 100,
+    }]
+  }
+
   const segments = selections.flatMap((selection, index) => {
     const startPosition = index === 0 ? 0 : selections[index - 1].scoreScrollPosition
     const librettoPage = librettoPages.find((page) => page.pageNumber === selection.librettoPageNumber)
