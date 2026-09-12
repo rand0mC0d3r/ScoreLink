@@ -1,4 +1,6 @@
-import { Box, Slider, Typography } from '@mui/material';
+import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
+import { Box, Button, Slider, Typography } from '@mui/material';
+import { Save } from 'lucide-react';
 import { useState } from 'react';
 
 export type ExtractedPage = {
@@ -9,10 +11,41 @@ export type ExtractedPage = {
   heightPx: number;
 };
 
+const EMPTY_SAVED_SELECTIONS: [number, number][] = [];
+
 export default function LibrettoPage({ label, page, scale = 1 }: { label: string; page: ExtractedPage; scale: number }) {
+  const { setSetting } = useSettings();
   const [selection, setSelection] = useState<[number, number]>([20, 80]);
+  const savedSelections = useSettingsStoreSelector((settings) => settings.librettoPageSelections[page.pageNumber] ?? EMPTY_SAVED_SELECTIONS);
   const pageWidth = page.widthPx / scale;
   const pageHeight = page.heightPx / scale;
+  const dummyWidth = 88;
+  const dummyHeight = pageHeight * dummyWidth / pageWidth;
+
+  const saveSelection = () => {
+    setSetting((settings) => ({
+      ...settings,
+      librettoPageSelections: {
+        ...settings.librettoPageSelections,
+        [page.pageNumber]: [...(settings.librettoPageSelections[page.pageNumber] ?? []), selection],
+      },
+    }));
+  };
+
+  const renderSelectionOverlay = (selected: [number, number]) => (
+    <Box
+      aria-hidden
+      sx={{
+        position: 'absolute',
+        top: `${100 - selected[1]}%`,
+        right: 0,
+        left: 0,
+        height: `${selected[1] - selected[0]}%`,
+        backgroundColor: 'primary.main',
+        opacity: 0.42,
+      }}
+    />
+  );
 
   return (
     <Box
@@ -31,39 +64,65 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
       }}
     >
       <Typography variant="body2">Page {page.pageNumber}</Typography>
-      <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 1 }}>
-        <Box sx={{ position: 'relative', width: pageWidth, height: pageHeight }}>
-          <Box
-            component="iframe"
-            title={`${label} page ${page.pageNumber}`}
-            src={`${page.url}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
-            sx={{ display: 'block', width: '100%', height: '100%', border: 0, backgroundColor: 'background.default' }}
-          />
-          <Box
-            aria-label="Selected libretto area"
-            sx={{
-              position: 'absolute',
-              top: `${100 - selection[1]}%`,
-              right: 0,
-              left: 0,
-              height: `${selection[1] - selection[0]}%`,
-              backgroundColor: 'primary.main',
-              opacity: 0.28,
-              pointerEvents: 'none',
-            }}
-          />
+      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+        <Box>
+          <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 1 }}>
+            <Box sx={{ position: 'relative', width: pageWidth, height: pageHeight }}>
+              <Box
+                component="iframe"
+                title={`${label} page ${page.pageNumber}`}
+                src={`${page.url}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
+                sx={{ display: 'block', width: '100%', height: '100%', border: 0, backgroundColor: 'background.default' }}
+              />
+              <Box sx={{ pointerEvents: 'none' }}>
+                {renderSelectionOverlay(selection)}
+              </Box>
+            </Box>
+            <Slider
+              aria-label={`Selected area for page ${page.pageNumber}`}
+              orientation="vertical"
+              value={selection}
+              min={0}
+              max={100}
+              onChange={(_, value) => {
+                if (Array.isArray(value)) setSelection([value[0], value[1]]);
+              }}
+              sx={{ height: pageHeight, py: 0 }}
+            />
+          </Box>
+          <Button
+            aria-label={`Save selection for page ${page.pageNumber}`}
+            onClick={saveSelection}
+            startIcon={<Save size={16} />}
+            size="small"
+            variant="outlined"
+            sx={{ mt: 1 }}
+          >
+            Save area
+          </Button>
         </Box>
-        <Slider
-          aria-label={`Selected area for page ${page.pageNumber}`}
-          orientation="vertical"
-          value={selection}
-          min={0}
-          max={100}
-          onChange={(_, value) => {
-            if (Array.isArray(value)) setSelection([value[0], value[1]]);
-          }}
-          sx={{ height: pageHeight, py: 0 }}
-        />
+        {savedSelections.length > 0 && (
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 1, maxWidth: 320 }}>
+            {savedSelections.map((savedSelection, index) => (
+              <Box key={`${savedSelection[0]}-${savedSelection[1]}-${index}`}>
+                <Typography variant="caption" color="text.secondary">Saved {index + 1}</Typography>
+                <Box
+                  aria-label={`Saved selection ${index + 1} for page ${page.pageNumber}`}
+                  sx={{
+                    position: 'relative',
+                    width: dummyWidth,
+                    height: dummyHeight,
+                    border: 1,
+                    borderColor: 'divider',
+                    backgroundColor: 'background.paper',
+                  }}
+                >
+                  {renderSelectionOverlay(savedSelection)}
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        )}
       </Box>
     </Box>
   );
