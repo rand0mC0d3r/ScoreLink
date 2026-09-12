@@ -8,7 +8,6 @@ import FullscreenToggle from '@/middleware/tools/ActionTools/FullscreenToggle';
 import SettingsWindowToggle from '@/middleware/tools/ActionTools/SettingsWindowToggle';
 import TutorialToggle from '@/middleware/tools/ActionTools/TutorialToggle';
 import ExtendedMenu from '@/middleware/tools/PopoverTools/ExtendedMenu';
-import PipelineSelector from './PipelineSelector';
 
 type HeaderProps = {
   currentPipelineId: string;
@@ -59,11 +58,6 @@ export default function Header({ currentPipelineId, pipelines, loadPipeline }: H
         }}>
           <GalleryHorizontalEnd size={16} />
           <Typography variant="subtitle2" sx={{ mr: 2 }}>Templates</Typography>
-          <PipelineSelector
-            currentPipelineId={currentPipelineId}
-            pipelines={pipelines}
-            loadPipeline={loadPipeline}
-          />
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'secondary.main', borderRadius: 2, p: 2, height: 42,
           bgcolor: 'background.paper',

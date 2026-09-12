@@ -2,10 +2,10 @@ import AiLoadingBar from '@/components/AiLoadingBar';
 import LoadingBar from '@/components/LoadingBar';
 import StatusBar from '@/components/StatusBar';
 import MainDriver from '@/components/tutorial/MainDriver';
+import Header from '@/middleware/windows/Header';
 import LightboxWindow from '@/middleware/windows/LightboxWindow';
 import NewVersionWindow from '@/middleware/windows/NewVersionWindow';
 import OnboardingWindow from '@/middleware/windows/OnboardingWindow';
-import Header from '@/middleware/windows/pipeline/components/Header';
 import SettingsWindow from '@/middleware/windows/SettingsWindow';
 import Box from '@mui/material/Box';
 
