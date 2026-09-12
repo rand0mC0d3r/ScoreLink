@@ -3,7 +3,7 @@ import PanelWrapper from '@/main/components/PanelWrapper';
 import PDFPreviewPage, { type ExtractedPage } from '@/main/components/PDFPreviewPage';
 import { Box } from '@mui/material';
 import { PDFDocument } from 'pdf-lib';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 type PdfPreviewProps = {
   label: string;
@@ -68,33 +68,62 @@ async function extractPdfPages(file: File): Promise<ExtractedPage[]> {
   return pages;
 }
 
+const getFileSource = (file: File) => `${file.name}:${file.size}:${file.lastModified}`;
+
 export default function SecondStage() {
   const { setSetting } = useSettings()
   const scorePDF = useSettingsStoreSelector((s) => s.scorePDF)
   const librettoPDF = useSettingsStoreSelector((s) => s.librettoPDF)
   const scorePages = useSettingsStoreSelector((s) => s.scorePages)
   const librettoPages = useSettingsStoreSelector((s) => s.librettoPages)
+  const scorePagesSource = useSettingsStoreSelector((s) => s.scorePagesSource)
+  const librettoPagesSource = useSettingsStoreSelector((s) => s.librettoPagesSource)
+  const cachedPagesRef = useRef({ scorePages, librettoPages, scorePagesSource, librettoPagesSource });
+
+  useEffect(() => {
+    cachedPagesRef.current = { scorePages, librettoPages, scorePagesSource, librettoPagesSource };
+  }, [scorePages, librettoPages, scorePagesSource, librettoPagesSource]);
 
   useEffect(() => {
     let cancelled = false;
 
-    const extractOrEmpty = async (file: File | undefined) => {
-      if (!file) return [];
+    const extractOrCached = async (
+      file: File | undefined,
+      cachedPages: ExtractedPage[],
+      cachedSource: string | undefined,
+    ): Promise<{ pages: ExtractedPage[]; created: boolean }> => {
+      if (!file) return { pages: [], created: false };
+
+      if (cachedPages.length > 0 && cachedSource === getFileSource(file)) {
+        return { pages: cachedPages, created: false };
+      }
 
       try {
-        return await extractPdfPages(file);
+        return { pages: await extractPdfPages(file), created: true };
       } catch {
-        return [];
+        return { pages: [], created: false };
       }
     };
 
-    void Promise.all([extractOrEmpty(librettoPDF), extractOrEmpty(scorePDF)]).then(([librettoPages, scorePages]) => {
+    const { scorePages: cachedScorePages, librettoPages: cachedLibrettoPages, scorePagesSource: cachedScoreSource, librettoPagesSource: cachedLibrettoSource } = cachedPagesRef.current;
+
+    void Promise.all([
+      extractOrCached(librettoPDF, cachedLibrettoPages, cachedLibrettoSource),
+      extractOrCached(scorePDF, cachedScorePages, cachedScoreSource),
+    ]).then(([librettoResult, scoreResult]) => {
       if (cancelled) {
-        [...librettoPages, ...scorePages].forEach((page) => URL.revokeObjectURL(page.url));
+        if (librettoResult.created) librettoResult.pages.forEach((page) => URL.revokeObjectURL(page.url));
+        if (scoreResult.created) scoreResult.pages.forEach((page) => URL.revokeObjectURL(page.url));
         return;
       }
 
-      setSetting(prev => ({ ...prev, librettoPages, scorePages }));
+      setSetting(prev => ({
+        ...prev,
+        librettoPages: librettoResult.pages,
+        scorePages: scoreResult.pages,
+        librettoPagesSource: librettoPDF ? getFileSource(librettoPDF) : undefined,
+        scorePagesSource: scorePDF ? getFileSource(scorePDF) : undefined,
+      }));
     });
 
     return () => {

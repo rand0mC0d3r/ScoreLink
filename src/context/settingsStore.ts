@@ -12,6 +12,8 @@ type SettingsStore = {
 
   librettoPages: any[],
   scorePages: any[],
+  librettoPagesSource?: string,
+  scorePagesSource?: string,
 
 
   onboarding: boolean,
@@ -48,6 +50,8 @@ const defaults: SettingsStore = {
 
   librettoPages: [],
   scorePages: [],
+  librettoPagesSource: undefined,
+  scorePagesSource: undefined,
 
 
   onboarding: true,
