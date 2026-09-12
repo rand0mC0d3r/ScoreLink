@@ -5,7 +5,6 @@ import MainDriver from '@/components/tutorial/MainDriver';
 import MainApp from '@/main/index';
 import Header from '@/middleware/windows/Header';
 import NewVersionWindow from '@/middleware/windows/NewVersionWindow';
-import OnboardingWindow from '@/middleware/windows/OnboardingWindow';
 import SettingsWindow from '@/middleware/windows/SettingsWindow';
 import Box from '@mui/material/Box';
 
@@ -14,7 +13,6 @@ export default function AppLayout() {
   return (
     <>
       <NewVersionWindow />
-      <OnboardingWindow />
       <SettingsWindow />
 
       <MainDriver />
