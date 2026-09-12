@@ -24,7 +24,7 @@ type ReflowPreviewSegment = {
   cropEnd?: number;
 };
 
-const previewWidth = 188;
+const previewWidth = 288;
 
 export default function ReflowPreviewPdf({ pageNumber, selections }: ReflowPreviewProps) {
   const scorePages = useSettingsStoreSelector((s) => s.scorePages)
@@ -128,18 +128,6 @@ export default function ReflowPreviewPdf({ pageNumber, selections }: ReflowPrevi
                   }}
                 />
               )}
-              <Box
-                aria-hidden
-                sx={{
-                  position: 'absolute',
-                  inset: 0,
-                  border: 2,
-                  borderColor: segment.type === 'score' ? 'secondary.main' : 'primary.main',
-                  backgroundColor: segment.type === 'score' ? 'secondary.main' : 'primary.main',
-                  opacity: 0.14,
-                  pointerEvents: 'none',
-                }}
-              />
             </Box>
           </Box>
           <Typography variant="caption" color="text.secondary">
