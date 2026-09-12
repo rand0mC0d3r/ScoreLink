@@ -15,6 +15,7 @@ type SettingsStore = {
   librettoPagesSource?: string,
   scorePagesSource?: string,
   librettoPageSelections: Record<number, [number, number][]>,
+  activePage?: number,
 
 
   onboarding: boolean,
@@ -54,6 +55,7 @@ const defaults: SettingsStore = {
   librettoPagesSource: undefined,
   scorePagesSource: undefined,
   librettoPageSelections: {},
+  activePage: undefined,
 
 
   onboarding: true,

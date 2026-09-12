@@ -46,7 +46,9 @@ export default function PanelWrapper({ label, file, color, children, tools, sx }
           {tools}
         </Box>
       </Box>
-      {children}
+      <Box sx={{ overflow: 'auto' }}>
+        {children}
+      </Box>
     </Paper>
   );
 }
