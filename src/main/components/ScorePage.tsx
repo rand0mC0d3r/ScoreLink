@@ -1,5 +1,5 @@
-import { useSettings } from '@/context/settingsStore';
-import { Box, Button, Typography } from '@mui/material';
+import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
+import { Box, Button, Slider, Typography } from '@mui/material';
 
 export type ExtractedPage = {
   pageNumber: number;
@@ -12,8 +12,11 @@ export type ExtractedPage = {
 
 export default function ScorePage({ label, page, scale = 1 }: { label: string; page: ExtractedPage; scale: number }) {
   const { setSetting } = useSettings();
+  const activePage = useSettingsStoreSelector((settings) => settings.activePage);
+  const scrollPosition = useSettingsStoreSelector((settings) => settings.activePageScrollPosition);
   const pageWidth = page.widthPx / scale;
   const pageHeight = page.heightPx / scale;
+  const isActive = activePage === page.pageNumber;
 
   const activatePage = () => {
     setSetting((settings) => ({ ...settings, activePage: page.pageNumber }));
@@ -39,6 +42,7 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
         <Button size="small" variant="outlined" onClick={activatePage}>
           Activate
         </Button>
+        {scrollPosition}
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
         <Box>
@@ -51,6 +55,22 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
                 sx={{ display: 'block', width: '100%', height: '100%', border: 0, backgroundColor: 'background.default' }}
               />
             </Box>
+            {isActive && (
+              <Slider
+                aria-label={`Scroll position for page ${page.pageNumber}`}
+                orientation="vertical"
+                value={scrollPosition}
+                min={0}
+                max={100}
+                onChange={(_, value) => {
+                  if (typeof value === 'number') {
+                    setSetting((settings) => ({ ...settings, activePageScrollPosition: value }));
+                  }
+                }}
+                color="secondary"
+                sx={{ height: pageHeight, py: 0 }}
+              />
+            )}
           </Box>
         </Box>
       </Box>
