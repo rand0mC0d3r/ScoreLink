@@ -3,6 +3,8 @@ import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import { Box, Button, IconButton, Slider, Tooltip, Typography } from '@mui/material';
 import { RotateCcw, Save, ToggleLeft, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import stc from 'string-to-color';
+import { adjectives, animals, colors, uniqueNamesGenerator } from 'unique-names-generator';
 
 export type ExtractedPage = {
   pageNumber: number;
@@ -13,6 +15,14 @@ export type ExtractedPage = {
 };
 
 const EMPTY_SAVED_SELECTIONS: [number, number][] = [];
+
+const generateUniqueSectionName = (existingNames: Set<string>) => {
+  let name = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], separator: '-' });
+  while (existingNames.has(name)) {
+    name = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], separator: '-' });
+  }
+  return name;
+};
 
 export default function LibrettoPage({ label, page, scale = 1 }: { label: string; page: ExtractedPage; scale: number }) {
   const { setSetting } = useSettings();
@@ -44,6 +54,7 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
       librettoReflowSelections: [
         ...settings.librettoReflowSelections,
         {
+          name: generateUniqueSectionName(new Set(settings.librettoReflowSelections.map((section) => section.name))),
           type: 'librettoSection',
           scorePageNumber: activePage,
           scoreScrollPosition: activePageScrollPosition,
@@ -179,7 +190,10 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 1, width: 200 }}>
           {savedSelections?.map((savedSelection, index) => (
             <Box key={`${savedSelection[0]}-${savedSelection[1]}-${index}`}>
-              <Typography variant="caption" color="text.secondary">Saved {index + 1}</Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, pb: 1 }}>
+                <Box sx={{ width: 8, height: 8, bgcolor: stc(page.pageNumber), borderRadius: 2 }} />
+                <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1}}>Saved {index + 1} </Typography>
+              </Box>
               <Box
                 aria-label={`Saved selection ${index + 1} for page ${page.pageNumber}`}
                 sx={{

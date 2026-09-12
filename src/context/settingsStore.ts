@@ -46,6 +46,7 @@ type SettingsStore = {
 }
 
 export type LibrettoReflowSelection = {
+  name: string,
   type: 'librettoSection' | 'emoji' | 'paragraph',
   scorePageNumber: number,
   scoreScrollPosition: number,
