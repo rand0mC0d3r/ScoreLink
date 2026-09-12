@@ -1,3 +1,4 @@
+import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { PDFDocument } from 'pdf-lib';
 import { useEffect, useState, type ChangeEvent } from 'react';
@@ -115,29 +116,31 @@ function PdfPreview({ label, file, onChange }: PdfPreviewProps) {
 
         {pages.length > 0 && (
           <Box sx={{ display: 'grid', gap: 1.5, gridTemplateColumns: { xs: '1fr', lg: 'repeat(2, minmax(0, 1fr))' } }}>
-            {pages.map((page) => (
-              <Box
-                key={page.pageNumber}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 0.75,
-                  minWidth: 0,
-                  p: 1,
-                  border: 1,
-                  borderColor: 'divider',
-                  backgroundColor: 'background.default',
-                }}
-              >
-                <Typography variant="body2">Page {page.pageNumber}</Typography>
+            {pages
+              .filter((_, i) => i < 5) // Example filter: only include even-indexed pages
+              .map((page) => (
                 <Box
-                  component="iframe"
-                  title={`${label} page ${page.pageNumber}`}
-                  src={`${page.url}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
-                  sx={{ width: '100%', height: 360, border: 0, backgroundColor: 'common.white' }}
-                />
-              </Box>
-            ))}
+                  key={page.pageNumber}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 0.75,
+                    minWidth: 0,
+                    p: 1,
+                    border: 1,
+                    borderColor: 'divider',
+                    backgroundColor: 'background.default',
+                  }}
+                >
+                  <Typography variant="body2">Page {page.pageNumber}</Typography>
+                  <Box
+                    component="iframe"
+                    title={`${label} page ${page.pageNumber}`}
+                    src={`${page.url}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
+                    sx={{ width: '100%', height: 360, border: 0, backgroundColor: 'common.white' }}
+                  />
+                </Box>
+              ))}
           </Box>
         )}
       </Box>
@@ -188,19 +191,22 @@ function usePdfPreviewUrl(file: File | null) {
 }
 
 export default function SecondStage() {
-  const [pdf1, setPdf1] = useState<File | null>(null);
-  const [pdf2, setPdf2] = useState<File | null>(null);
+  const { setSetting } = useSettings()
+  const scorePDF = useSettingsStoreSelector((s) => s.scorePDF)
+  const librettoPDF = useSettingsStoreSelector((s) => s.librettoPDF)
 
-  const handleFileChange =
-      (setFile: (file: File | null) => void) =>
-        (event: ChangeEvent<HTMLInputElement>) => {
-          setFile(event.target.files?.[0] ?? null);
-        };
+  const handleScoreChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSetting(prev => ({ ...prev, scorePDF: event.target.files?.[0] ?? undefined }));
+  };
+
+  const handleLibrettoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSetting(prev => ({ ...prev, librettoPDF: event.target.files?.[0] ?? undefined }));
+  };
 
   return (
     <Box sx={{ display: 'flex', flex: 1, minHeight: 0, gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-      <PdfPreview label="Libretto" file={pdf1} onChange={handleFileChange(setPdf1)} />
-      <PdfPreview label="Score" file={pdf2} onChange={handleFileChange(setPdf2)} />
+      <PdfPreview label="Libretto" file={librettoPDF ?? null} onChange={handleLibrettoChange} color="primary" />
+      <PdfPreview label="Score" file={scorePDF ?? null} onChange={handleScoreChange} color="secondary" />
     </Box>
   );
 }
