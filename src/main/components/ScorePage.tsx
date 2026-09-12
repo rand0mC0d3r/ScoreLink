@@ -87,7 +87,6 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
         />
         <ReflowPreviewPdf
           pageNumber={page.pageNumber}
-          selections={sortedPageReflowSelections}
         />
       </Box>
     </Box>

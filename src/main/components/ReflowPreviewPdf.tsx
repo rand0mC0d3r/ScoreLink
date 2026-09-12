@@ -1,87 +1,15 @@
-import { useSettingsStoreSelector } from '@/context/settingsStore';
+import { getReflowPreviewSegments, useSettingsStoreSelector, type ReflowPreviewSegment } from '@/context/settingsStore';
 import { Box, Typography } from '@mui/material';
-
-type ReflowPreviewSelection = {
-  scoreScrollPosition: number;
-  librettoPageNumber: number;
-  librettoSelection: [number, number];
-};
 
 type ReflowPreviewProps = {
   pageNumber: number;
-  selections: ReflowPreviewSelection[];
-};
-
-type ReflowPreviewSegment = {
-  type: 'score' | 'libretto';
-  height: number;
-  ariaLabel: string;
-  caption: string;
-  pageUrl?: string;
-  pageWidth?: number;
-  pageHeight?: number;
-  cropStart?: number;
-  cropEnd?: number;
 };
 
 const previewWidth = 288;
 
-export default function ReflowPreviewPdf({ pageNumber, selections }: ReflowPreviewProps) {
-  const scorePages = useSettingsStoreSelector((s) => s.scorePages)
-  const librettoPages = useSettingsStoreSelector((s) => s.librettoPages)
-  const scorePage = scorePages.find((page) => page.pageNumber === pageNumber)
-
-  const scoreGapHeight = (startPosition: number, endPosition: number) => (
-    scorePage
-      ? scorePage.heightPx * previewWidth / scorePage.widthPx * (endPosition - startPosition) / 100
-      : 0
-  );
-  const segments = selections.flatMap((selection, index) => {
-    const startPosition = index === 0 ? 0 : selections[index - 1].scoreScrollPosition;
-    const librettoPage = librettoPages.find((page) => page.pageNumber === selection.librettoPageNumber);
-
-    return [
-      {
-        type: 'score' as const,
-        height: scoreGapHeight(startPosition, selection.scoreScrollPosition),
-        ariaLabel: `Score gap ${index + 1} for score page ${pageNumber}`,
-        caption: `${startPosition}% - ${selection.scoreScrollPosition}%`,
-        pageUrl: scorePage?.url,
-        pageWidth: scorePage?.widthPx,
-        pageHeight: scorePage?.heightPx,
-        cropStart: startPosition,
-        cropEnd: selection.scoreScrollPosition,
-      },
-      {
-        type: 'libretto' as const,
-        height: librettoPage
-          ? librettoPage.heightPx * previewWidth / librettoPage.widthPx * (selection.librettoSelection[1] - selection.librettoSelection[0]) / 100
-          : 0,
-        ariaLabel: `Libretto selection ${index + 1} for score page ${pageNumber}`,
-        caption: `Libretto page ${selection.librettoPageNumber}`,
-        pageUrl: librettoPage?.url,
-        pageWidth: librettoPage?.widthPx,
-        pageHeight: librettoPage?.heightPx,
-        cropStart: selection.librettoSelection[0],
-        cropEnd: selection.librettoSelection[1],
-      },
-    ];
-  });
-
-  if (selections.length > 0) {
-    const lastSelection = selections[selections.length - 1];
-    segments.push({
-      type: 'score',
-      height: scoreGapHeight(lastSelection.scoreScrollPosition, 100),
-      ariaLabel: `Score gap after selection ${selections.length} for score page ${pageNumber}`,
-      caption: `${lastSelection.scoreScrollPosition}% - 100%`,
-      pageUrl: scorePage?.url,
-      pageWidth: scorePage?.widthPx,
-      pageHeight: scorePage?.heightPx,
-      cropStart: lastSelection.scoreScrollPosition,
-      cropEnd: 100,
-    });
-  }
+export default function ReflowPreviewPdf({ pageNumber }: ReflowPreviewProps) {
+  useSettingsStoreSelector((settings) => settings);
+  const segments = getReflowPreviewSegments(pageNumber);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180, alignItems: 'flex-start' }}>

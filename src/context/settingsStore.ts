@@ -54,6 +54,18 @@ export type LibrettoReflowSelection = {
   librettoSelection: [number, number],
 }
 
+export type ReflowPreviewSegment = {
+  type: 'score' | 'libretto',
+  height: number,
+  ariaLabel: string,
+  caption: string,
+  pageUrl?: string,
+  pageWidth?: number,
+  pageHeight?: number,
+  cropStart?: number,
+  cropEnd?: number,
+}
+
 const defaults: SettingsStore = {
 
   pipelineStep: 0,
@@ -108,6 +120,68 @@ const {
   getStore: getSettingsStore,
   setStore: setSettingsStore,
 } = createLocalStorageStoreNg<SettingsStore>(defaults, 'settingsStore')
+
+export const getReflowPreviewSegments = (pageNumber: number): ReflowPreviewSegment[] => {
+  const { scorePages, librettoPages, librettoReflowSelections } = getSettingsStore()
+  const scorePage = scorePages.find((page) => page.pageNumber === pageNumber)
+  const selections = librettoReflowSelections
+    .filter((selection) => selection.scorePageNumber === pageNumber)
+    .sort((a, b) => a.scoreScrollPosition - b.scoreScrollPosition)
+  const previewWidth = 288
+  const scoreGapHeight = (startPosition: number, endPosition: number) => (
+    scorePage
+      ? scorePage.heightPx * previewWidth / scorePage.widthPx * (endPosition - startPosition) / 100
+      : 0
+  )
+  const segments = selections.flatMap((selection, index) => {
+    const startPosition = index === 0 ? 0 : selections[index - 1].scoreScrollPosition
+    const librettoPage = librettoPages.find((page) => page.pageNumber === selection.librettoPageNumber)
+
+    return [
+      {
+        type: 'score' as const,
+        height: scoreGapHeight(startPosition, selection.scoreScrollPosition),
+        ariaLabel: `Score gap ${index + 1} for score page ${pageNumber}`,
+        caption: `${startPosition}% - ${selection.scoreScrollPosition}%`,
+        pageUrl: scorePage?.url,
+        pageWidth: scorePage?.widthPx,
+        pageHeight: scorePage?.heightPx,
+        cropStart: startPosition,
+        cropEnd: selection.scoreScrollPosition,
+      },
+      {
+        type: 'libretto' as const,
+        height: librettoPage
+          ? librettoPage.heightPx * previewWidth / librettoPage.widthPx * (selection.librettoSelection[1] - selection.librettoSelection[0]) / 100
+          : 0,
+        ariaLabel: `Libretto selection ${index + 1} for score page ${pageNumber}`,
+        caption: `Libretto page ${selection.librettoPageNumber}`,
+        pageUrl: librettoPage?.url,
+        pageWidth: librettoPage?.widthPx,
+        pageHeight: librettoPage?.heightPx,
+        cropStart: selection.librettoSelection[0],
+        cropEnd: selection.librettoSelection[1],
+      },
+    ]
+  })
+
+  if (selections.length > 0) {
+    const lastSelection = selections[selections.length - 1]
+    segments.push({
+      type: 'score',
+      height: scoreGapHeight(lastSelection.scoreScrollPosition, 100),
+      ariaLabel: `Score gap after selection ${selections.length} for score page ${pageNumber}`,
+      caption: `${lastSelection.scoreScrollPosition}% - 100%`,
+      pageUrl: scorePage?.url,
+      pageWidth: scorePage?.widthPx,
+      pageHeight: scorePage?.heightPx,
+      cropStart: lastSelection.scoreScrollPosition,
+      cropEnd: 100,
+    })
+  }
+
+  return segments
+}
 
 function useHydratePdfFiles() {
   const setSetting = useSetStore()
