@@ -3,6 +3,15 @@ import type { SupportedLanguage } from '@/lib/i18n';
 import { ImageArray } from '@/middleware/windows/pipeline/types';
 
 type SettingsStore = {
+  pipelineStep: number,
+
+  librettoPDF: string | undefined,
+  scorePDF: string | undefined,
+
+  librettoImages: ImageArray,
+  scoreImages: ImageArray,
+
+
   onboarding: boolean,
   onboardingStep: number,
   newVersion?: boolean,
@@ -29,6 +38,16 @@ type SettingsStore = {
 }
 
 const defaults: SettingsStore = {
+
+  pipelineStep: 0,
+
+  librettoPDF: undefined,
+  scorePDF: undefined,
+
+  librettoImages: [],
+  scoreImages: [],
+
+
   onboarding: true,
   onboardingStep: 0,
   newVersion: false,

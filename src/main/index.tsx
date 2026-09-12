@@ -1,96 +1,19 @@
-import { Box, Button, Paper, Typography } from '@mui/material';
-import { useEffect, useState, type ChangeEvent } from 'react';
+import { Box, Button, Step, StepLabel, Stepper } from '@mui/material';
+import { ChevronLeft, ChevronsRight, CircleX } from 'lucide-react';
+import { useState } from 'react';
+import FirstStage from './firstStage';
 
-type PdfPreviewProps = {
-  label: string;
-  file: File | null;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-};
+const steps = [
+  "Load PDF",
+  "Split In page",
+  "Add Libretto",
+  "Review",
+  "Export",
+];
 
-function PdfPreview({ label, file, onChange }: PdfPreviewProps) {
-  const previewUrl = usePdfPreviewUrl(file);
-
-  return (
-    <Paper
-      variant="outlined"
-      sx={{
-        display: 'flex',
-        flex: 1,
-        minWidth: 0,
-        flexDirection: 'column',
-        gap: 1.5,
-        p: 2,
-      }}
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
-        <Typography component="h2" variant="h6">
-          {label}
-        </Typography>
-        <Button component="label" variant="contained">
-          Upload PDF
-          <input hidden type="file" accept="application/pdf,.pdf" onChange={onChange} />
-        </Button>
-      </Box>
-
-      {previewUrl ? (
-        <Box
-          component="iframe"
-          title={`${label} preview`}
-          src={previewUrl}
-          sx={{ width: '100%', minHeight: 560, flex: 1, border: 0, backgroundColor: 'background.default' }}
-        />
-      ) : (
-        <Box
-          sx={{
-            display: 'grid',
-            minHeight: 560,
-            flex: 1,
-            placeItems: 'center',
-            border: 1,
-            borderColor: 'divider',
-            backgroundColor: 'background.default',
-          }}
-        >
-          <Typography color="text.secondary">Choose a PDF to preview it here.</Typography>
-        </Box>
-      )}
-
-      {file && (
-        <Typography noWrap color="text.secondary" variant="body2" title={file.name}>
-          {file.name}
-        </Typography>
-      )}
-    </Paper>
-  );
-}
-
-function usePdfPreviewUrl(file: File | null) {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!file) {
-      setPreviewUrl(null);
-      return;
-    }
-
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
-
-    return () => URL.revokeObjectURL(url);
-  }, [file]);
-
-  return previewUrl;
-}
 
 export default function MainApp() {
-  const [pdf1, setPdf1] = useState<File | null>(null);
-  const [pdf2, setPdf2] = useState<File | null>(null);
-
-  const handleFileChange =
-      (setFile: (file: File | null) => void) =>
-        (event: ChangeEvent<HTMLInputElement>) => {
-          setFile(event.target.files?.[0] ?? null);
-        };
+  const [onboardingStep, setOnboardingStep] = useState(0);
 
   return (
     <Box sx={{
@@ -104,13 +27,56 @@ export default function MainApp() {
       px: { xs: 2, md: 4 },
       overflow: 'auto',
     }}>
-      <Typography component="h1" variant="h5">
-        Libretto & Score
-      </Typography>
-      <Box sx={{ display: 'flex', flex: 1, minHeight: 0, gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-        <PdfPreview label="Libretto" file={pdf1} onChange={handleFileChange(setPdf1)} />
-        <PdfPreview label="Score" file={pdf2} onChange={handleFileChange(setPdf2)} />
+      <Box sx={{
+        px: 1,
+        pr: 3,
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 1,
+      }}>
+        <Stepper activeStep={onboardingStep} alternativeLabel nonLinear={true} >
+          {steps.map((label) => (
+            <Step key={label}
+              sx={{
+                width: '140px'
+              }}
+            >
+              <StepLabel >{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, alignItems: 'stretch' }}>
+          <Button
+            size="large"
+            disabled={onboardingStep === 0}
+            onClick={() => {
+              if (onboardingStep > 0) {
+                setOnboardingStep(prev => prev - 1)
+              }
+            } } variant="outlined">
+            <ChevronLeft size={16} />
+          </Button>
+          <Button
+            size="large"
+            disabled={onboardingStep === 2 && !serverOnline}
+            onClick={() => {
+              if (onboardingStep < steps.length - 1) {
+                setOnboardingStep(prev => prev + 1)
+              }
+              if (onboardingStep === steps.length - 1) {
+                setSetting(prev => ({ ...prev, onboarding: false }))
+              }
+            }}
+            variant="contained">
+            { onboardingStep === steps.length - 1 ? <CircleX size={16} /> : <ChevronsRight size={16} /> }
+          </Button>
+        </Box>
       </Box>
+      <FirstStage />
     </Box>
   )
 }
