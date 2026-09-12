@@ -15,6 +15,7 @@ type SettingsStore = {
   librettoPagesSource?: string,
   scorePagesSource?: string,
   librettoPageSelections: Record<number, [number, number][]>,
+  librettoReflowSelections: LibrettoReflowSelection[],
   activePage?: number,
   activePageScrollPosition: number,
 
@@ -44,6 +45,14 @@ type SettingsStore = {
   locale: SupportedLanguage,
 }
 
+export type LibrettoReflowSelection = {
+  type: 'librettoSection' | 'emoji' | 'paragraph',
+  scorePageNumber: number,
+  scoreScrollPosition: number,
+  librettoPageNumber: number,
+  librettoSelection: [number, number],
+}
+
 const defaults: SettingsStore = {
 
   pipelineStep: 0,
@@ -56,6 +65,7 @@ const defaults: SettingsStore = {
   librettoPagesSource: undefined,
   scorePagesSource: undefined,
   librettoPageSelections: {},
+  librettoReflowSelections: [],
   activePage: undefined,
   activePageScrollPosition: 0,
 

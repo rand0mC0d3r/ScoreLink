@@ -15,6 +15,8 @@ const EMPTY_SAVED_SELECTIONS: [number, number][] = [];
 
 export default function LibrettoPage({ label, page, scale = 1 }: { label: string; page: ExtractedPage; scale: number }) {
   const { setSetting } = useSettings();
+  const activePage = useSettingsStoreSelector((settings) => settings.activePage);
+  const activePageScrollPosition = useSettingsStoreSelector((settings) => settings.activePageScrollPosition);
   const [selection, setSelection] = useState<[number, number]>([20, 80]);
   const savedSelections = useSettingsStoreSelector((settings) => settings.librettoPageSelections[page.pageNumber] ?? EMPTY_SAVED_SELECTIONS);
   const pageWidth = page.widthPx / scale;
@@ -29,6 +31,24 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
         ...settings.librettoPageSelections,
         [page.pageNumber]: [...(settings.librettoPageSelections[page.pageNumber] ?? []), selection],
       },
+    }));
+  };
+
+  const addReflowSelection = (librettoSelection: [number, number]) => {
+    if (activePage === undefined) return;
+
+    setSetting((settings) => ({
+      ...settings,
+      librettoReflowSelections: [
+        ...settings.librettoReflowSelections,
+        {
+          type: 'librettoSection',
+          scorePageNumber: activePage,
+          scoreScrollPosition: activePageScrollPosition,
+          librettoPageNumber: page.pageNumber,
+          librettoSelection,
+        },
+      ],
     }));
   };
 
@@ -177,6 +197,18 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
                     >
                       <Trash2 size={14} />
                     </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Add selection">
+                    <span>
+                      <IconButton
+                        aria-label={`Add saved selection ${index + 1} for page ${page.pageNumber}`}
+                        size="small"
+                        onClick={() => addReflowSelection(savedSelection)}
+                        disabled={activePage === undefined}
+                      >
+                        <Save size={14} />
+                      </IconButton>
+                    </span>
                   </Tooltip>
                 </Box>
               </Box>
