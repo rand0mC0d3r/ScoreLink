@@ -122,6 +122,17 @@ export default function PDFComposer() {
         </Box>
       )}
       {composeError && <Alert severity="error">The composed PDF could not be created.</Alert>}
+      {/* {scorePages.length > 0 && (
+        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', mt: 2 }}>
+          {scorePages.slice(0, 15).map((page) => (
+            <ComposePDFPage
+              key={page.pageNumber}
+              pageNumber={page.pageNumber}
+              previewWidth={288}
+            />
+          ))}
+        </Box>
+      )} */}
     </PanelWrapper>
   </>);
 }
