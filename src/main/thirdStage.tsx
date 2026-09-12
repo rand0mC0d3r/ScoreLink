@@ -18,7 +18,7 @@ function ScorePdfPreview({ label, file, pages: storedPages, color }: PdfPreviewP
       label={label}
       file={file}
       color={color}
-      sx={{flex: color === 'secondary' ? 2 : 0.5 }}
+      sx={{flex: color === 'secondary' ? 1 : 0.5 }}
     >
       {(storedPages.length > 0) && (
         <Box sx={{ display: 'flex', gap: 1.5, flexDirection: 'column' }}>
