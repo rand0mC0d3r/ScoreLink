@@ -13,7 +13,7 @@ export default function ComposePDFPage({ pageNumber, previewWidth = 288 }: Reflo
   const segments = getReflowPreviewSegments(pageNumber);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180, alignItems: 'flex-start' }}>ssss
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180, alignItems: 'flex-start' }}>
       {[...segments].map((segment: ReflowPreviewSegment, index) => (
         <Box key={`${segment.type}-${index}`} sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'flex-start' }}>
           <Box

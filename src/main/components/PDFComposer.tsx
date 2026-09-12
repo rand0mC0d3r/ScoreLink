@@ -1,11 +1,106 @@
-import { useSettingsStoreSelector } from '@/context/settingsStore';
+import { getReflowPreviewSegments, useSettingsStoreSelector } from '@/context/settingsStore';
 import ComposePDFPage from '@/main/components/ComposePDFPage';
 import PanelWrapper from '@/main/components/PanelWrapper';
-import { Box } from '@mui/material';
+import { Alert, Box, CircularProgress } from '@mui/material';
+import { PDFDocument } from 'pdf-lib';
+import { useEffect, useState } from 'react';
+
+type SourcePage = {
+  pageNumber: number;
+  widthPx: number;
+  heightPx: number;
+};
+
+const pointsFromPixels = (pixels: number) => pixels * 72 / 96;
+
+async function composePdf(
+  scorePDF: File,
+  librettoPDF: File | undefined,
+  scorePages: SourcePage[],
+  librettoPages: SourcePage[],
+) {
+  const scoreSource = await PDFDocument.load(await scorePDF.arrayBuffer());
+  const librettoSource = librettoPDF
+    ? await PDFDocument.load(await librettoPDF.arrayBuffer())
+    : undefined;
+  const output = await PDFDocument.create();
+
+  for (const scorePage of scorePages) {
+    const segments = getReflowPreviewSegments(scorePage.pageNumber);
+    const scoreWidth = pointsFromPixels(scorePage.widthPx);
+    const embeddedPages = await Promise.all(segments.map(async (segment) => {
+      const sourcePage = segment.type === 'score'
+        ? scorePage
+        : librettoPages.find((page) => page.pageNumber === segment.sourcePageNumber);
+      const sourceDocument = segment.type === 'score' ? scoreSource : librettoSource;
+
+      if (!sourcePage || !sourceDocument || segment.cropStart === undefined || segment.cropEnd === undefined) {
+        return undefined;
+      }
+
+      const sourcePdfPage = sourceDocument.getPage(sourcePage.pageNumber - 1);
+      const sourceWidth = pointsFromPixels(sourcePage.widthPx);
+      const sourceHeight = pointsFromPixels(sourcePage.heightPx);
+      const cropTop = sourceHeight * (1 - segment.cropStart / 100);
+      const cropBottom = sourceHeight * (1 - segment.cropEnd / 100);
+      const cropHeight = cropTop - cropBottom;
+      const embedded = await output.embedPage(sourcePdfPage, {
+        left: 0,
+        bottom: cropBottom,
+        right: sourceWidth,
+        top: cropTop,
+      });
+
+      return { embedded, height: cropHeight * scoreWidth / sourceWidth };
+    }));
+
+    const validPages = embeddedPages.filter((page): page is NonNullable<typeof page> => page !== undefined && page.height > 0);
+    const outputHeight = validPages.reduce((height, page) => height + page.height, 0);
+    const outputPage = output.addPage([scoreWidth, outputHeight || pointsFromPixels(scorePage.heightPx)]);
+    let y = outputPage.getHeight();
+
+    for (const page of validPages) {
+      y -= page.height;
+      outputPage.drawPage(page.embedded, { x: 0, y, width: scoreWidth, height: page.height });
+    }
+  }
+
+  return output.save();
+}
 
 export default function PDFComposer() {
   const scorePDF = useSettingsStoreSelector((s) => s.scorePDF)
+  const librettoPDF = useSettingsStoreSelector((s) => s.librettoPDF)
   const scorePages = useSettingsStoreSelector((s) => s.scorePages)
+  const librettoPages = useSettingsStoreSelector((s) => s.librettoPages)
+  const [composedPdfUrl, setComposedPdfUrl] = useState<string>();
+  const [composeError, setComposeError] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    let nextUrl: string | undefined;
+
+    if (!scorePDF || scorePages.length === 0) {
+      setComposedPdfUrl(undefined);
+      return;
+    }
+
+    setComposeError(false);
+    void composePdf(scorePDF, librettoPDF, scorePages, librettoPages)
+      .then((bytes) => {
+        if (cancelled) return;
+        nextUrl = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+        setComposedPdfUrl(nextUrl);
+      })
+      .catch(() => {
+        if (!cancelled) setComposeError(true);
+      });
+
+    return () => {
+      cancelled = true;
+      if (nextUrl) URL.revokeObjectURL(nextUrl);
+    };
+  }, [librettoPDF, librettoPages, scorePDF, scorePages]);
 
   return (<>
     <PanelWrapper
@@ -14,6 +109,20 @@ export default function PDFComposer() {
       color="secondary"
       sx={{ flex: 1 }}
     >
+      {composedPdfUrl && (
+        <Box
+          component="iframe"
+          title="Composed score PDF"
+          src={`${composedPdfUrl}#toolbar=1&navpanes=0&scrollbar=1`}
+          sx={{ width: '100%', minHeight: 720, border: 0, backgroundColor: 'background.default' }}
+        />
+      )}
+      {!composedPdfUrl && !composeError && scorePages.length > 0 && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+          <CircularProgress size={28} />
+        </Box>
+      )}
+      {composeError && <Alert severity="error">The composed PDF could not be created.</Alert>}
       {(scorePages.length > 0) && (
         <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
           {(scorePages)
