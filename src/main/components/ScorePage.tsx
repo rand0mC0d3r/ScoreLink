@@ -14,9 +14,15 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
   const { setSetting } = useSettings();
   const activePage = useSettingsStoreSelector((settings) => settings.activePage);
   const scrollPosition = useSettingsStoreSelector((settings) => settings.activePageScrollPosition);
+  const librettoReflowSelections = useSettingsStoreSelector((settings) => settings.librettoReflowSelections);
   const pageWidth = page.widthPx / scale;
   const pageHeight = page.heightPx / scale;
+  const reflowPreviewWidth = 88;
+  const reflowPreviewHeight = pageHeight * reflowPreviewWidth / pageWidth;
   const isActive = activePage === page.pageNumber;
+  const pageReflowSelections = librettoReflowSelections.filter(
+    (selection) => selection.scorePageNumber === page.pageNumber,
+  );
 
   const activatePage = () => {
     setSetting((settings) => ({ ...settings, activePage: page.pageNumber }));
@@ -72,6 +78,40 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
               />
             )}
           </Box>
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180 }}>
+          {pageReflowSelections.map((selection, index) => (
+            <Box key={`${selection.librettoPageNumber}-${selection.librettoSelection[0]}-${selection.librettoSelection[1]}-${index}`}>
+              <Typography variant="caption" color="text.secondary">
+                Libretto page {selection.librettoPageNumber}: {selection.librettoSelection[1] - selection.librettoSelection[0]}%
+              </Typography>
+              <Box
+                aria-label={`Libretto selection ${index + 1} for score page ${page.pageNumber}`}
+                sx={{
+                  position: 'relative',
+                  width: reflowPreviewWidth,
+                  height: reflowPreviewHeight,
+                  border: 1,
+                  borderRadius: 2,
+                  borderColor: 'divider',
+                  backgroundColor: 'background.paper',
+                }}
+              >
+                <Box
+                  aria-hidden
+                  sx={{
+                    position: 'absolute',
+                    top: `${100 - selection.librettoSelection[1]}%`,
+                    right: 0,
+                    left: 0,
+                    height: `${selection.librettoSelection[1] - selection.librettoSelection[0]}%`,
+                    backgroundColor: 'primary.main',
+                    opacity: 0.42,
+                  }}
+                />
+              </Box>
+            </Box>
+          ))}
         </Box>
       </Box>
     </Box>
