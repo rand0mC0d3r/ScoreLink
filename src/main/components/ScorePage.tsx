@@ -25,7 +25,7 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
   );
   const sortedPageReflowSelections = [...pageReflowSelections].sort((a, b) => a.scoreScrollPosition - b.scoreScrollPosition);
   const scoreGapHeight = (startPosition: number, endPosition: number) => (
-    reflowPreviewPageHeight * (endPosition - startPosition) / 100
+    pageHeight * (endPosition - startPosition) / 100
   );
   const reflowPreviewSegments = sortedPageReflowSelections.flatMap((selection, index) => {
     const startPosition = index === 0 ? 0 : sortedPageReflowSelections[index - 1].scoreScrollPosition;
@@ -55,6 +55,10 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
       caption: `${lastSelection.scoreScrollPosition}% - 100%`,
     });
   }
+  const reflowPreviewNaturalHeight = reflowPreviewSegments.reduce((total, segment) => total + segment.height, 0);
+  const reflowPreviewScale = reflowPreviewNaturalHeight > pageHeight
+    ? pageHeight / reflowPreviewNaturalHeight
+    : 1;
 
   const activatePage = () => {
     setSetting((settings) => ({ ...settings, activePage: page.pageNumber }));
@@ -111,14 +115,14 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
             )}
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180, maxHeight: pageHeight, overflow: 'hidden' }}>
           {reflowPreviewSegments.map((segment, index) => (
             <Box key={`${segment.type}-${index}`} sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'flex-start' }}>
               <Box
                 aria-label={segment.ariaLabel}
                 sx={{
                   width: reflowPreviewWidth,
-                  height: segment.height,
+                  height: segment.height * reflowPreviewScale,
                   border: 1,
                   borderRadius: 1,
                   borderColor: segment.type === 'score' ? 'secondary.main' : 'primary.main',
