@@ -1,4 +1,5 @@
-import { Box, Typography } from '@mui/material';
+import SolidChip from '@/components/SolidChip';
+import { Box } from '@mui/material';
 
 export type ExtractedPage = {
   pageNumber: number;
@@ -24,9 +25,11 @@ export default function PDFPreviewPage({ label, page, scale = 1 }: { label: stri
         backgroundColor: 'background.default',
       }}
     >
-      <Typography variant="body2">Page {page.pageNumber}</Typography>
-      <Typography variant="body2">Size: {page.sizeKb} KB</Typography>
-      <Typography variant="body2">Dimensions: {page.widthPx} x {page.heightPx} px</Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 0.5 }}>
+        <SolidChip label={`Page ${page.pageNumber}`} variant="header" />
+        <SolidChip label={`Size: ${page.sizeKb} KB`} />
+        <SolidChip label={`Dimensions: ${page.widthPx} x ${page.heightPx} px`} />
+      </Box>
       <Box
         component="iframe"
         title={`${label} page ${page.pageNumber}`}
