@@ -1,6 +1,7 @@
 import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import PanelWrapper from '@/main/components/PanelWrapper';
-import { Box, Typography } from '@mui/material';
+import PDFPreviewPage from '@/main/components/PDFPreviewPage';
+import { Box } from '@mui/material';
 import { PDFDocument } from 'pdf-lib';
 import { useEffect } from 'react';
 
@@ -30,27 +31,11 @@ function PdfPreview({ label, file, pages: storedPages, color }: PdfPreviewProps)
             {(storedPages)
               .slice(0, 5)
               .map((page) => (
-                <Box
+                <PDFPreviewPage
                   key={page.pageNumber}
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 0.75,
-                    minWidth: 0,
-                    p: 1,
-                    border: 1,
-                    borderColor: 'divider',
-                    backgroundColor: 'background.default',
-                  }}
-                >
-                  <Typography variant="body2">Page {page.pageNumber}</Typography>
-                  <Box
-                    component="iframe"
-                    title={`${label} page ${page.pageNumber}`}
-                    src={`${page.url}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
-                    sx={{ width: '100%', height: 750, border: 0, backgroundColor: 'common.white' }}
-                  />
-                </Box>
+                  label={label}
+                  page={page}
+                />
               ))}
           </Box>
         )}
