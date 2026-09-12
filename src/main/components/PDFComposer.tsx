@@ -11,6 +11,8 @@ type SourcePage = {
 };
 
 const pointsFromPixels = (pixels: number) => pixels * 72 / 96;
+const A4_WIDTH = 595.28;
+const A4_HEIGHT = 841.89;
 
 async function composePdf(
   scorePDF: File,
@@ -23,47 +25,62 @@ async function composePdf(
     ? await PDFDocument.load(await librettoPDF.arrayBuffer())
     : undefined;
   const output = await PDFDocument.create();
+  let outputPage = output.addPage([A4_WIDTH, A4_HEIGHT]);
+  let cursorY = A4_HEIGHT;
+
+  const startNewPage = () => {
+    outputPage = output.addPage([A4_WIDTH, A4_HEIGHT]);
+    cursorY = A4_HEIGHT;
+  };
 
   for (const scorePage of scorePages) {
     const segments = getReflowPreviewSegments(scorePage.pageNumber);
-    const scoreWidth = pointsFromPixels(scorePage.widthPx);
-    const embeddedPages = await Promise.all(segments.map(async (segment) => {
+    for (const segment of segments) {
       const sourcePage = segment.type === 'score'
         ? scorePage
         : librettoPages.find((page) => page.pageNumber === segment.sourcePageNumber);
       const sourceDocument = segment.type === 'score' ? scoreSource : librettoSource;
 
       if (!sourcePage || !sourceDocument || segment.cropStart === undefined || segment.cropEnd === undefined) {
-        return undefined;
+        continue;
       }
 
       const sourcePdfPage = sourceDocument.getPage(sourcePage.pageNumber - 1);
       const sourceWidth = pointsFromPixels(sourcePage.widthPx);
       const sourceHeight = pointsFromPixels(sourcePage.heightPx);
-      const cropTop = sourceHeight * (1 - segment.cropStart / 100);
-      const cropBottom = sourceHeight * (1 - segment.cropEnd / 100);
-      const cropHeight = cropTop - cropBottom;
-      const embedded = await output.embedPage(sourcePdfPage, {
-        left: 0,
-        bottom: cropBottom,
-        right: sourceWidth,
-        top: cropTop,
-      });
+      let cropTop = sourceHeight * (1 - segment.cropStart / 100);
+      const segmentBottom = sourceHeight * (1 - segment.cropEnd / 100);
 
-      return { embedded, height: cropHeight * scoreWidth / sourceWidth };
-    }));
+      while (cropTop - segmentBottom > 0) {
+        if (cursorY === 0) startNewPage();
 
-    const validPages = embeddedPages.filter((page): page is NonNullable<typeof page> => page !== undefined && page.height > 0);
-    const outputHeight = validPages.reduce((height, page) => height + page.height, 0);
-    const outputPage = output.addPage([scoreWidth, outputHeight || pointsFromPixels(scorePage.heightPx)]);
-    let y = outputPage.getHeight();
+        const availableHeight = cursorY;
+        const remainingHeight = (cropTop - segmentBottom) * A4_WIDTH / sourceWidth;
+        const drawnHeight = Math.min(availableHeight, remainingHeight);
+        const sourceChunkHeight = drawnHeight * sourceWidth / A4_WIDTH;
+        const cropBottom = Math.max(segmentBottom, cropTop - sourceChunkHeight);
+        const embedded = await output.embedPage(sourcePdfPage, {
+          left: 0,
+          bottom: cropBottom,
+          right: sourceWidth,
+          top: cropTop,
+        });
 
-    for (const page of validPages) {
-      y -= page.height;
-      outputPage.drawPage(page.embedded, { x: 0, y, width: scoreWidth, height: page.height });
+        cursorY -= drawnHeight;
+        outputPage.drawPage(embedded, {
+          x: 0,
+          y: cursorY,
+          width: A4_WIDTH,
+          height: drawnHeight,
+        });
+        cropTop = cropBottom;
+
+        if (cursorY === 0) startNewPage();
+      }
     }
   }
 
+  if (cursorY === A4_HEIGHT) output.removePage(output.getPageCount() - 1);
   return output.save();
 }
 
