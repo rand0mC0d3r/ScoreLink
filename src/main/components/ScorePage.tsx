@@ -1,4 +1,5 @@
-import { Box, Typography } from '@mui/material';
+import { useSettings } from '@/context/settingsStore';
+import { Box, Button, Typography } from '@mui/material';
 
 export type ExtractedPage = {
   pageNumber: number;
@@ -10,8 +11,13 @@ export type ExtractedPage = {
 
 
 export default function ScorePage({ label, page, scale = 1 }: { label: string; page: ExtractedPage; scale: number }) {
+  const { setSetting } = useSettings();
   const pageWidth = page.widthPx / scale;
   const pageHeight = page.heightPx / scale;
+
+  const activatePage = () => {
+    setSetting((settings) => ({ ...settings, activePage: page.pageNumber }));
+  };
 
   return (
     <Box
@@ -28,7 +34,12 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
         mb: 2,
       }}
     >
-      <Typography variant="body2">Page {page.pageNumber}</Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Typography variant="body2">Page {page.pageNumber}</Typography>
+        <Button size="small" variant="outlined" onClick={activatePage}>
+          Activate
+        </Button>
+      </Box>
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
         <Box>
           <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 1 }}>
