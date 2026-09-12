@@ -23,6 +23,10 @@ export function createLocalStorageStoreNg<T extends object>(
       const parsed = JSON.parse(raw)
 
       function merge(def: any, val: any) {
+        if (def === undefined && val && typeof val === 'object' && !Array.isArray(val) && Object.keys(val).length === 0) {
+          return def
+        }
+
         if (def instanceof Set) {
           // parsed stored as array -> convert to Set
           if (Array.isArray(val)) return new Set(val)
@@ -55,6 +59,7 @@ export function createLocalStorageStoreNg<T extends object>(
   function saveToStorage(next: T) {
     try {
       function serialize(v: any): any {
+        if (typeof File !== 'undefined' && v instanceof File) return undefined
         if (v instanceof Set) return Array.from(v)
         if (Array.isArray(v)) return v.map(serialize)
         if (v && typeof v === 'object') {

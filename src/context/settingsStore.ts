@@ -1,6 +1,8 @@
 import { createLocalStorageStoreNg } from '@/lib/createLocalStorageStoreNg';
+import { loadStoredFile, saveStoredFile } from '@/lib/fileStorage';
 import type { SupportedLanguage } from '@/lib/i18n';
 import { ImageArray } from '@/middleware/windows/pipeline/types';
+import React, { useEffect } from 'react';
 
 type SettingsStore = {
   pipelineStep: number,
@@ -73,13 +75,54 @@ const defaults: SettingsStore = {
   locale: 'en',
 } satisfies SettingsStore;
 
+const fileStorageKeys = {
+  librettoPDF: 'libretto-pdf',
+  scorePDF: 'score-pdf',
+} as const;
+
 const {
-  Provider: SettingsProvider,
+  Provider: BaseSettingsProvider,
   useSetStore,
   useStoreSelector: useSettingsStoreSelector,
   getStore: getSettingsStore,
   setStore: setSettingsStore,
 } = createLocalStorageStoreNg<SettingsStore>(defaults, 'settingsStore')
+
+function useHydratePdfFiles() {
+  const setSetting = useSetStore()
+
+  useEffect(() => {
+    void Promise.all([
+      loadStoredFile(fileStorageKeys.librettoPDF),
+      loadStoredFile(fileStorageKeys.scorePDF),
+    ]).then(([librettoPDF, scorePDF]) => {
+      if (!librettoPDF && !scorePDF) return
+
+      setSetting(prev => ({
+        ...prev,
+        librettoPDF: prev.librettoPDF ?? librettoPDF,
+        scorePDF: prev.scorePDF ?? scorePDF,
+      }))
+    }).catch(() => undefined)
+  }, [setSetting])
+}
+
+export const persistPdfFile = (key: keyof typeof fileStorageKeys, file: File | undefined) => {
+  if (file) void saveStoredFile(fileStorageKeys[key], file).catch(() => undefined)
+}
+
+function SettingsProvider({ children }: { children: React.ReactNode }) {
+  return React.createElement(
+    BaseSettingsProvider,
+    null,
+    React.createElement(PdfFileHydrator, null, children),
+  )
+}
+
+function PdfFileHydrator({ children }: { children: React.ReactNode }) {
+  useHydratePdfFiles()
+  return children
+}
 
 export const useSettings = () => {
   const setSetting = useSetStore()

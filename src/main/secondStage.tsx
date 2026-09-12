@@ -1,4 +1,4 @@
-import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
+import { persistPdfFile, useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { PDFDocument } from 'pdf-lib';
 import { useEffect, useState, type ChangeEvent } from 'react';
@@ -196,11 +196,15 @@ export default function SecondStage() {
   const librettoPDF = useSettingsStoreSelector((s) => s.librettoPDF)
 
   const handleScoreChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSetting(prev => ({ ...prev, scorePDF: event.target.files?.[0] ?? undefined }));
+    const file = event.target.files?.[0];
+    persistPdfFile('scorePDF', file);
+    setSetting(prev => ({ ...prev, scorePDF: file }));
   };
 
   const handleLibrettoChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSetting(prev => ({ ...prev, librettoPDF: event.target.files?.[0] ?? undefined }));
+    const file = event.target.files?.[0];
+    persistPdfFile('librettoPDF', file);
+    setSetting(prev => ({ ...prev, librettoPDF: file }));
   };
 
   return (
