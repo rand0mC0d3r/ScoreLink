@@ -206,10 +206,6 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
                 boxShadow: 2,
               }
             }}>
-              {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, pb: 1 }}>
-                <Box sx={{ width: 8, height: 8, bgcolor: stc(page.pageNumber), borderRadius: 2 }} />
-                <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1}}>Saved {index + 1} </Typography>
-              </Box> */}
               <Box
                 aria-label={`Saved selection ${index + 1} for page ${page.pageNumber}`}
                 sx={{
@@ -225,28 +221,18 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
                 {renderSelectionOverlay(savedSelection)}
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'center', gap: 0.25 }}>
-                {/* <Tooltip title="Load selection">
-                  <IconButton
-                    aria-label={`Load saved selection ${index + 1} for page ${page.pageNumber}`}
-                    size="small"
-                    onClick={() => setSelection([savedSelection[0], savedSelection[1]])}
-                  >
-                    <RotateCcw size={14} />
-                  </IconButton>
-                </Tooltip> */}
                 <Tooltip title="Delete selection">
                   <IconButton
                     aria-label={`Delete saved selection ${index + 1} for page ${page.pageNumber}`}
-                    // size="small"
                     onClick={() => deleteSelection(index)}
                   >
                     <Trash2 size={14} />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Add selection">
+                <Tooltip title="Insert selection">
                   <span>
                     <IconButton
-                      aria-label={`Add saved selection ${index + 1} for page ${page.pageNumber}`}
+                      aria-label={`Insert saved selection ${index + 1} for page ${page.pageNumber}`}
                       // size="small"
                       onClick={() => addReflowSelection(savedSelection)}
                       disabled={activePage === undefined}
