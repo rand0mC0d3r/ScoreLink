@@ -13,6 +13,8 @@ type SourcePage = {
 const pointsFromPixels = (pixels: number) => pixels * 72 / 96;
 const A4_WIDTH = 595.28;
 const A4_HEIGHT = 841.89;
+const OUTPUT_GUTTER = 24;
+const CONTENT_WIDTH = A4_WIDTH - OUTPUT_GUTTER * 2;
 
 async function composePdf(
   scorePDF: File,
@@ -30,7 +32,7 @@ async function composePdf(
 
   const startNewPage = () => {
     outputPage = output.addPage([A4_WIDTH, A4_HEIGHT]);
-    cursorY = A4_HEIGHT;
+    cursorY = A4_HEIGHT - OUTPUT_GUTTER;
   };
 
   for (const scorePage of scorePages) {
@@ -63,14 +65,22 @@ async function composePdf(
       const sourceHeight = pointsFromPixels(sourcePage.heightPx);
       let cropTop = sourceHeight * (1 - segment.cropStart / 100);
       const segmentBottom = sourceHeight * (1 - segment.cropEnd / 100);
+      const isFullLibrettoPage = segment.type === 'libretto'
+        && segment.cropStart === 0
+        && segment.cropEnd === 100;
+
+      if (isFullLibrettoPage) {
+        outputPage = undefined;
+        cursorY = 0;
+      }
 
       while (cropTop - segmentBottom > 0) {
         if (!outputPage || cursorY <= 0) startNewPage();
 
-        const availableHeight = cursorY;
-        const remainingHeight = (cropTop - segmentBottom) * A4_WIDTH / sourceWidth;
+        const availableHeight = cursorY - OUTPUT_GUTTER;
+        const remainingHeight = (cropTop - segmentBottom) * CONTENT_WIDTH / sourceWidth;
         const drawnHeight = Math.min(availableHeight, remainingHeight);
-        const sourceChunkHeight = drawnHeight * sourceWidth / A4_WIDTH;
+        const sourceChunkHeight = drawnHeight * sourceWidth / CONTENT_WIDTH;
         const cropBottom = Math.max(segmentBottom, cropTop - sourceChunkHeight);
         const embedded = await output.embedPage(sourcePdfPage, {
           left: 0,
@@ -81,17 +91,22 @@ async function composePdf(
 
         cursorY -= drawnHeight;
         outputPage.drawPage(embedded, {
-          x: 0,
+          x: OUTPUT_GUTTER,
           y: cursorY,
-          width: A4_WIDTH,
+          width: CONTENT_WIDTH,
           height: drawnHeight,
         });
         cropTop = cropBottom;
 
-        if (cursorY <= 0) {
+        if (cursorY <= OUTPUT_GUTTER) {
           outputPage = undefined;
           cursorY = 0;
         }
+      }
+
+      if (isFullLibrettoPage) {
+        outputPage = undefined;
+        cursorY = 0;
       }
     }
   }
