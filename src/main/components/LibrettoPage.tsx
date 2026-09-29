@@ -47,6 +47,16 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
     }));
   };
 
+  const saveFullPageSelection = () => {
+    setSetting((settings) => ({
+      ...settings,
+      librettoPageSelections: {
+        ...settings.librettoPageSelections,
+        [page.pageNumber]: [...(settings.librettoPageSelections[page.pageNumber] ?? []), [0, 100]],
+      },
+    }));
+  };
+
   const addReflowSelection = (librettoSelection: [number, number]) => {
     if (activePage === undefined) return;
 
@@ -182,17 +192,28 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
             Work
               </Button>
             </Box>
-            <Button
-              aria-label={`Save selection for page ${page.pageNumber}`}
-              onClick={saveSelection}
-              disabled={disabled}
-              startIcon={<Plus size={16} />}
-              size="small"
-              variant={disabled ? 'outlined' : 'contained'}
-            >
-            Save area
-            </Button>
-
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+              <Button
+                aria-label={`Save selection for page ${page.pageNumber}`}
+                onClick={saveSelection}
+                disabled={disabled}
+                startIcon={<Plus size={16} />}
+                size="small"
+                variant={disabled ? 'outlined' : 'contained'}
+              >
+            Add area
+              </Button>
+              <Button
+                aria-label={`Save full page selection for page ${page.pageNumber}`}
+                onClick={saveFullPageSelection}
+                disabled={disabled}
+                startIcon={<Plus size={16} />}
+                size="small"
+                variant={disabled ? 'outlined' : 'contained'}
+              >
+            Full page
+              </Button>
+            </Box>
           </Box>
         </Box>
         {savedSelections.length === 0 && <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', alignSelf: 'stretch', border: 1, borderColor: 'divider', borderRadius: 3, p: 0.5, borderStyle: 'dashed' }}>
