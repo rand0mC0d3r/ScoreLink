@@ -1,12 +1,9 @@
 import { persistPdfFile, useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import PanelWrapper from '@/main/components/PanelWrapper';
 import { Box, Button, Typography } from '@mui/material';
+import { Upload } from 'lucide-react';
 import { useEffect, useState, type ChangeEvent } from 'react';
 
-type ExtractedPage = {
-  pageNumber: number;
-  url: string;
-};
 
 type PdfPreviewProps = {
   label: string;
@@ -27,8 +24,8 @@ function PdfPreview({ label, file, onChange, color }: PdfPreviewProps & { color:
       file={file}
       color={color}
       tools={<>
-        <Button component="label" variant="contained" color={color}>
-          Upload PDF
+        <Button component="label" variant="contained" color={color} startIcon={<Upload size={16} />} size="small">
+          Upload {label} PDF
           <input hidden type="file" accept="application/pdf,.pdf" onChange={handleFileChange} />
         </Button>
       </>}
