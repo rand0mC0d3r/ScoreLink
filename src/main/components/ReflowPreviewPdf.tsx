@@ -1,5 +1,6 @@
 import { getReflowPreviewSegments, useSettingsStoreSelector, type ReflowPreviewSegment } from '@/context/settingsStore';
 import { Box, Typography } from '@mui/material';
+import { useInView } from 'react-intersection-observer';
 
 type ReflowPreviewProps = {
   pageNumber: number;
@@ -11,9 +12,10 @@ type ReflowPreviewProps = {
 export default function ReflowPreviewPdf({ pageNumber, previewWidth = 288 }: ReflowPreviewProps) {
   useSettingsStoreSelector((settings) => settings);
   const segments = getReflowPreviewSegments(pageNumber);
+  const { inView, ref } = useInView();
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180, alignItems: 'flex-start' }}>
+    <Box ref={ref} sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180, alignItems: 'flex-start' }}>
       {[...segments].map((segment: ReflowPreviewSegment, index) => (
         <Box key={`${segment.type}-${index}`} sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'flex-start' }}>
           <Box
@@ -38,7 +40,7 @@ export default function ReflowPreviewPdf({ pageNumber, previewWidth = 288 }: Ref
                 clipPath: 'inset(0)',
               }}
             >
-              {segment.pageUrl && segment.pageWidth && segment.pageHeight && segment.cropStart !== undefined && segment.cropEnd !== undefined && (
+              {inView && segment.pageUrl && segment.pageWidth && segment.pageHeight && segment.cropStart !== undefined && segment.cropEnd !== undefined && (
                 <Box
                   component="iframe"
                   title={segment.ariaLabel}
@@ -59,7 +61,7 @@ export default function ReflowPreviewPdf({ pageNumber, previewWidth = 288 }: Ref
               )}
             </Box>
           </Box>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="text.secondary" sx={{ width: '300px' }}>
             {segment.caption}
           </Typography>
         </Box>

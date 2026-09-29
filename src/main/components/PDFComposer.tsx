@@ -137,7 +137,7 @@ export default function PDFComposer() {
     <PanelWrapper
       label="Composer"
       file={scorePDF ?? null}
-      color="secondary"
+      color="primary"
       sx={{ flex: 0.6 }}
     >
       {composedPdfUrl && (

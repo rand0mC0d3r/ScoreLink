@@ -15,7 +15,7 @@ export default function ReviewPicker() {
       file={scorePDF ?? null}
       color="secondary"
       tools={<SolidChip label={activePage === undefined ? '' : `Page ${activePage}`} variant="header" />}
-      sx={{ flex: 1 }}
+      sx={{ flex: 0.4 }}
     >
       {(scorePages.length > 0) && (
         <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
