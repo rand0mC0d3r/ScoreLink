@@ -14,13 +14,12 @@ export default function ScorePicker() {
       label="Score"
       file={scorePDF ?? null}
       color="secondary"
-      tools={<SolidChip label={activePage === undefined ? 'Choose a page...' : `Page ${activePage}`} variant="header" />}
+      tools={<SolidChip label={activePage === undefined ? 'Choose a page...' : `Active page ${activePage}`} variant="header" />}
       sx={{ flex: 1.25 }}
     >
       {(scorePages.length > 0) && (
         <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
           {(scorePages)
-            .slice(0, 15)
             .map((page) => (
               <ScorePage
                 key={page.pageNumber}

@@ -2,6 +2,7 @@ import SolidChip from '@/components/SolidChip';
 import { useSettings, useSettingsStoreSelector, type LibrettoReflowSelection } from '@/context/settingsStore';
 import ReflowPreviewPdf from '@/main/components/ReflowPreviewPdf';
 import { Box, Button, Slider } from '@mui/material';
+import { useInView } from 'react-intersection-observer';
 import ReflowPreview from './ReflowPreview';
 
 export type ExtractedPage = {
@@ -20,6 +21,7 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
   const librettoReflowSelections = useSettingsStoreSelector((settings) => settings.librettoReflowSelections);
   const pageWidth = page.widthPx / scale;
   const pageHeight = page.heightPx / scale;
+  const { inView, ref } = useInView();
   const isActive = activePage === page.pageNumber;
   const pageReflowSelections = librettoReflowSelections.filter(
     (selection) => selection.scorePageNumber === page.pageNumber,
@@ -37,6 +39,7 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
 
   return (
     <Box
+      ref={ref}
       key={page.pageNumber}
       sx={{
         display: 'flex',
@@ -59,8 +62,9 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, flex: 1, width: '100%' }}>
         <Box>
           <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 1 }}>
-            <Box sx={{ position: 'relative', width: pageWidth, height: pageHeight }}>
-              <Box
+            <Box
+              sx={{ position: 'relative', width: pageWidth, height: pageHeight }}>
+              {inView && <Box
                 component="iframe"
                 title={`${label} page ${page.pageNumber}`}
                 src={`${page.url}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
@@ -68,7 +72,7 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
                   border: 0, backgroundColor: 'background.default',
                   opacity: isActive ? 1 : 0.35,
                 }}
-              />
+              />}
             </Box>
             {isActive && (
               <Slider
@@ -96,9 +100,9 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
           selections={sortedPageReflowSelections}
           onDeleteSelection={deleteLibrettoReflowSelection}
         />
-        <ReflowPreviewPdf
+        {inView && <ReflowPreviewPdf
           pageNumber={page.pageNumber}
-        />
+        />}
       </Box>
     </Box>
   );
