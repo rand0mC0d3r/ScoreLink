@@ -20,7 +20,7 @@ export default function ScorePicker() {
       {(scorePages.length > 0) && (
         <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
           {(scorePages)
-            // .slice(0, 15)
+            .slice(0, 15)
             .map((page) => (
               <ScorePage
                 key={page.pageNumber}

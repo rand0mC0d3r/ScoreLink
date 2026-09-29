@@ -123,6 +123,7 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        flex: 1,
         gap: 2,
         minWidth: 0,
         borderBottom: 1,
@@ -132,7 +133,7 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
       }}
     >
 
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, flex: 1, width: '100%', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 1 }}>
             <Box sx={{ position: 'relative', width: pageWidth, height: pageHeight }}>

@@ -14,10 +14,10 @@ export default function LibrettoPicker() {
       label="Libretto"
       file={librettoPDF ?? null}
       color="primary"
-      sx={{flex: 0.5 }}
+      sx={{flex: 0.5, minWidth: '720px', alignItems: 'stretch', justifyContent: 'stretch'}}
     >
       {(librettoPages.length > 0) && (
-        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', flex: 1, width: '100%' }}>
           {(librettoPages)
             // .slice(0, 15)
             .map((page) => (
