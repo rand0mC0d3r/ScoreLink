@@ -1,5 +1,6 @@
 import SolidChip from '@/components/SolidChip';
 import { Box } from '@mui/material';
+import { useInView } from 'react-intersection-observer';
 
 export type ExtractedPage = {
   pageNumber: number;
@@ -10,8 +11,11 @@ export type ExtractedPage = {
 };
 
 export default function PDFPreviewPage({ label, page, scale = 1 }: { label: string; page: ExtractedPage; scale: number }) {
+  const { inView, ref} = useInView();
+
   return (
     <Box
+      ref={ref}
       key={page.pageNumber}
       sx={{
         display: 'flex',
@@ -22,6 +26,7 @@ export default function PDFPreviewPage({ label, page, scale = 1 }: { label: stri
         border: 1,
         borderRadius: 2,
         borderColor: 'divider',
+        height: page.heightPx / scale + 70,
         backgroundColor: 'background.default',
       }}
     >
@@ -30,12 +35,14 @@ export default function PDFPreviewPage({ label, page, scale = 1 }: { label: stri
         <SolidChip label={`Size: ${page.sizeKb} KB`} />
         <SolidChip label={`Dimensions: ${page.widthPx} x ${page.heightPx} px`} />
       </Box>
-      <Box
-        component="iframe"
-        title={`${label} page ${page.pageNumber}`}
-        src={`${page.url}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
-        sx={{ width: page.widthPx / scale, height: page.heightPx / scale, border: 0, backgroundColor: 'background.default', borderRadius: 2, overflow: 'hidden' }}
-      />
+      {inView && (
+        <Box
+          component="iframe"
+          title={`${label} page ${page.pageNumber}`}
+          src={`${page.url}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
+          sx={{ width: page.widthPx / scale, height: page.heightPx / scale, border: 0, backgroundColor: 'background.default', borderRadius: 2, overflow: 'hidden' }}
+        />
+      )}
     </Box>
   );
 }

@@ -27,7 +27,6 @@ function PdfPreview({ label, file, pages: storedPages, color }: PdfPreviewProps)
         {(storedPages.length > 0) && (
           <Box sx={{ display: 'grid', gap: 1.5, gridTemplateColumns: { xs: '1fr', lg: 'repeat(auto-fill, minmax(450px, 1fr))' } }}>
             {(storedPages)
-              .slice(0, 15)
               .map((page) => (
                 <PDFPreviewPage
                   key={page.pageNumber}
