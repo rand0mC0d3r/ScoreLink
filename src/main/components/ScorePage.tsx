@@ -45,7 +45,7 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <SolidChip label={`Page ${page.pageNumber}`} variant='header' fontSize={22} height={37} />
+        <SolidChip label={`Page ${page.pageNumber}`} variant={isActive ? 'header' : 'text'} fontSize={22} height={36} minWidth={110} />
         <Button variant={isActive ? 'contained' : 'outlined'} onClick={activatePage}>
           {isActive ? 'Active' : 'Activate'}
         </Button>
@@ -54,7 +54,6 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
         <Box>
           <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 1 }}>
             <Box sx={{ position: 'relative', width: pageWidth, height: pageHeight }}>
-
               <Box
                 component="iframe"
                 title={`${label} page ${page.pageNumber}`}
