@@ -74,23 +74,23 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
                 }}
               />}
             </Box>
-            {isActive && (
-              <Slider
-                valueLabelFormat={(value) => `Insert at position: ${100 - value}%`}
-                orientation="vertical"
-                value={100 - scrollPosition}
-                valueLabelDisplay="auto"
-                min={0}
-                max={100}
-                onChange={(_, value) => {
-                  if (typeof value === 'number') {
-                    setSetting((settings) => ({ ...settings, activePageScrollPosition: 100 - value }));
-                  }
-                }}
-                color="secondary"
-                sx={{ height: pageHeight, py: 0 }}
-              />
-            )}
+
+            <Slider
+              valueLabelFormat={(value) => `Insert at position: ${100 - value}%`}
+              orientation="vertical"
+              disabled={!isActive}
+              value={100 - scrollPosition}
+              valueLabelDisplay="auto"
+              min={0}
+              max={100}
+              onChange={(_, value) => {
+                if (typeof value === 'number') {
+                  setSetting((settings) => ({ ...settings, activePageScrollPosition: 100 - value }));
+                }
+              }}
+              color="secondary"
+              sx={{ height: pageHeight, py: 0 }}
+            />
           </Box>
         </Box>
         <ReflowPreview

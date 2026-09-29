@@ -59,7 +59,7 @@ export default function ReflowPreview({ pageNumber, pageWidth, pageHeight, selec
   const scale = naturalHeight > pageHeight ? pageHeight / naturalHeight : 1;
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 180, maxHeight: pageHeight, overflow: 'hidden' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, width: 300, maxHeight: pageHeight, overflow: 'hidden' }}>
       {[...segments].map((segment: ReflowPreviewSegment, index) => (
         <Box key={`${segment.type}-${index}`} sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'flex-start' }}>
           <Box
