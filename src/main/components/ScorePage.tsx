@@ -1,5 +1,5 @@
 import SolidChip from '@/components/SolidChip';
-import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
+import { useSettings, useSettingsStoreSelector, type LibrettoReflowSelection } from '@/context/settingsStore';
 import ReflowPreviewPdf from '@/main/components/ReflowPreviewPdf';
 import { Box, Button, Slider } from '@mui/material';
 import ReflowPreview from './ReflowPreview';
@@ -27,6 +27,12 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
   const sortedPageReflowSelections = [...pageReflowSelections].sort((a, b) => a.scoreScrollPosition - b.scoreScrollPosition);
   const activatePage = () => {
     setSetting((settings) => ({ ...settings, activePage: page.pageNumber }));
+  };
+  const deleteLibrettoReflowSelection = (selection: LibrettoReflowSelection) => {
+    setSetting((settings) => ({
+      ...settings,
+      librettoReflowSelections: settings.librettoReflowSelections.filter(({ name }) => name !== selection.name),
+    }));
   };
 
   return (
@@ -88,6 +94,7 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
           pageWidth={pageWidth}
           pageHeight={pageHeight}
           selections={sortedPageReflowSelections}
+          onDeleteSelection={deleteLibrettoReflowSelection}
         />
         <ReflowPreviewPdf
           pageNumber={page.pageNumber}

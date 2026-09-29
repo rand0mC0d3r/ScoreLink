@@ -1,16 +1,13 @@
-import { Box, Typography } from '@mui/material';
-
-type ReflowPreviewSelection = {
-  scoreScrollPosition: number;
-  librettoPageNumber: number;
-  librettoSelection: [number, number];
-};
+import { type LibrettoReflowSelection } from '@/context/settingsStore';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
+import { Trash2 } from 'lucide-react';
 
 type ReflowPreviewProps = {
   pageNumber: number;
   pageWidth: number;
   pageHeight: number;
-  selections: ReflowPreviewSelection[];
+  selections: LibrettoReflowSelection[];
+  onDeleteSelection: (selection: LibrettoReflowSelection) => void;
 };
 
 type ReflowPreviewSegment = {
@@ -18,11 +15,12 @@ type ReflowPreviewSegment = {
   height: number;
   ariaLabel: string;
   caption: string;
+  selection?: LibrettoReflowSelection;
 };
 
 const previewWidth = 88;
 
-export default function ReflowPreview({ pageNumber, pageWidth, pageHeight, selections }: ReflowPreviewProps) {
+export default function ReflowPreview({ pageNumber, pageWidth, pageHeight, selections, onDeleteSelection }: ReflowPreviewProps) {
   const previewPageHeight = pageHeight * previewWidth / pageWidth;
   const scoreGapHeight = (startPosition: number, endPosition: number) => (
     pageHeight * (endPosition - startPosition) / 100
@@ -42,6 +40,7 @@ export default function ReflowPreview({ pageNumber, pageWidth, pageHeight, selec
         height: previewPageHeight * (selection.librettoSelection[1] - selection.librettoSelection[0]) / 100,
         ariaLabel: `Libretto selection ${index + 1} for score page ${pageNumber}`,
         caption: `Libretto page ${selection.librettoPageNumber}`,
+        selection,
       },
     ];
   });
@@ -75,9 +74,22 @@ export default function ReflowPreview({ pageNumber, pageWidth, pageHeight, selec
               opacity: 0.42,
             }}
           />
-          <Typography variant="caption" color="text.secondary">
-            {segment.caption}
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <Typography variant="caption" color="text.secondary">
+              {segment.caption}
+            </Typography>
+            {segment.type === 'libretto' && segment.selection && (
+              <Tooltip title="Delete libretto selection">
+                <IconButton
+                  aria-label={`Delete ${segment.ariaLabel}`}
+                  onClick={() => onDeleteSelection(segment.selection!)}
+                  size="small"
+                >
+                  <Trash2 size={16} />
+                </IconButton>
+              </Tooltip>
+            )}
+          </Box>
         </Box>
       ))}
     </Box>
