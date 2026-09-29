@@ -20,7 +20,6 @@ export default function SettingsSection({ uuid, title, icon, guidance, children,
   return <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, flexGrow: 0, m: 0.25, overflow: 'visible' }}>
     <Box sx={{
       bgcolor: theme => `color-mix(in srgb, color-mix(in srgb, ${theme.palette.primary.main} 5%, ${theme.palette.background.paper} 90%) 55%, transparent)`,
-      // bgcolor: 'action.hover',
       mb: 1,
       p: 1,
       borderRadius: 3,

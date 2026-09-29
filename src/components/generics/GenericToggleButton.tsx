@@ -1,5 +1,4 @@
 import KeyboardChip from '@/components/KeyboardChip';
-import PopoverButtonSimple from '@/components/PopoverButtonSimple';
 import GenericHotkey from '@/components/generics/GenericHotkey';
 import { Box, ToggleButton, Tooltip, Typography, useTheme } from '@mui/material';
 import { Astroid, ChevronDown, ChevronUp } from 'lucide-react';
@@ -124,11 +123,5 @@ export default memo(function GenericToggleButton({
     </>
   );
 
-  return popover ? (
-    <PopoverButtonSimple trigger={<span>{content}</span>}>
-      {popover}
-    </PopoverButtonSimple>
-  ) : (
-    content
-  );
+  return content
 });

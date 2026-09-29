@@ -144,7 +144,6 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
         mb: 2,
       }}
     >
-
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, flex: 1, width: '100%', justifyContent: 'flex-start' }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 1 }}>

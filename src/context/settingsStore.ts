@@ -1,7 +1,6 @@
 import { createLocalStorageStoreNg } from '@/lib/createLocalStorageStoreNg';
 import { loadStoredFile, saveStoredFile } from '@/lib/fileStorage';
 import type { SupportedLanguage } from '@/lib/i18n';
-import { ImageArray } from '@/middleware/windows/pipeline/types';
 import React, { useEffect } from 'react';
 
 type SettingsStore = {
@@ -20,28 +19,11 @@ type SettingsStore = {
   activePageScrollPosition: number,
 
 
-  onboarding: boolean,
-  onboardingStep: number,
   newVersion?: boolean,
-  serverOnline: boolean,
-  lightboxOpen: boolean,
-  lightboxImages: ImageArray,
-  pipelineOpen: boolean,
-  pipelineMaxConcurrentTasks: number,
-  pipelinePhotoBatchSize: number,
-  pipelineMaxAIRequests: number,
-  pipelineAICallDelayMs: number,
-  performanceMode: boolean,
-  tutorial: boolean,
   themeMode?: 'light' | 'dark',
   themeId: string,
-  thumbnailFormat: 'cover' | 'contain',
-  activeSettingsTab?: string,
   previewPhotoObj?: string,
-  loading: boolean,
-  loadingValue: number | null,
   showSettings: boolean,
-  selectMode: boolean,
   locale: SupportedLanguage,
 }
 
@@ -68,12 +50,9 @@ export type ReflowPreviewSegment = {
 }
 
 const defaults: SettingsStore = {
-
   pipelineStep: 0,
-
   librettoPDF: undefined,
   scorePDF: undefined,
-
   librettoPages: [],
   scorePages: [],
   librettoPagesSource: undefined,
@@ -82,30 +61,11 @@ const defaults: SettingsStore = {
   librettoReflowSelections: [],
   activePage: undefined,
   activePageScrollPosition: 0,
-
-
-  onboarding: true,
-  onboardingStep: 0,
   newVersion: false,
-  performanceMode: false,
-  lightboxOpen: false,
-  lightboxImages: [],
-  serverOnline: true,
-  thumbnailFormat: 'cover',
   themeMode: 'light',
   themeId: 'default',
-  tutorial: false,
-  loading: false,
-  loadingValue: null,
   previewPhotoObj: undefined,
-  pipelineOpen: false,
-  pipelineMaxConcurrentTasks: 5,
-  pipelinePhotoBatchSize: 10,
-  pipelineMaxAIRequests: 2,
-  pipelineAICallDelayMs: 250,
   showSettings: false,
-  activeSettingsTab: undefined,
-  selectMode: false,
   locale: 'en',
 } satisfies SettingsStore;
 
