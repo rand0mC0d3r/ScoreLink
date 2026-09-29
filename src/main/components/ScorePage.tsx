@@ -1,6 +1,7 @@
+import SolidChip from '@/components/SolidChip';
 import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import ReflowPreviewPdf from '@/main/components/ReflowPreviewPdf';
-import { Box, Button, Slider, Typography } from '@mui/material';
+import { Box, Button, Slider } from '@mui/material';
 import ReflowPreview from './ReflowPreview';
 
 export type ExtractedPage = {
@@ -34,7 +35,7 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         gap: 2,
         minWidth: 0,
         borderBottom: 1,
@@ -44,28 +45,32 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Typography variant="body2">Page {page.pageNumber}</Typography>
-        <Button size="small" variant="outlined" onClick={activatePage}>
-          Activate
+        <SolidChip label={`Page ${page.pageNumber}`} variant='header' fontSize={22} height={37} />
+        <Button variant={isActive ? 'contained' : 'outlined'} onClick={activatePage}>
+          {isActive ? 'Active' : 'Activate'}
         </Button>
-        {scrollPosition}
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, flex: 1, width: '100%' }}>
         <Box>
           <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 1 }}>
             <Box sx={{ position: 'relative', width: pageWidth, height: pageHeight }}>
+
               <Box
                 component="iframe"
                 title={`${label} page ${page.pageNumber}`}
                 src={`${page.url}#toolbar=0&navpanes=0&scrollbar=0&pagemode=none`}
-                sx={{ display: 'block', width: '100%', height: '100%', border: 0, backgroundColor: 'background.default' }}
+                sx={{ display: 'block', width: '100%', height: '100%',
+                  border: 0, backgroundColor: 'background.default',
+                  opacity: isActive ? 1 : 0.35,
+                }}
               />
             </Box>
             {isActive && (
               <Slider
-                aria-label={`Scroll position for page ${page.pageNumber}`}
+                valueLabelFormat={(value) => `Insert at position: ${100 - value}%`}
                 orientation="vertical"
                 value={100 - scrollPosition}
+                valueLabelDisplay="auto"
                 min={0}
                 max={100}
                 onChange={(_, value) => {

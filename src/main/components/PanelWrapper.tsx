@@ -42,9 +42,9 @@ export default function PanelWrapper({ label, file, color, children, tools, sx }
             variant="header"
           />
         )}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1, justifyContent: 'flex-end' }}>
+        {tools && <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1, justifyContent: 'flex-end' }}>
           {tools}
-        </Box>
+        </Box>}
       </Box>
       <Box sx={{ overflow: 'auto' }}>
         {children}

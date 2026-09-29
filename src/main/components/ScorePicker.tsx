@@ -14,7 +14,7 @@ export default function ScorePicker() {
       label="Score"
       file={scorePDF ?? null}
       color="secondary"
-      tools={<SolidChip label={activePage === undefined ? '' : `Page ${activePage}`} variant="header" />}
+      tools={<SolidChip label={activePage === undefined ? 'Choose a page...' : `Page ${activePage}`} variant="header" />}
       sx={{ flex: 1.25 }}
     >
       {(scorePages.length > 0) && (
