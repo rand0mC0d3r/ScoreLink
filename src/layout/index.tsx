@@ -1,12 +1,7 @@
-import AiLoadingBar from '@/components/AiLoadingBar';
-import LoadingBar from '@/components/LoadingBar';
-import StatusBar from '@/components/StatusBar';
-import MainDriver from '@/components/tutorial/MainDriver';
 import MainApp from '@/main/index';
 import Header from '@/middleware/windows/Header';
 import NewVersionWindow from '@/middleware/windows/NewVersionWindow';
 import SettingsWindow from '@/middleware/windows/SettingsWindow';
-import Box from '@mui/material/Box';
 
 export default function AppLayout() {
 
@@ -15,33 +10,8 @@ export default function AppLayout() {
       <NewVersionWindow />
       <SettingsWindow />
 
-      <MainDriver />
-      <AiLoadingBar />
-
-
-      <Header
-        currentPipelineId={''}
-        pipelines={[]}
-        loadPipeline={() => {}}
-      />
+      <Header />
       <MainApp />
-
-      <Box
-        id="status-bar"
-        sx={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 1.5,
-          p: 0.5,
-          py: 0,
-          position: 'relative',
-        }}
-      >
-        <LoadingBar />
-        <StatusBar />
-      </Box>
     </>
   );
 }

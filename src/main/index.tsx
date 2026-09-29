@@ -33,11 +33,9 @@ export default function MainApp() {
         minHeight: 0,
         flexDirection: 'column',
         gap: 2,
-        p: 0.5,
         overflow: 'auto',
       }}>
         <Box sx={{
-          px: 1,
           display: 'flex',
           width: '100%',
           flexDirection: 'row',

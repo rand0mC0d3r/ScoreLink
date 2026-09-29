@@ -4,8 +4,6 @@ import SolidChip from '@/components/SolidChip';
 import DarkLightStatus from '@/middleware/tools/ActionTools/DarkLightStatus';
 import FullscreenToggle from '@/middleware/tools/ActionTools/FullscreenToggle';
 import SettingsWindowToggle from '@/middleware/tools/ActionTools/SettingsWindowToggle';
-import TutorialToggle from '@/middleware/tools/ActionTools/TutorialToggle';
-import ExtendedMenu from '@/middleware/tools/PopoverTools/ExtendedMenu';
 
 export default function Header() {
   return (
@@ -16,11 +14,11 @@ export default function Header() {
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <img
-          src="./couchLogoMini.png"
+          src="./smalllogo.png"
           alt="Logo"
-          width={45}
+          width={30}
           height={30}
-          style={{ width: 45, height: 30 }}
+          style={{ width: 30, height: 30 }}
           fetchPriority="high"
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -28,7 +26,7 @@ export default function Header() {
             <Typography sx={{ fontWeight: 'bold', fontSize: 17, lineHeight: 1 }}>ScoreLink</Typography>
             <SolidChip label="Beta" variant="header" />
           </Box>
-          <Typography variant="caption" color="textDisabled" sx={{ lineHeight: 1 }}>Load · Drag · Recompose</Typography>
+          <Typography variant="caption" color="textDisabled" sx={{ lineHeight: 1 }}>Score · Libretto · Puff!</Typography>
         </Box>
       </Box>
 
@@ -36,8 +34,6 @@ export default function Header() {
         <SettingsWindowToggle />
         <DarkLightStatus />
         <FullscreenToggle />
-        <TutorialToggle />
-        <ExtendedMenu />
       </Box>
     </Box>
   );
