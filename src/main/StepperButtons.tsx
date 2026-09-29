@@ -1,6 +1,6 @@
 import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
-import { Box, Button, Divider, Stack, Tooltip } from '@mui/material';
-import { ChevronLeft, ChevronsRight, CircleX } from 'lucide-react';
+import { alpha, Box, Button, Divider, Stack, Tooltip } from '@mui/material';
+import { ChevronsLeft, ChevronsRight, FileDown, FileUp, Merge, Scissors } from 'lucide-react';
 
 const steps = [
   "Load PDF",
@@ -8,6 +8,14 @@ const steps = [
   "Add Libretto",
   "Review",
 ];
+
+const iconsSteps = [
+  <FileUp size={16} />,
+  <Scissors size={16} />,
+  <Merge size={16} />,
+  <FileDown size={16} />,
+
+]
 
 export default function StepperButtons() {
   const { setSetting } = useSettings()
@@ -22,13 +30,17 @@ export default function StepperButtons() {
       gap: 4,
     }}>
 
-      <Stack direction={"row"} divider={<Divider orientation="vertical" flexItem />} spacing={2}>
+      <Stack direction={"row"} divider={<Divider orientation="vertical" flexItem />} spacing={1}>
         {steps.map((label, index) => (
           <Box key={label} sx={{
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
             gap: 1,
+            p: 0.5,
+            px: 2,
+            borderRadius: 2,
+            bgcolor: theme => index <= pipelineStep ? alpha(theme.palette.primary.main, 0.1) : 'background.paper',
           }}>
             <Box sx={{
               width: 10,
@@ -36,6 +48,7 @@ export default function StepperButtons() {
               borderRadius: '50%',
               bgcolor: index <= pipelineStep ? 'primary.main' : 'text.disabled',
             }} />
+            {iconsSteps[index]}
             <Box sx={{ fontSize: 12, color: index <= pipelineStep ? 'text.primary' : 'text.disabled' }}>{label}</Box>
           </Box>
         ))}
@@ -51,7 +64,7 @@ export default function StepperButtons() {
                 setSetting(prev => ({ ...prev, pipelineStep: prev.pipelineStep - 1 }))
               }
             } } variant="outlined">
-            <ChevronLeft size={16} />
+            <ChevronsLeft size={16} />
           </Button>
         </Tooltip>
 
@@ -65,7 +78,7 @@ export default function StepperButtons() {
               }
             }}
             variant="contained">
-            { pipelineStep === steps.length - 1 ? <CircleX size={16} /> : <ChevronsRight size={16} /> }
+            <ChevronsRight size={16} />
           </Button>
         </Tooltip>
       </Box>
