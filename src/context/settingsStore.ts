@@ -100,6 +100,7 @@ export function importSettingsStore(serializedStore: string): void {
   setSettingsStore((prev) => ({
     ...prev,
     ...(parsed as Partial<SettingsStore>),
+    pipelineStep: 0,
     librettoPDF: prev.librettoPDF,
     scorePDF: prev.scorePDF,
   }));

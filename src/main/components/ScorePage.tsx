@@ -74,12 +74,11 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
                 }}
               />}
             </Box>
-
             <Slider
               valueLabelFormat={(value) => `Insert at position: ${100 - value}%`}
               orientation="vertical"
               disabled={!isActive}
-              value={100 - scrollPosition}
+              value={isActive ? 100 - scrollPosition : 50}
               valueLabelDisplay="auto"
               min={0}
               max={100}
@@ -89,7 +88,7 @@ export default function ScorePage({ label, page, scale = 1 }: { label: string; p
                 }
               }}
               color="secondary"
-              sx={{ height: pageHeight, py: 0 }}
+              sx={{ height: pageHeight, py: 0, opacity: isActive ? 1 : 0.15, }}
             />
           </Box>
         </Box>

@@ -14,20 +14,22 @@ export default function ScorePicker() {
       label="Score"
       file={scorePDF ?? null}
       color="secondary"
-      tools={<SolidChip label={activePage === undefined ? 'Choose a page...' : `Active page ${activePage}`} variant="header" />}
+      tools={<>
+        <SolidChip label={activePage === undefined ? 'Choose a page...' : `Active page ${activePage}`} variant="header" />
+        <SolidChip label='Insert a "Full page" by moving the slider to either 100% or 0%'  />
+      </>}
       sx={{ flex: 1.25 }}
     >
       {(scorePages.length > 0) && (
         <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
-          {(scorePages)
-            .map((page) => (
-              <ScorePage
-                key={page.pageNumber}
-                label="Score"
-                page={page}
-                scale={1}
-              />
-            ))}
+          {(scorePages).map((page) => (
+            <ScorePage
+              key={page.pageNumber}
+              label="Score"
+              page={page}
+              scale={1}
+            />
+          ))}
         </Box>
       )}
     </PanelWrapper>
