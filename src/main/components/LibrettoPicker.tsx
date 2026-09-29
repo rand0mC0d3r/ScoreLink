@@ -1,3 +1,4 @@
+import SolidChip from '@/components/SolidChip';
 import { useSettingsStoreSelector } from '@/context/settingsStore';
 import LibrettoPage from '@/main/components/LibrettoPage';
 import PanelWrapper from '@/main/components/PanelWrapper';
@@ -12,14 +13,16 @@ export default function LibrettoPicker() {
   return (<>
     <PanelWrapper
       label="Libretto"
+      tools={<>
+        <SolidChip label={librettoPages.length > 0 ? `${librettoPages.length} pages` : ''} variant="header" />
+      </>}
       file={librettoPDF ?? null}
       color="primary"
-      sx={{flex: 0.5, minWidth: '720px', alignItems: 'stretch', justifyContent: 'stretch'}}
+      sx={{flex: 0.55, minWidth: '720px', alignItems: 'stretch', justifyContent: 'stretch'}}
     >
       {(librettoPages.length > 0) && (
         <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', flex: 1, width: '100%' }}>
           {(librettoPages)
-            // .slice(0, 15)
             .map((page) => (
               <LibrettoPage
                 key={page.pageNumber}

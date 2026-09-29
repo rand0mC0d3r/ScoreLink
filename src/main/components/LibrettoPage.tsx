@@ -135,7 +135,7 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
       }}
     >
 
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, flex: 1, width: '100%', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, flex: 1, width: '100%', justifyContent: 'flex-start' }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 1 }}>
             <Box sx={{ position: 'relative', width: pageWidth, height: pageHeight }}>
@@ -195,8 +195,11 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
 
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 1}}>
-          {savedSelections.length === 0 && <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1}}>No saved selections</Typography>}
+        {savedSelections.length === 0 && <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', alignSelf: 'stretch', border: 1, borderColor: 'divider', borderRadius: 3, p: 0.5, borderStyle: 'dashed' }}>
+          <Typography variant="caption" color="text.secondary" sx={{ opacity: disabled ? 0.35 : 1 }}>No saved selections</Typography>
+        </Box>}
+
+        {savedSelections.length > 0 && <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 1, alignSelf: 'stretch', flex: 1 }}>
           {savedSelections?.map((savedSelection, index) => (
             <Box key={`${savedSelection[0]}-${savedSelection[1]}-${index}`} sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, border: 1, borderColor: 'divider', borderRadius: 3, p: 0.5,
               '&:hover': {
@@ -255,7 +258,7 @@ export default function LibrettoPage({ label, page, scale = 1 }: { label: string
               </Box>
             </Box>
           ))}
-        </Box>
+        </Box>}
       </Box>
     </Box>
   );
