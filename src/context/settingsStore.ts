@@ -74,6 +74,37 @@ const fileStorageKeys = {
   scorePDF: 'score-pdf',
 } as const;
 
+function serializeStore(value: unknown): unknown {
+  if (typeof File !== 'undefined' && value instanceof File) return undefined;
+  if (value instanceof Set) return Array.from(value);
+  if (Array.isArray(value)) return value.map(serializeStore);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, entry]) => [key, serializeStore(entry)])
+    );
+  }
+  return value;
+}
+
+export function exportSettingsStore(): string {
+  return JSON.stringify(serializeStore(getSettingsStore()), null, 2);
+}
+
+export function importSettingsStore(serializedStore: string): void {
+  const parsed: unknown = JSON.parse(serializedStore);
+
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error('Invalid ScoreLink store file');
+  }
+
+  setSettingsStore((prev) => ({
+    ...prev,
+    ...(parsed as Partial<SettingsStore>),
+    librettoPDF: prev.librettoPDF,
+    scorePDF: prev.scorePDF,
+  }));
+}
+
 const {
   Provider: BaseSettingsProvider,
   useSetStore,

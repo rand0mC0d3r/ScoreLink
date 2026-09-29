@@ -5,6 +5,7 @@ import StepperButtons from '@/main/StepperButtons';
 import DarkLightStatus from '@/middleware/tools/ActionTools/DarkLightStatus';
 import FullscreenToggle from '@/middleware/tools/ActionTools/FullscreenToggle';
 import SettingsWindowToggle from '@/middleware/tools/ActionTools/SettingsWindowToggle';
+import StoreFileControls from '@/middleware/tools/ActionTools/StoreFileControls';
 
 export default function Header() {
   return (
@@ -35,6 +36,7 @@ export default function Header() {
       <StepperButtons />
 
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+        <StoreFileControls />
         <SettingsWindowToggle />
         <DarkLightStatus />
         <FullscreenToggle />
