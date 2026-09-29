@@ -19,7 +19,7 @@ export default function LibrettoPicker() {
       {(librettoPages.length > 0) && (
         <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
           {(librettoPages)
-            .slice(0, 15)
+            // .slice(0, 15)
             .map((page) => (
               <LibrettoPage
                 key={page.pageNumber}

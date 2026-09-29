@@ -2,7 +2,7 @@ import SolidChip from '@/components/SolidChip';
 import { useSettings, useSettingsStoreSelector } from '@/context/settingsStore';
 import PanelWrapper from '@/main/components/PanelWrapper';
 import PDFPreviewPage, { type ExtractedPage } from '@/main/components/PDFPreviewPage';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { PDFDocument } from 'pdf-lib';
 import { useEffect, useRef } from 'react';
 
@@ -23,6 +23,7 @@ function PdfPreview({ label, file, pages: storedPages, color }: PdfPreviewProps)
       tools={<SolidChip label={storedPages.length > 0 ? `${storedPages.length} pages` : ''} variant="header" />}
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+        <Typography variant="caption" color="textSecondary">Only first 15 pages are shown here. All pages will be available in the next step.</Typography>
         {(storedPages.length > 0) && (
           <Box sx={{ display: 'grid', gap: 1.5, gridTemplateColumns: { xs: '1fr', lg: 'repeat(auto-fill, minmax(450px, 1fr))' } }}>
             {(storedPages)
