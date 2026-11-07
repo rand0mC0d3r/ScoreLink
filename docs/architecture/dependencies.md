@@ -1,0 +1,350 @@
+# File dependency graph
+
+**Navigate:** [Index](index.md) · [Overview](overview.md) · [Index](index.md) · [Cycles](cycles.md) · [Components](components.md) · [Hooks](hooks.md) · [Stores](stores.md) · [Pipeline](pipeline.md)
+
+All 71 analysed files (grouped by directory) and 127 file-level edges. Red edges are part of a circular dependency (9 edges). Per-module views with reverse dependencies are in the [module pages](./modules/).
+
+```mermaid
+flowchart LR
+  subgraph sg0["src"]
+    n_src_freakflags_css["freakflags.css"]
+    n_src_index_css["index.css"]
+    n_src_main_tsx["main.tsx"]
+    n_src_sw_js["sw.js"]
+    n_src_vite_env_d_ts["vite-env.d.ts"]
+  end
+  subgraph sg1["src/components"]
+    n_src_components_KeyboardChip_tsx["KeyboardChip.tsx"]
+    n_src_components_SettingsSection_tsx["SettingsSection.tsx"]
+    n_src_components_SolidChip_tsx["SolidChip.tsx"]
+  end
+  subgraph sg2["src/components/generics"]
+    n_src_components_generics_GenericHotkey_tsx["GenericHotkey.tsx"]
+    n_src_components_generics_GenericToggleButton_tsx["GenericToggleButton.tsx"]
+    n_src_components_generics_GenericToggleButtonGroup_tsx["GenericToggleButtonGroup.tsx"]
+  end
+  subgraph sg3["src/context"]
+    n_src_context_AppProviders_tsx["AppProviders.tsx"]
+    n_src_context_ThemeContext_tsx["ThemeContext.tsx"]
+    n_src_context_settingsStore_ts["settingsStore.ts"]
+    n_src_context_types_d_ts["types.d.ts"]
+  end
+  subgraph sg4["src/discovery"]
+    n_src_discovery_globLoader_ts["globLoader.ts"]
+    n_src_discovery_registry_ts["registry.ts"]
+    n_src_discovery_registryTypes_ts["registryTypes.ts"]
+    n_src_discovery_themeDiscovery_ts["themeDiscovery.ts"]
+    n_src_discovery_themeRegistry_ts["themeRegistry.ts"]
+    n_src_discovery_utils_ts["discovery/utils.ts"]
+  end
+  subgraph sg5["src/hooks"]
+    n_src_hooks_useLocaleSync_ts["useLocaleSync.ts"]
+    n_src_hooks_utils_ts["hooks/utils.ts"]
+  end
+  subgraph sg6["src/layout"]
+    n_src_layout_index_tsx["layout/index.tsx"]
+  end
+  subgraph sg7["src/lib"]
+    n_src_lib_createLocalStorageStoreNg_tsx["createLocalStorageStoreNg.tsx"]
+    n_src_lib_fileStorage_ts["fileStorage.ts"]
+    n_src_lib_i18n_ts["i18n.ts"]
+  end
+  subgraph sg8["src/locales"]
+    n_src_locales_de_json["de.json"]
+    n_src_locales_en_json["en.json"]
+  end
+  subgraph sg9["src/main"]
+    n_src_main_GdeltNews15Min_tsx["GdeltNews15Min.tsx"]
+    n_src_main_StepperButtons_tsx["StepperButtons.tsx"]
+    n_src_main_firstStage_tsx["firstStage.tsx"]
+    n_src_main_fourthStage_tsx["fourthStage.tsx"]
+    n_src_main_index_tsx["main/index.tsx"]
+    n_src_main_secondStage_tsx["secondStage.tsx"]
+    n_src_main_thirdStage_tsx["thirdStage.tsx"]
+  end
+  subgraph sg10["src/main/components"]
+    n_src_main_components_LibrettoPage_tsx["LibrettoPage.tsx"]
+    n_src_main_components_LibrettoPicker_tsx["LibrettoPicker.tsx"]
+    n_src_main_components_PDFComposer_tsx["PDFComposer.tsx"]
+    n_src_main_components_PDFPreviewPage_tsx["PDFPreviewPage.tsx"]
+    n_src_main_components_PanelWrapper_tsx["PanelWrapper.tsx"]
+    n_src_main_components_ReflowPreview_tsx["ReflowPreview.tsx"]
+    n_src_main_components_ReflowPreviewPdf_tsx["ReflowPreviewPdf.tsx"]
+    n_src_main_components_ReviewPage_tsx["ReviewPage.tsx"]
+    n_src_main_components_ReviewPicker_tsx["ReviewPicker.tsx"]
+    n_src_main_components_ScorePage_tsx["ScorePage.tsx"]
+    n_src_main_components_ScorePicker_tsx["ScorePicker.tsx"]
+  end
+  subgraph sg11["src/middleware/tools/ActionTools"]
+    n_src_middleware_tools_ActionTools_DarkLightStatus_tsx["DarkLightStatus.tsx"]
+    n_src_middleware_tools_ActionTools_FullscreenToggle_tsx["FullscreenToggle.tsx"]
+    n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx["SettingsWindowToggle.tsx"]
+    n_src_middleware_tools_ActionTools_StoreFileControls_tsx["StoreFileControls.tsx"]
+  end
+  subgraph sg12["src/middleware/tools/MixedTools"]
+    n_src_middleware_tools_MixedTools_LocaleToggle_tsx["LocaleToggle.tsx"]
+  end
+  subgraph sg13["src/middleware/tools/PopoverTools"]
+    n_src_middleware_tools_PopoverTools_ThemeMenu_tsx["ThemeMenu.tsx"]
+  end
+  subgraph sg14["src/middleware/windows"]
+    n_src_middleware_windows_Header_tsx["Header.tsx"]
+    n_src_middleware_windows_NewVersionWindow_tsx["middleware/windows/NewVersionWindow.tsx"]
+    n_src_middleware_windows_SettingsWindow_tsx["SettingsWindow.tsx"]
+  end
+  subgraph sg15["src/middleware/windows/newVersion"]
+    n_src_middleware_windows_newVersion_NewVersionWindow_tsx["middleware/windows/newVersion/NewVersionWindow.tsx"]
+  end
+  subgraph sg16["src/middleware/windows/settings"]
+    n_src_middleware_windows_settings_LayoutPopover_tsx["LayoutPopover.tsx"]
+    n_src_middleware_windows_settings_SettingsContent_tsx["SettingsContent.tsx"]
+  end
+  subgraph sg17["src/middleware/windows/settings/components"]
+    n_src_middleware_windows_settings_components_SettingSelectRow_tsx["SettingSelectRow.tsx"]
+    n_src_middleware_windows_settings_components_SettingsComponentRow_tsx["SettingsComponentRow.tsx"]
+  end
+  subgraph sg18["src/themes"]
+    n_src_themes_barbie_theme_ts["barbie.theme.ts"]
+    n_src_themes_catppuccin_theme_ts["catppuccin.theme.ts"]
+    n_src_themes_debug_ts["debug.ts"]
+    n_src_themes_default_theme_ts["default.theme.ts"]
+    n_src_themes_dracula_theme_ts["dracula.theme.ts"]
+    n_src_themes_index_ts["index.ts"]
+    n_src_themes_monokai_theme_ts["monokai.theme.ts"]
+    n_src_themes_solarized_theme_ts["solarized.theme.ts"]
+    n_src_themes_tokyoNight_theme_ts["tokyoNight.theme.ts"]
+    n_src_themes_utils_ts["themes/utils.ts"]
+  end
+  n_src_components_generics_GenericToggleButton_tsx --> n_src_components_KeyboardChip_tsx
+  n_src_components_generics_GenericToggleButton_tsx --> n_src_components_generics_GenericHotkey_tsx
+  n_src_components_generics_GenericToggleButtonGroup_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_context_AppProviders_tsx --> n_src_context_settingsStore_ts
+  n_src_context_AppProviders_tsx --> n_src_context_ThemeContext_tsx
+  n_src_context_ThemeContext_tsx --> n_src_context_settingsStore_ts
+  n_src_context_ThemeContext_tsx --> n_src_hooks_useLocaleSync_ts
+  n_src_context_ThemeContext_tsx --> n_src_themes_index_ts
+  n_src_context_settingsStore_ts --> n_src_lib_createLocalStorageStoreNg_tsx
+  n_src_context_settingsStore_ts --> n_src_lib_fileStorage_ts
+  n_src_context_settingsStore_ts -.-> n_src_lib_i18n_ts
+  n_src_discovery_globLoader_ts --> n_src_hooks_utils_ts
+  n_src_discovery_registryTypes_ts --> n_src_discovery_registry_ts
+  n_src_discovery_themeDiscovery_ts --> n_src_discovery_globLoader_ts
+  n_src_discovery_themeDiscovery_ts -.-> n_src_discovery_registryTypes_ts
+  n_src_discovery_themeDiscovery_ts --> n_src_discovery_themeRegistry_ts
+  n_src_discovery_themeDiscovery_ts --> n_src_discovery_utils_ts
+  n_src_discovery_themeDiscovery_ts ==> n_src_themes_barbie_theme_ts
+  n_src_discovery_themeDiscovery_ts ==> n_src_themes_catppuccin_theme_ts
+  n_src_discovery_themeDiscovery_ts ==> n_src_themes_default_theme_ts
+  n_src_discovery_themeDiscovery_ts ==> n_src_themes_dracula_theme_ts
+  n_src_discovery_themeDiscovery_ts ==> n_src_themes_monokai_theme_ts
+  n_src_discovery_themeDiscovery_ts ==> n_src_themes_solarized_theme_ts
+  n_src_discovery_themeDiscovery_ts ==> n_src_themes_tokyoNight_theme_ts
+  n_src_discovery_themeRegistry_ts --> n_src_discovery_registry_ts
+  n_src_discovery_themeRegistry_ts -.-> n_src_discovery_registryTypes_ts
+  n_src_discovery_utils_ts -.-> n_src_discovery_globLoader_ts
+  n_src_hooks_useLocaleSync_ts --> n_src_context_settingsStore_ts
+  n_src_hooks_useLocaleSync_ts --> n_src_lib_i18n_ts
+  n_src_hooks_utils_ts --> n_src_main_tsx
+  n_src_layout_index_tsx --> n_src_main_index_tsx
+  n_src_layout_index_tsx --> n_src_middleware_windows_Header_tsx
+  n_src_layout_index_tsx --> n_src_middleware_windows_NewVersionWindow_tsx
+  n_src_layout_index_tsx --> n_src_middleware_windows_SettingsWindow_tsx
+  n_src_lib_i18n_ts ==> n_src_locales_de_json
+  n_src_lib_i18n_ts ==> n_src_locales_en_json
+  n_src_main_tsx --> n_src_context_settingsStore_ts
+  n_src_main_tsx --> n_src_layout_index_tsx
+  n_src_main_tsx --> n_src_lib_i18n_ts
+  n_src_main_tsx --> n_src_context_AppProviders_tsx
+  n_src_main_tsx --> n_src_freakflags_css
+  n_src_main_tsx --> n_src_index_css
+  n_src_main_StepperButtons_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_LibrettoPage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_LibrettoPage_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_LibrettoPicker_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_LibrettoPicker_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_LibrettoPicker_tsx --> n_src_main_components_LibrettoPage_tsx
+  n_src_main_components_LibrettoPicker_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_components_PDFComposer_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_PDFComposer_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_components_PDFPreviewPage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_PanelWrapper_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ReflowPreview_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ReflowPreviewPdf_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ReviewPage_tsx --> n_src_main_components_ReflowPreviewPdf_tsx
+  n_src_main_components_ReviewPicker_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ReviewPicker_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ReviewPicker_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_components_ReviewPicker_tsx --> n_src_main_components_ReviewPage_tsx
+  n_src_main_components_ScorePage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ScorePage_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ScorePage_tsx --> n_src_main_components_ReflowPreviewPdf_tsx
+  n_src_main_components_ScorePage_tsx --> n_src_main_components_ReflowPreview_tsx
+  n_src_main_components_ScorePicker_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ScorePicker_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ScorePicker_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_components_ScorePicker_tsx --> n_src_main_components_ScorePage_tsx
+  n_src_main_firstStage_tsx --> n_src_context_settingsStore_ts
+  n_src_main_firstStage_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_firstStage_tsx --> n_src_main_GdeltNews15Min_tsx
+  n_src_main_fourthStage_tsx --> n_src_main_components_PDFComposer_tsx
+  n_src_main_fourthStage_tsx --> n_src_main_components_ReviewPicker_tsx
+  n_src_main_index_tsx --> n_src_context_settingsStore_ts
+  n_src_main_index_tsx --> n_src_main_fourthStage_tsx
+  n_src_main_index_tsx --> n_src_main_secondStage_tsx
+  n_src_main_index_tsx --> n_src_main_thirdStage_tsx
+  n_src_main_index_tsx --> n_src_main_firstStage_tsx
+  n_src_main_secondStage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_secondStage_tsx --> n_src_context_settingsStore_ts
+  n_src_main_secondStage_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_secondStage_tsx --> n_src_main_components_PDFPreviewPage_tsx
+  n_src_main_thirdStage_tsx --> n_src_main_components_LibrettoPicker_tsx
+  n_src_main_thirdStage_tsx --> n_src_main_components_ScorePicker_tsx
+  n_src_middleware_tools_ActionTools_DarkLightStatus_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_ActionTools_DarkLightStatus_tsx --> n_src_components_generics_GenericToggleButtonGroup_tsx
+  n_src_middleware_tools_ActionTools_DarkLightStatus_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_tools_ActionTools_FullscreenToggle_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_ActionTools_FullscreenToggle_tsx --> n_src_components_generics_GenericToggleButtonGroup_tsx
+  n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx --> n_src_components_generics_GenericToggleButtonGroup_tsx
+  n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_tools_ActionTools_StoreFileControls_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_ActionTools_StoreFileControls_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_tools_MixedTools_LocaleToggle_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_MixedTools_LocaleToggle_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_tools_MixedTools_LocaleToggle_tsx --> n_src_lib_i18n_ts
+  n_src_middleware_tools_PopoverTools_ThemeMenu_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_tools_PopoverTools_ThemeMenu_tsx --> n_src_discovery_themeDiscovery_ts
+  n_src_middleware_tools_PopoverTools_ThemeMenu_tsx --> n_src_middleware_windows_settings_components_SettingSelectRow_tsx
+  n_src_middleware_tools_PopoverTools_ThemeMenu_tsx --> n_src_themes_index_ts
+  n_src_middleware_windows_Header_tsx --> n_src_components_SolidChip_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_main_StepperButtons_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_middleware_tools_ActionTools_DarkLightStatus_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_middleware_tools_ActionTools_FullscreenToggle_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_middleware_tools_ActionTools_StoreFileControls_tsx
+  n_src_middleware_windows_NewVersionWindow_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_windows_NewVersionWindow_tsx --> n_src_middleware_windows_newVersion_NewVersionWindow_tsx
+  n_src_middleware_windows_SettingsWindow_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_windows_SettingsWindow_tsx --> n_src_middleware_windows_settings_SettingsContent_tsx
+  n_src_middleware_windows_newVersion_NewVersionWindow_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_components_SettingsSection_tsx
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_middleware_tools_ActionTools_DarkLightStatus_tsx
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_middleware_tools_MixedTools_LocaleToggle_tsx
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_middleware_tools_PopoverTools_ThemeMenu_tsx
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_middleware_windows_settings_components_SettingsComponentRow_tsx
+  n_src_middleware_windows_settings_SettingsContent_tsx --> n_src_middleware_windows_settings_LayoutPopover_tsx
+  n_src_themes_barbie_theme_ts --> n_src_themes_utils_ts
+  n_src_themes_catppuccin_theme_ts --> n_src_themes_utils_ts
+  n_src_themes_default_theme_ts --> n_src_themes_utils_ts
+  n_src_themes_dracula_theme_ts --> n_src_themes_utils_ts
+  n_src_themes_index_ts --> n_src_discovery_themeRegistry_ts
+  n_src_themes_index_ts --> n_src_themes_default_theme_ts
+  n_src_themes_monokai_theme_ts --> n_src_themes_utils_ts
+  n_src_themes_solarized_theme_ts --> n_src_themes_utils_ts
+  n_src_themes_tokyoNight_theme_ts --> n_src_themes_utils_ts
+  click n_src_freakflags_css "../../src/freakflags.css" "src/freakflags.css"
+  click n_src_index_css "../../src/index.css" "src/index.css"
+  click n_src_main_tsx "../../src/main.tsx" "src/main.tsx"
+  click n_src_sw_js "../../src/sw.js" "src/sw.js"
+  click n_src_vite_env_d_ts "../../src/vite-env.d.ts" "src/vite-env.d.ts"
+  click n_src_components_KeyboardChip_tsx "../../src/components/KeyboardChip.tsx" "src/components/KeyboardChip.tsx"
+  click n_src_components_SettingsSection_tsx "../../src/components/SettingsSection.tsx" "src/components/SettingsSection.tsx"
+  click n_src_components_SolidChip_tsx "../../src/components/SolidChip.tsx" "src/components/SolidChip.tsx"
+  click n_src_components_generics_GenericHotkey_tsx "../../src/components/generics/GenericHotkey.tsx" "src/components/generics/GenericHotkey.tsx"
+  click n_src_components_generics_GenericToggleButton_tsx "../../src/components/generics/GenericToggleButton.tsx" "src/components/generics/GenericToggleButton.tsx"
+  click n_src_components_generics_GenericToggleButtonGroup_tsx "../../src/components/generics/GenericToggleButtonGroup.tsx" "src/components/generics/GenericToggleButtonGroup.tsx"
+  click n_src_context_AppProviders_tsx "../../src/context/AppProviders.tsx" "src/context/AppProviders.tsx"
+  click n_src_context_ThemeContext_tsx "../../src/context/ThemeContext.tsx" "src/context/ThemeContext.tsx"
+  click n_src_context_settingsStore_ts "../../src/context/settingsStore.ts" "src/context/settingsStore.ts"
+  click n_src_context_types_d_ts "../../src/context/types.d.ts" "src/context/types.d.ts"
+  click n_src_discovery_globLoader_ts "../../src/discovery/globLoader.ts" "src/discovery/globLoader.ts"
+  click n_src_discovery_registry_ts "../../src/discovery/registry.ts" "src/discovery/registry.ts"
+  click n_src_discovery_registryTypes_ts "../../src/discovery/registryTypes.ts" "src/discovery/registryTypes.ts"
+  click n_src_discovery_themeDiscovery_ts "../../src/discovery/themeDiscovery.ts" "src/discovery/themeDiscovery.ts"
+  click n_src_discovery_themeRegistry_ts "../../src/discovery/themeRegistry.ts" "src/discovery/themeRegistry.ts"
+  click n_src_discovery_utils_ts "../../src/discovery/utils.ts" "src/discovery/utils.ts"
+  click n_src_hooks_useLocaleSync_ts "../../src/hooks/useLocaleSync.ts" "src/hooks/useLocaleSync.ts"
+  click n_src_hooks_utils_ts "../../src/hooks/utils.ts" "src/hooks/utils.ts"
+  click n_src_layout_index_tsx "../../src/layout/index.tsx" "src/layout/index.tsx"
+  click n_src_lib_createLocalStorageStoreNg_tsx "../../src/lib/createLocalStorageStoreNg.tsx" "src/lib/createLocalStorageStoreNg.tsx"
+  click n_src_lib_fileStorage_ts "../../src/lib/fileStorage.ts" "src/lib/fileStorage.ts"
+  click n_src_lib_i18n_ts "../../src/lib/i18n.ts" "src/lib/i18n.ts"
+  click n_src_locales_de_json "../../src/locales/de.json" "src/locales/de.json"
+  click n_src_locales_en_json "../../src/locales/en.json" "src/locales/en.json"
+  click n_src_main_GdeltNews15Min_tsx "../../src/main/GdeltNews15Min.tsx" "src/main/GdeltNews15Min.tsx"
+  click n_src_main_StepperButtons_tsx "../../src/main/StepperButtons.tsx" "src/main/StepperButtons.tsx"
+  click n_src_main_firstStage_tsx "../../src/main/firstStage.tsx" "src/main/firstStage.tsx"
+  click n_src_main_fourthStage_tsx "../../src/main/fourthStage.tsx" "src/main/fourthStage.tsx"
+  click n_src_main_index_tsx "../../src/main/index.tsx" "src/main/index.tsx"
+  click n_src_main_secondStage_tsx "../../src/main/secondStage.tsx" "src/main/secondStage.tsx"
+  click n_src_main_thirdStage_tsx "../../src/main/thirdStage.tsx" "src/main/thirdStage.tsx"
+  click n_src_main_components_LibrettoPage_tsx "../../src/main/components/LibrettoPage.tsx" "src/main/components/LibrettoPage.tsx"
+  click n_src_main_components_LibrettoPicker_tsx "../../src/main/components/LibrettoPicker.tsx" "src/main/components/LibrettoPicker.tsx"
+  click n_src_main_components_PDFComposer_tsx "../../src/main/components/PDFComposer.tsx" "src/main/components/PDFComposer.tsx"
+  click n_src_main_components_PDFPreviewPage_tsx "../../src/main/components/PDFPreviewPage.tsx" "src/main/components/PDFPreviewPage.tsx"
+  click n_src_main_components_PanelWrapper_tsx "../../src/main/components/PanelWrapper.tsx" "src/main/components/PanelWrapper.tsx"
+  click n_src_main_components_ReflowPreview_tsx "../../src/main/components/ReflowPreview.tsx" "src/main/components/ReflowPreview.tsx"
+  click n_src_main_components_ReflowPreviewPdf_tsx "../../src/main/components/ReflowPreviewPdf.tsx" "src/main/components/ReflowPreviewPdf.tsx"
+  click n_src_main_components_ReviewPage_tsx "../../src/main/components/ReviewPage.tsx" "src/main/components/ReviewPage.tsx"
+  click n_src_main_components_ReviewPicker_tsx "../../src/main/components/ReviewPicker.tsx" "src/main/components/ReviewPicker.tsx"
+  click n_src_main_components_ScorePage_tsx "../../src/main/components/ScorePage.tsx" "src/main/components/ScorePage.tsx"
+  click n_src_main_components_ScorePicker_tsx "../../src/main/components/ScorePicker.tsx" "src/main/components/ScorePicker.tsx"
+  click n_src_middleware_tools_ActionTools_DarkLightStatus_tsx "../../src/middleware/tools/ActionTools/DarkLightStatus.tsx" "src/middleware/tools/ActionTools/DarkLightStatus.tsx"
+  click n_src_middleware_tools_ActionTools_FullscreenToggle_tsx "../../src/middleware/tools/ActionTools/FullscreenToggle.tsx" "src/middleware/tools/ActionTools/FullscreenToggle.tsx"
+  click n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx "../../src/middleware/tools/ActionTools/SettingsWindowToggle.tsx" "src/middleware/tools/ActionTools/SettingsWindowToggle.tsx"
+  click n_src_middleware_tools_ActionTools_StoreFileControls_tsx "../../src/middleware/tools/ActionTools/StoreFileControls.tsx" "src/middleware/tools/ActionTools/StoreFileControls.tsx"
+  click n_src_middleware_tools_MixedTools_LocaleToggle_tsx "../../src/middleware/tools/MixedTools/LocaleToggle.tsx" "src/middleware/tools/MixedTools/LocaleToggle.tsx"
+  click n_src_middleware_tools_PopoverTools_ThemeMenu_tsx "../../src/middleware/tools/PopoverTools/ThemeMenu.tsx" "src/middleware/tools/PopoverTools/ThemeMenu.tsx"
+  click n_src_middleware_windows_Header_tsx "../../src/middleware/windows/Header.tsx" "src/middleware/windows/Header.tsx"
+  click n_src_middleware_windows_NewVersionWindow_tsx "../../src/middleware/windows/NewVersionWindow.tsx" "src/middleware/windows/NewVersionWindow.tsx"
+  click n_src_middleware_windows_SettingsWindow_tsx "../../src/middleware/windows/SettingsWindow.tsx" "src/middleware/windows/SettingsWindow.tsx"
+  click n_src_middleware_windows_newVersion_NewVersionWindow_tsx "../../src/middleware/windows/newVersion/NewVersionWindow.tsx" "src/middleware/windows/newVersion/NewVersionWindow.tsx"
+  click n_src_middleware_windows_settings_LayoutPopover_tsx "../../src/middleware/windows/settings/LayoutPopover.tsx" "src/middleware/windows/settings/LayoutPopover.tsx"
+  click n_src_middleware_windows_settings_SettingsContent_tsx "../../src/middleware/windows/settings/SettingsContent.tsx" "src/middleware/windows/settings/SettingsContent.tsx"
+  click n_src_middleware_windows_settings_components_SettingSelectRow_tsx "../../src/middleware/windows/settings/components/SettingSelectRow.tsx" "src/middleware/windows/settings/components/SettingSelectRow.tsx"
+  click n_src_middleware_windows_settings_components_SettingsComponentRow_tsx "../../src/middleware/windows/settings/components/SettingsComponentRow.tsx" "src/middleware/windows/settings/components/SettingsComponentRow.tsx"
+  click n_src_themes_barbie_theme_ts "../../src/themes/barbie.theme.ts" "src/themes/barbie.theme.ts"
+  click n_src_themes_catppuccin_theme_ts "../../src/themes/catppuccin.theme.ts" "src/themes/catppuccin.theme.ts"
+  click n_src_themes_debug_ts "../../src/themes/debug.ts" "src/themes/debug.ts"
+  click n_src_themes_default_theme_ts "../../src/themes/default.theme.ts" "src/themes/default.theme.ts"
+  click n_src_themes_dracula_theme_ts "../../src/themes/dracula.theme.ts" "src/themes/dracula.theme.ts"
+  click n_src_themes_index_ts "../../src/themes/index.ts" "src/themes/index.ts"
+  click n_src_themes_monokai_theme_ts "../../src/themes/monokai.theme.ts" "src/themes/monokai.theme.ts"
+  click n_src_themes_solarized_theme_ts "../../src/themes/solarized.theme.ts" "src/themes/solarized.theme.ts"
+  click n_src_themes_tokyoNight_theme_ts "../../src/themes/tokyoNight.theme.ts" "src/themes/tokyoNight.theme.ts"
+  click n_src_themes_utils_ts "../../src/themes/utils.ts" "src/themes/utils.ts"
+  linkStyle 11,13,29,33,37,98,110,115,117 stroke:#c62828,stroke-width:2px,color:#c62828
+  classDef mod fill:#e8f0fe,stroke:#3b6fb6,color:#000
+  classDef ext fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray:4 3,color:#333
+  classDef store fill:#fff7e0,stroke:#b58900,color:#000
+  classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
+  classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
+  classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000
+```
+
+**Legend:** solid = runtime import (value, re-export, JSX, hook use) · dotted = type-only import · thick = dynamic `import()` or glob-expanded import.
+
+**Dynamic and glob imports:**
+
+| Importing file | Pattern | Resolved to |
+|---|---|---|
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/**/*.theme.ts` | [barbie.theme.ts](../../src/themes/barbie.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/**/*.theme.ts` | [catppuccin.theme.ts](../../src/themes/catppuccin.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/**/*.theme.ts` | [default.theme.ts](../../src/themes/default.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/**/*.theme.ts` | [dracula.theme.ts](../../src/themes/dracula.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/**/*.theme.ts` | [monokai.theme.ts](../../src/themes/monokai.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/**/*.theme.ts` | [solarized.theme.ts](../../src/themes/solarized.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/**/*.theme.ts` | [tokyoNight.theme.ts](../../src/themes/tokyoNight.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/*.theme.ts` | [barbie.theme.ts](../../src/themes/barbie.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/*.theme.ts` | [catppuccin.theme.ts](../../src/themes/catppuccin.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/*.theme.ts` | [default.theme.ts](../../src/themes/default.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/*.theme.ts` | [dracula.theme.ts](../../src/themes/dracula.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/*.theme.ts` | [monokai.theme.ts](../../src/themes/monokai.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/*.theme.ts` | [solarized.theme.ts](../../src/themes/solarized.theme.ts) |
+| [themeDiscovery.ts](../../src/discovery/themeDiscovery.ts) | `../themes/*.theme.ts` | [tokyoNight.theme.ts](../../src/themes/tokyoNight.theme.ts) |
+| [i18n.ts](../../src/lib/i18n.ts) | `../locales/*.json` | [de.json](../../src/locales/de.json) |
+| [i18n.ts](../../src/lib/i18n.ts) | `../locales/*.json` | [en.json](../../src/locales/en.json) |
+
+**Barrel files:** `src/discovery/registryTypes.ts` re-exports `./registry` (`export *`). No consumer imports a symbol through it, so no barrel-resolved edges exist in this repository.
+
+**Navigate:** [Index](index.md) · [Overview](overview.md) · [Index](index.md) · [Cycles](cycles.md) · [Components](components.md) · [Hooks](hooks.md) · [Stores](stores.md) · [Pipeline](pipeline.md)

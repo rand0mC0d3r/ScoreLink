@@ -1,0 +1,83 @@
+# Module: App shell and entry
+
+**Navigate:** [Index](../index.md) · [Overview](../overview.md) · [Overview](../overview.md) · [Cycles](../cycles.md) · [Dependencies](../dependencies.md)
+
+Entry point (`src/main.tsx`), providers, and the layout shell.
+
+6 files. Cross-module edges: 1 incoming, 7 outgoing. Grey dashed nodes are files in other modules; clicking one opens that module's page.
+
+```mermaid
+flowchart LR
+  subgraph sg0["src"]
+    n_src_freakflags_css["freakflags.css"]
+    n_src_index_css["index.css"]
+    n_src_main_tsx["main.tsx"]
+    n_src_sw_js["sw.js"]
+    n_src_vite_env_d_ts["vite-env.d.ts"]
+  end
+  subgraph sg1["src/layout"]
+    n_src_layout_index_tsx["layout/index.tsx"]
+  end
+  subgraph sg2["Outside: State and hooks"]
+    n_src_context_AppProviders_tsx["AppProviders.tsx"]
+    n_src_context_settingsStore_ts["settingsStore.ts"]
+    n_src_hooks_utils_ts["hooks/utils.ts"]
+  end
+  subgraph sg3["Outside: Pipeline nodes (stages)"]
+    n_src_main_index_tsx["main/index.tsx"]
+  end
+  subgraph sg4["Outside: Windows"]
+    n_src_middleware_windows_Header_tsx["Header.tsx"]
+    n_src_middleware_windows_NewVersionWindow_tsx["middleware/windows/NewVersionWindow.tsx"]
+    n_src_middleware_windows_SettingsWindow_tsx["SettingsWindow.tsx"]
+  end
+  subgraph sg5["Outside: Library and locales"]
+    n_src_lib_i18n_ts["i18n.ts"]
+  end
+  n_src_hooks_utils_ts --> n_src_main_tsx
+  n_src_layout_index_tsx --> n_src_main_index_tsx
+  n_src_layout_index_tsx --> n_src_middleware_windows_Header_tsx
+  n_src_layout_index_tsx --> n_src_middleware_windows_NewVersionWindow_tsx
+  n_src_layout_index_tsx --> n_src_middleware_windows_SettingsWindow_tsx
+  n_src_main_tsx --> n_src_context_settingsStore_ts
+  n_src_main_tsx --> n_src_layout_index_tsx
+  n_src_main_tsx --> n_src_lib_i18n_ts
+  n_src_main_tsx --> n_src_context_AppProviders_tsx
+  n_src_main_tsx --> n_src_freakflags_css
+  n_src_main_tsx --> n_src_index_css
+  click n_src_freakflags_css "../../../src/freakflags.css" "src/freakflags.css"
+  click n_src_index_css "../../../src/index.css" "src/index.css"
+  click n_src_main_tsx "../../../src/main.tsx" "src/main.tsx"
+  click n_src_sw_js "../../../src/sw.js" "src/sw.js"
+  click n_src_vite_env_d_ts "../../../src/vite-env.d.ts" "src/vite-env.d.ts"
+  click n_src_layout_index_tsx "../../../src/layout/index.tsx" "src/layout/index.tsx"
+  click n_src_context_AppProviders_tsx "state-hooks.md" "src/context/AppProviders.tsx (module: State and hooks)"
+  click n_src_context_settingsStore_ts "state-hooks.md" "src/context/settingsStore.ts (module: State and hooks)"
+  click n_src_hooks_utils_ts "state-hooks.md" "src/hooks/utils.ts (module: State and hooks)"
+  click n_src_main_index_tsx "pipeline-nodes.md" "src/main/index.tsx (module: Pipeline nodes (stages))"
+  click n_src_middleware_windows_Header_tsx "windows.md" "src/middleware/windows/Header.tsx (module: Windows)"
+  click n_src_middleware_windows_NewVersionWindow_tsx "windows.md" "src/middleware/windows/NewVersionWindow.tsx (module: Windows)"
+  click n_src_middleware_windows_SettingsWindow_tsx "windows.md" "src/middleware/windows/SettingsWindow.tsx (module: Windows)"
+  click n_src_lib_i18n_ts "lib-locales.md" "src/lib/i18n.ts (module: Library and locales)"
+  class n_src_context_AppProviders_tsx,n_src_context_settingsStore_ts,n_src_hooks_utils_ts,n_src_main_index_tsx,n_src_middleware_windows_Header_tsx,n_src_middleware_windows_NewVersionWindow_tsx,n_src_middleware_windows_SettingsWindow_tsx,n_src_lib_i18n_ts ext
+  linkStyle 0,4,6 stroke:#c62828,stroke-width:2px,color:#c62828
+  classDef mod fill:#e8f0fe,stroke:#3b6fb6,color:#000
+  classDef ext fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray:4 3,color:#333
+  classDef store fill:#fff7e0,stroke:#b58900,color:#000
+  classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
+  classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
+  classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000
+```
+
+**Imports and reverse dependencies (file level):**
+
+| File | Imports | Imported by |
+|---|---|---|
+| [freakflags.css](../../../src/freakflags.css) | — | [main.tsx](../../../src/main.tsx) |
+| [index.css](../../../src/index.css) | — | [main.tsx](../../../src/main.tsx) |
+| [layout/index.tsx](../../../src/layout/index.tsx) | [main/index.tsx](../../../src/main/index.tsx), [Header.tsx](../../../src/middleware/windows/Header.tsx), [middleware/windows/NewVersionWindow.tsx](../../../src/middleware/windows/NewVersionWindow.tsx), [SettingsWindow.tsx](../../../src/middleware/windows/SettingsWindow.tsx) | [main.tsx](../../../src/main.tsx) |
+| [main.tsx](../../../src/main.tsx) | [settingsStore.ts](../../../src/context/settingsStore.ts), [layout/index.tsx](../../../src/layout/index.tsx), [i18n.ts](../../../src/lib/i18n.ts), [AppProviders.tsx](../../../src/context/AppProviders.tsx), [freakflags.css](../../../src/freakflags.css), [index.css](../../../src/index.css) | [hooks/utils.ts](../../../src/hooks/utils.ts) |
+| [sw.js](../../../src/sw.js) | — | — |
+| [vite-env.d.ts](../../../src/vite-env.d.ts) | — | — |
+
+**Navigate:** [Index](../index.md) · [Overview](../overview.md) · [Overview](../overview.md) · [Cycles](../cycles.md) · [Dependencies](../dependencies.md)

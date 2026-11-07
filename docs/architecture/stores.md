@@ -1,0 +1,186 @@
+# State stores
+
+**Navigate:** [Index](index.md) · [Overview](overview.md) · [Hooks](hooks.md) · [Pipeline](pipeline.md) · [Overview](overview.md)
+
+One store: `settingsStore` (created by `createLocalStorageStoreNg`). Persistence is `localStorage`; PDFs go to IndexedDB through `fileStorage`. Symbols are exports of `settingsStore.ts`; consumer edges point at the symbols they import.
+
+```mermaid
+flowchart LR
+  subgraph sg0["State store (src/context, src/lib)"]
+    n_src_context_settingsStore_ts["settingsStore.ts"]
+    n_src_lib_createLocalStorageStoreNg_tsx["createLocalStorageStoreNg.tsx"]
+    n_src_lib_fileStorage_ts["fileStorage.ts"]
+  end
+  subgraph sg1["Selectors and hooks (settingsStore.ts)"]
+    s_useSettings["useSettings"]
+    s_useSettingsStoreSelector["useSettingsStoreSelector"]
+  end
+  subgraph sg2["Actions (settingsStore.ts)"]
+    s_exportSettingsStore["exportSettingsStore"]
+    s_importSettingsStore["importSettingsStore"]
+    s_persistPdfFile["persistPdfFile"]
+    s_getSettingsStore["getSettingsStore"]
+    s_setSettingsStore["setSettingsStore"]
+  end
+  subgraph sg3["Provider and helpers (settingsStore.ts)"]
+    s_getReflowPreviewSegments["getReflowPreviewSegments"]
+    s_SettingsProvider["SettingsProvider"]
+  end
+  subgraph sg4["src"]
+    n_src_main_tsx["main.tsx"]
+  end
+  subgraph sg5["src/context"]
+    n_src_context_AppProviders_tsx["AppProviders.tsx"]
+    n_src_context_ThemeContext_tsx["ThemeContext.tsx"]
+  end
+  subgraph sg6["src/hooks"]
+    n_src_hooks_useLocaleSync_ts["useLocaleSync.ts"]
+  end
+  subgraph sg7["src/main"]
+    n_src_main_StepperButtons_tsx["StepperButtons.tsx"]
+    n_src_main_firstStage_tsx["firstStage.tsx"]
+    n_src_main_index_tsx["main/index.tsx"]
+    n_src_main_secondStage_tsx["secondStage.tsx"]
+  end
+  subgraph sg8["src/main/components"]
+    n_src_main_components_LibrettoPage_tsx["LibrettoPage.tsx"]
+    n_src_main_components_LibrettoPicker_tsx["LibrettoPicker.tsx"]
+    n_src_main_components_PDFComposer_tsx["PDFComposer.tsx"]
+    n_src_main_components_ReflowPreview_tsx["ReflowPreview.tsx"]
+    n_src_main_components_ReflowPreviewPdf_tsx["ReflowPreviewPdf.tsx"]
+    n_src_main_components_ReviewPicker_tsx["ReviewPicker.tsx"]
+    n_src_main_components_ScorePage_tsx["ScorePage.tsx"]
+    n_src_main_components_ScorePicker_tsx["ScorePicker.tsx"]
+  end
+  subgraph sg9["src/middleware/tools/ActionTools"]
+    n_src_middleware_tools_ActionTools_DarkLightStatus_tsx["DarkLightStatus.tsx"]
+    n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx["SettingsWindowToggle.tsx"]
+    n_src_middleware_tools_ActionTools_StoreFileControls_tsx["StoreFileControls.tsx"]
+  end
+  subgraph sg10["src/middleware/tools/MixedTools"]
+    n_src_middleware_tools_MixedTools_LocaleToggle_tsx["LocaleToggle.tsx"]
+  end
+  subgraph sg11["src/middleware/tools/PopoverTools"]
+    n_src_middleware_tools_PopoverTools_ThemeMenu_tsx["ThemeMenu.tsx"]
+  end
+  subgraph sg12["src/middleware/windows"]
+    n_src_middleware_windows_NewVersionWindow_tsx["middleware/windows/NewVersionWindow.tsx"]
+    n_src_middleware_windows_SettingsWindow_tsx["SettingsWindow.tsx"]
+  end
+  subgraph sg13["src/middleware/windows/newVersion"]
+    n_src_middleware_windows_newVersion_NewVersionWindow_tsx["middleware/windows/newVersion/NewVersionWindow.tsx"]
+  end
+  st_localstorage[("localStorage (settings)")]
+  st_indexeddb[("IndexedDB (PDF files)")]
+  n_src_context_settingsStore_ts --> s_useSettings
+  n_src_context_settingsStore_ts --> s_useSettingsStoreSelector
+  n_src_context_settingsStore_ts --> s_exportSettingsStore
+  n_src_context_settingsStore_ts --> s_importSettingsStore
+  n_src_context_settingsStore_ts --> s_persistPdfFile
+  n_src_context_settingsStore_ts --> s_getSettingsStore
+  n_src_context_settingsStore_ts --> s_setSettingsStore
+  n_src_context_settingsStore_ts --> s_getReflowPreviewSegments
+  n_src_context_settingsStore_ts --> s_SettingsProvider
+  n_src_lib_createLocalStorageStoreNg_tsx --> st_localstorage
+  n_src_lib_fileStorage_ts --> st_indexeddb
+  n_src_context_settingsStore_ts --> n_src_lib_createLocalStorageStoreNg_tsx
+  n_src_context_settingsStore_ts --> n_src_lib_fileStorage_ts
+  n_src_context_AppProviders_tsx --> s_SettingsProvider
+  n_src_context_ThemeContext_tsx --> s_useSettings
+  n_src_context_ThemeContext_tsx --> s_useSettingsStoreSelector
+  n_src_hooks_useLocaleSync_ts --> s_useSettingsStoreSelector
+  n_src_main_tsx --> s_setSettingsStore
+  n_src_main_StepperButtons_tsx --> s_useSettings
+  n_src_main_StepperButtons_tsx --> s_useSettingsStoreSelector
+  n_src_main_components_LibrettoPage_tsx --> s_useSettings
+  n_src_main_components_LibrettoPage_tsx --> s_useSettingsStoreSelector
+  n_src_main_components_LibrettoPicker_tsx --> s_useSettingsStoreSelector
+  n_src_main_components_PDFComposer_tsx --> s_getReflowPreviewSegments
+  n_src_main_components_PDFComposer_tsx --> s_useSettingsStoreSelector
+  n_src_main_components_ReflowPreview_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ReflowPreviewPdf_tsx --> s_getReflowPreviewSegments
+  n_src_main_components_ReflowPreviewPdf_tsx --> s_useSettingsStoreSelector
+  n_src_main_components_ReviewPicker_tsx --> s_useSettingsStoreSelector
+  n_src_main_components_ScorePage_tsx --> s_useSettings
+  n_src_main_components_ScorePage_tsx --> s_useSettingsStoreSelector
+  n_src_main_components_ScorePicker_tsx --> s_useSettingsStoreSelector
+  n_src_main_firstStage_tsx --> s_persistPdfFile
+  n_src_main_firstStage_tsx --> s_useSettings
+  n_src_main_firstStage_tsx --> s_useSettingsStoreSelector
+  n_src_main_index_tsx --> s_useSettingsStoreSelector
+  n_src_main_secondStage_tsx --> s_useSettings
+  n_src_main_secondStage_tsx --> s_useSettingsStoreSelector
+  n_src_middleware_tools_ActionTools_DarkLightStatus_tsx --> s_useSettings
+  n_src_middleware_tools_ActionTools_DarkLightStatus_tsx --> s_useSettingsStoreSelector
+  n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx --> s_useSettings
+  n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx --> s_useSettingsStoreSelector
+  n_src_middleware_tools_ActionTools_StoreFileControls_tsx --> s_exportSettingsStore
+  n_src_middleware_tools_ActionTools_StoreFileControls_tsx --> s_importSettingsStore
+  n_src_middleware_tools_MixedTools_LocaleToggle_tsx --> s_useSettings
+  n_src_middleware_tools_MixedTools_LocaleToggle_tsx --> s_useSettingsStoreSelector
+  n_src_middleware_tools_PopoverTools_ThemeMenu_tsx --> s_useSettings
+  n_src_middleware_tools_PopoverTools_ThemeMenu_tsx --> s_useSettingsStoreSelector
+  n_src_middleware_windows_NewVersionWindow_tsx --> s_useSettingsStoreSelector
+  n_src_middleware_windows_SettingsWindow_tsx --> s_useSettings
+  n_src_middleware_windows_SettingsWindow_tsx --> s_useSettingsStoreSelector
+  n_src_middleware_windows_newVersion_NewVersionWindow_tsx --> s_useSettings
+  click n_src_context_settingsStore_ts "../../src/context/settingsStore.ts" "src/context/settingsStore.ts"
+  click n_src_lib_createLocalStorageStoreNg_tsx "../../src/lib/createLocalStorageStoreNg.tsx" "src/lib/createLocalStorageStoreNg.tsx"
+  click n_src_lib_fileStorage_ts "../../src/lib/fileStorage.ts" "src/lib/fileStorage.ts"
+  click n_src_main_tsx "../../src/main.tsx" "src/main.tsx"
+  click n_src_context_AppProviders_tsx "../../src/context/AppProviders.tsx" "src/context/AppProviders.tsx"
+  click n_src_context_ThemeContext_tsx "../../src/context/ThemeContext.tsx" "src/context/ThemeContext.tsx"
+  click n_src_hooks_useLocaleSync_ts "../../src/hooks/useLocaleSync.ts" "src/hooks/useLocaleSync.ts"
+  click n_src_main_StepperButtons_tsx "../../src/main/StepperButtons.tsx" "src/main/StepperButtons.tsx"
+  click n_src_main_firstStage_tsx "../../src/main/firstStage.tsx" "src/main/firstStage.tsx"
+  click n_src_main_index_tsx "../../src/main/index.tsx" "src/main/index.tsx"
+  click n_src_main_secondStage_tsx "../../src/main/secondStage.tsx" "src/main/secondStage.tsx"
+  click n_src_main_components_LibrettoPage_tsx "../../src/main/components/LibrettoPage.tsx" "src/main/components/LibrettoPage.tsx"
+  click n_src_main_components_LibrettoPicker_tsx "../../src/main/components/LibrettoPicker.tsx" "src/main/components/LibrettoPicker.tsx"
+  click n_src_main_components_PDFComposer_tsx "../../src/main/components/PDFComposer.tsx" "src/main/components/PDFComposer.tsx"
+  click n_src_main_components_ReflowPreview_tsx "../../src/main/components/ReflowPreview.tsx" "src/main/components/ReflowPreview.tsx"
+  click n_src_main_components_ReflowPreviewPdf_tsx "../../src/main/components/ReflowPreviewPdf.tsx" "src/main/components/ReflowPreviewPdf.tsx"
+  click n_src_main_components_ReviewPicker_tsx "../../src/main/components/ReviewPicker.tsx" "src/main/components/ReviewPicker.tsx"
+  click n_src_main_components_ScorePage_tsx "../../src/main/components/ScorePage.tsx" "src/main/components/ScorePage.tsx"
+  click n_src_main_components_ScorePicker_tsx "../../src/main/components/ScorePicker.tsx" "src/main/components/ScorePicker.tsx"
+  click n_src_middleware_tools_ActionTools_DarkLightStatus_tsx "../../src/middleware/tools/ActionTools/DarkLightStatus.tsx" "src/middleware/tools/ActionTools/DarkLightStatus.tsx"
+  click n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx "../../src/middleware/tools/ActionTools/SettingsWindowToggle.tsx" "src/middleware/tools/ActionTools/SettingsWindowToggle.tsx"
+  click n_src_middleware_tools_ActionTools_StoreFileControls_tsx "../../src/middleware/tools/ActionTools/StoreFileControls.tsx" "src/middleware/tools/ActionTools/StoreFileControls.tsx"
+  click n_src_middleware_tools_MixedTools_LocaleToggle_tsx "../../src/middleware/tools/MixedTools/LocaleToggle.tsx" "src/middleware/tools/MixedTools/LocaleToggle.tsx"
+  click n_src_middleware_tools_PopoverTools_ThemeMenu_tsx "../../src/middleware/tools/PopoverTools/ThemeMenu.tsx" "src/middleware/tools/PopoverTools/ThemeMenu.tsx"
+  click n_src_middleware_windows_NewVersionWindow_tsx "../../src/middleware/windows/NewVersionWindow.tsx" "src/middleware/windows/NewVersionWindow.tsx"
+  click n_src_middleware_windows_SettingsWindow_tsx "../../src/middleware/windows/SettingsWindow.tsx" "src/middleware/windows/SettingsWindow.tsx"
+  click n_src_middleware_windows_newVersion_NewVersionWindow_tsx "../../src/middleware/windows/newVersion/NewVersionWindow.tsx" "src/middleware/windows/newVersion/NewVersionWindow.tsx"
+  class n_src_context_settingsStore_ts,n_src_lib_createLocalStorageStoreNg_tsx,n_src_lib_fileStorage_ts,st_localstorage,st_indexeddb store
+  class s_useSettings,s_useSettingsStoreSelector,s_exportSettingsStore,s_importSettingsStore,s_persistPdfFile,s_getSettingsStore,s_setSettingsStore,s_getReflowPreviewSegments,s_SettingsProvider sym
+  classDef mod fill:#e8f0fe,stroke:#3b6fb6,color:#000
+  classDef ext fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray:4 3,color:#333
+  classDef store fill:#fff7e0,stroke:#b58900,color:#000
+  classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
+  classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
+  classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000
+```
+
+**Store keys** (`SettingsStore` type) and the pipeline files that reference them (name-based, direction not verified):
+
+| Key | Referenced in |
+|---|---|
+| `pipelineStep` | [StepperButtons.tsx](../../src/main/StepperButtons.tsx), [main/index.tsx](../../src/main/index.tsx) |
+| `librettoPDF` | [LibrettoPicker.tsx](../../src/main/components/LibrettoPicker.tsx), [PDFComposer.tsx](../../src/main/components/PDFComposer.tsx), [firstStage.tsx](../../src/main/firstStage.tsx), [secondStage.tsx](../../src/main/secondStage.tsx) |
+| `scorePDF` | [PDFComposer.tsx](../../src/main/components/PDFComposer.tsx), [ReviewPicker.tsx](../../src/main/components/ReviewPicker.tsx), [ScorePicker.tsx](../../src/main/components/ScorePicker.tsx), [firstStage.tsx](../../src/main/firstStage.tsx), [secondStage.tsx](../../src/main/secondStage.tsx) |
+| `librettoPages` | [LibrettoPicker.tsx](../../src/main/components/LibrettoPicker.tsx), [PDFComposer.tsx](../../src/main/components/PDFComposer.tsx), [secondStage.tsx](../../src/main/secondStage.tsx) |
+| `scorePages` | [PDFComposer.tsx](../../src/main/components/PDFComposer.tsx), [ReviewPicker.tsx](../../src/main/components/ReviewPicker.tsx), [ScorePicker.tsx](../../src/main/components/ScorePicker.tsx), [secondStage.tsx](../../src/main/secondStage.tsx) |
+| `librettoPagesSource` | [secondStage.tsx](../../src/main/secondStage.tsx) |
+| `scorePagesSource` | [secondStage.tsx](../../src/main/secondStage.tsx) |
+| `librettoPageSelections` | [LibrettoPage.tsx](../../src/main/components/LibrettoPage.tsx) |
+| `librettoReflowSelections` | [LibrettoPage.tsx](../../src/main/components/LibrettoPage.tsx), [ScorePage.tsx](../../src/main/components/ScorePage.tsx) |
+| `activePage` | [LibrettoPage.tsx](../../src/main/components/LibrettoPage.tsx), [ReviewPicker.tsx](../../src/main/components/ReviewPicker.tsx), [ScorePage.tsx](../../src/main/components/ScorePage.tsx), [ScorePicker.tsx](../../src/main/components/ScorePicker.tsx) |
+| `activePageScrollPosition` | [LibrettoPage.tsx](../../src/main/components/LibrettoPage.tsx), [ScorePage.tsx](../../src/main/components/ScorePage.tsx) |
+| `newVersion` | — |
+| `themeMode` | — |
+| `themeId` | — |
+| `previewPhotoObj` | — |
+| `showSettings` | — |
+| `locale` | — |
+
+**Navigate:** [Index](index.md) · [Overview](overview.md) · [Hooks](hooks.md) · [Pipeline](pipeline.md) · [Overview](overview.md)

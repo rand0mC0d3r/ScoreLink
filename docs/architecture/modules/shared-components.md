@@ -1,0 +1,106 @@
+# Module: Shared components
+
+**Navigate:** [Index](../index.md) · [Overview](../overview.md) · [Components](../components.md) · [Hooks](../hooks.md)
+
+Generic UI primitives (chips, toggles, settings section).
+
+6 files. Cross-module edges: 18 incoming, 0 outgoing. Grey dashed nodes are files in other modules; clicking one opens that module's page.
+
+```mermaid
+flowchart LR
+  subgraph sg0["src/components"]
+    n_src_components_KeyboardChip_tsx["KeyboardChip.tsx"]
+    n_src_components_SettingsSection_tsx["SettingsSection.tsx"]
+    n_src_components_SolidChip_tsx["SolidChip.tsx"]
+  end
+  subgraph sg1["src/components/generics"]
+    n_src_components_generics_GenericHotkey_tsx["GenericHotkey.tsx"]
+    n_src_components_generics_GenericToggleButton_tsx["GenericToggleButton.tsx"]
+    n_src_components_generics_GenericToggleButtonGroup_tsx["GenericToggleButtonGroup.tsx"]
+  end
+  subgraph sg2["Outside: Pipeline components"]
+    n_src_main_components_LibrettoPage_tsx["LibrettoPage.tsx"]
+    n_src_main_components_LibrettoPicker_tsx["LibrettoPicker.tsx"]
+    n_src_main_components_PDFPreviewPage_tsx["PDFPreviewPage.tsx"]
+    n_src_main_components_PanelWrapper_tsx["PanelWrapper.tsx"]
+    n_src_main_components_ReviewPicker_tsx["ReviewPicker.tsx"]
+    n_src_main_components_ScorePage_tsx["ScorePage.tsx"]
+    n_src_main_components_ScorePicker_tsx["ScorePicker.tsx"]
+  end
+  subgraph sg3["Outside: Pipeline nodes (stages)"]
+    n_src_main_secondStage_tsx["secondStage.tsx"]
+  end
+  subgraph sg4["Outside: Toolbars"]
+    n_src_middleware_tools_ActionTools_DarkLightStatus_tsx["DarkLightStatus.tsx"]
+    n_src_middleware_tools_ActionTools_FullscreenToggle_tsx["FullscreenToggle.tsx"]
+    n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx["SettingsWindowToggle.tsx"]
+    n_src_middleware_tools_ActionTools_StoreFileControls_tsx["StoreFileControls.tsx"]
+    n_src_middleware_tools_MixedTools_LocaleToggle_tsx["LocaleToggle.tsx"]
+  end
+  subgraph sg5["Outside: Windows"]
+    n_src_middleware_windows_Header_tsx["Header.tsx"]
+    n_src_middleware_windows_settings_LayoutPopover_tsx["LayoutPopover.tsx"]
+  end
+  n_src_components_generics_GenericToggleButton_tsx --> n_src_components_KeyboardChip_tsx
+  n_src_components_generics_GenericToggleButton_tsx --> n_src_components_generics_GenericHotkey_tsx
+  n_src_components_generics_GenericToggleButtonGroup_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_main_components_LibrettoPage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_LibrettoPicker_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_PDFPreviewPage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_PanelWrapper_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ReviewPicker_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ScorePage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ScorePicker_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_secondStage_tsx --> n_src_components_SolidChip_tsx
+  n_src_middleware_tools_ActionTools_DarkLightStatus_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_ActionTools_DarkLightStatus_tsx --> n_src_components_generics_GenericToggleButtonGroup_tsx
+  n_src_middleware_tools_ActionTools_FullscreenToggle_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_ActionTools_FullscreenToggle_tsx --> n_src_components_generics_GenericToggleButtonGroup_tsx
+  n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx --> n_src_components_generics_GenericToggleButtonGroup_tsx
+  n_src_middleware_tools_ActionTools_StoreFileControls_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_MixedTools_LocaleToggle_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_components_SolidChip_tsx
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_components_SettingsSection_tsx
+  click n_src_components_KeyboardChip_tsx "../../../src/components/KeyboardChip.tsx" "src/components/KeyboardChip.tsx"
+  click n_src_components_SettingsSection_tsx "../../../src/components/SettingsSection.tsx" "src/components/SettingsSection.tsx"
+  click n_src_components_SolidChip_tsx "../../../src/components/SolidChip.tsx" "src/components/SolidChip.tsx"
+  click n_src_components_generics_GenericHotkey_tsx "../../../src/components/generics/GenericHotkey.tsx" "src/components/generics/GenericHotkey.tsx"
+  click n_src_components_generics_GenericToggleButton_tsx "../../../src/components/generics/GenericToggleButton.tsx" "src/components/generics/GenericToggleButton.tsx"
+  click n_src_components_generics_GenericToggleButtonGroup_tsx "../../../src/components/generics/GenericToggleButtonGroup.tsx" "src/components/generics/GenericToggleButtonGroup.tsx"
+  click n_src_main_components_LibrettoPage_tsx "pipeline-components.md" "src/main/components/LibrettoPage.tsx (module: Pipeline components)"
+  click n_src_main_components_LibrettoPicker_tsx "pipeline-components.md" "src/main/components/LibrettoPicker.tsx (module: Pipeline components)"
+  click n_src_main_components_PDFPreviewPage_tsx "pipeline-components.md" "src/main/components/PDFPreviewPage.tsx (module: Pipeline components)"
+  click n_src_main_components_PanelWrapper_tsx "pipeline-components.md" "src/main/components/PanelWrapper.tsx (module: Pipeline components)"
+  click n_src_main_components_ReviewPicker_tsx "pipeline-components.md" "src/main/components/ReviewPicker.tsx (module: Pipeline components)"
+  click n_src_main_components_ScorePage_tsx "pipeline-components.md" "src/main/components/ScorePage.tsx (module: Pipeline components)"
+  click n_src_main_components_ScorePicker_tsx "pipeline-components.md" "src/main/components/ScorePicker.tsx (module: Pipeline components)"
+  click n_src_main_secondStage_tsx "pipeline-nodes.md" "src/main/secondStage.tsx (module: Pipeline nodes (stages))"
+  click n_src_middleware_tools_ActionTools_DarkLightStatus_tsx "toolbars.md" "src/middleware/tools/ActionTools/DarkLightStatus.tsx (module: Toolbars)"
+  click n_src_middleware_tools_ActionTools_FullscreenToggle_tsx "toolbars.md" "src/middleware/tools/ActionTools/FullscreenToggle.tsx (module: Toolbars)"
+  click n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx "toolbars.md" "src/middleware/tools/ActionTools/SettingsWindowToggle.tsx (module: Toolbars)"
+  click n_src_middleware_tools_ActionTools_StoreFileControls_tsx "toolbars.md" "src/middleware/tools/ActionTools/StoreFileControls.tsx (module: Toolbars)"
+  click n_src_middleware_tools_MixedTools_LocaleToggle_tsx "toolbars.md" "src/middleware/tools/MixedTools/LocaleToggle.tsx (module: Toolbars)"
+  click n_src_middleware_windows_Header_tsx "windows.md" "src/middleware/windows/Header.tsx (module: Windows)"
+  click n_src_middleware_windows_settings_LayoutPopover_tsx "windows.md" "src/middleware/windows/settings/LayoutPopover.tsx (module: Windows)"
+  class n_src_main_components_LibrettoPage_tsx,n_src_main_components_LibrettoPicker_tsx,n_src_main_components_PDFPreviewPage_tsx,n_src_main_components_PanelWrapper_tsx,n_src_main_components_ReviewPicker_tsx,n_src_main_components_ScorePage_tsx,n_src_main_components_ScorePicker_tsx,n_src_main_secondStage_tsx,n_src_middleware_tools_ActionTools_DarkLightStatus_tsx,n_src_middleware_tools_ActionTools_FullscreenToggle_tsx,n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx,n_src_middleware_tools_ActionTools_StoreFileControls_tsx,n_src_middleware_tools_MixedTools_LocaleToggle_tsx,n_src_middleware_windows_Header_tsx,n_src_middleware_windows_settings_LayoutPopover_tsx ext
+  classDef mod fill:#e8f0fe,stroke:#3b6fb6,color:#000
+  classDef ext fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray:4 3,color:#333
+  classDef store fill:#fff7e0,stroke:#b58900,color:#000
+  classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
+  classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
+  classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000
+```
+
+**Imports and reverse dependencies (file level):**
+
+| File | Imports | Imported by |
+|---|---|---|
+| [KeyboardChip.tsx](../../../src/components/KeyboardChip.tsx) | — | [GenericToggleButton.tsx](../../../src/components/generics/GenericToggleButton.tsx) |
+| [SettingsSection.tsx](../../../src/components/SettingsSection.tsx) | — | [LayoutPopover.tsx](../../../src/middleware/windows/settings/LayoutPopover.tsx) |
+| [SolidChip.tsx](../../../src/components/SolidChip.tsx) | — | [LibrettoPage.tsx](../../../src/main/components/LibrettoPage.tsx), [LibrettoPicker.tsx](../../../src/main/components/LibrettoPicker.tsx), [PDFPreviewPage.tsx](../../../src/main/components/PDFPreviewPage.tsx), [PanelWrapper.tsx](../../../src/main/components/PanelWrapper.tsx), [ReviewPicker.tsx](../../../src/main/components/ReviewPicker.tsx), [ScorePage.tsx](../../../src/main/components/ScorePage.tsx), [ScorePicker.tsx](../../../src/main/components/ScorePicker.tsx), [secondStage.tsx](../../../src/main/secondStage.tsx), [Header.tsx](../../../src/middleware/windows/Header.tsx) |
+| [GenericHotkey.tsx](../../../src/components/generics/GenericHotkey.tsx) | — | [GenericToggleButton.tsx](../../../src/components/generics/GenericToggleButton.tsx) |
+| [GenericToggleButton.tsx](../../../src/components/generics/GenericToggleButton.tsx) | [KeyboardChip.tsx](../../../src/components/KeyboardChip.tsx), [GenericHotkey.tsx](../../../src/components/generics/GenericHotkey.tsx) | [GenericToggleButtonGroup.tsx](../../../src/components/generics/GenericToggleButtonGroup.tsx), [DarkLightStatus.tsx](../../../src/middleware/tools/ActionTools/DarkLightStatus.tsx), [FullscreenToggle.tsx](../../../src/middleware/tools/ActionTools/FullscreenToggle.tsx), [SettingsWindowToggle.tsx](../../../src/middleware/tools/ActionTools/SettingsWindowToggle.tsx), [StoreFileControls.tsx](../../../src/middleware/tools/ActionTools/StoreFileControls.tsx), [LocaleToggle.tsx](../../../src/middleware/tools/MixedTools/LocaleToggle.tsx) |
+| [GenericToggleButtonGroup.tsx](../../../src/components/generics/GenericToggleButtonGroup.tsx) | [GenericToggleButton.tsx](../../../src/components/generics/GenericToggleButton.tsx) | [DarkLightStatus.tsx](../../../src/middleware/tools/ActionTools/DarkLightStatus.tsx), [FullscreenToggle.tsx](../../../src/middleware/tools/ActionTools/FullscreenToggle.tsx), [SettingsWindowToggle.tsx](../../../src/middleware/tools/ActionTools/SettingsWindowToggle.tsx) |
+
+**Navigate:** [Index](../index.md) · [Overview](../overview.md) · [Components](../components.md) · [Hooks](../hooks.md)

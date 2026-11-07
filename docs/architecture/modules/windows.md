@@ -1,0 +1,111 @@
+# Module: Windows
+
+**Navigate:** [Index](../index.md) · [Overview](../overview.md) · [Components](../components.md) · [Hooks](../hooks.md) · [Cycles](../cycles.md)
+
+Overlay windows (settings, new-version notice) and the header.
+
+8 files. Cross-module edges: 4 incoming, 13 outgoing. Grey dashed nodes are files in other modules; clicking one opens that module's page.
+
+```mermaid
+flowchart LR
+  subgraph sg0["src/middleware/windows"]
+    n_src_middleware_windows_Header_tsx["Header.tsx"]
+    n_src_middleware_windows_NewVersionWindow_tsx["middleware/windows/NewVersionWindow.tsx"]
+    n_src_middleware_windows_SettingsWindow_tsx["SettingsWindow.tsx"]
+  end
+  subgraph sg1["src/middleware/windows/newVersion"]
+    n_src_middleware_windows_newVersion_NewVersionWindow_tsx["middleware/windows/newVersion/NewVersionWindow.tsx"]
+  end
+  subgraph sg2["src/middleware/windows/settings"]
+    n_src_middleware_windows_settings_LayoutPopover_tsx["LayoutPopover.tsx"]
+    n_src_middleware_windows_settings_SettingsContent_tsx["SettingsContent.tsx"]
+  end
+  subgraph sg3["src/middleware/windows/settings/components"]
+    n_src_middleware_windows_settings_components_SettingSelectRow_tsx["SettingSelectRow.tsx"]
+    n_src_middleware_windows_settings_components_SettingsComponentRow_tsx["SettingsComponentRow.tsx"]
+  end
+  subgraph sg4["Outside: App shell and entry"]
+    n_src_layout_index_tsx["layout/index.tsx"]
+  end
+  subgraph sg5["Outside: Toolbars"]
+    n_src_middleware_tools_ActionTools_DarkLightStatus_tsx["DarkLightStatus.tsx"]
+    n_src_middleware_tools_ActionTools_FullscreenToggle_tsx["FullscreenToggle.tsx"]
+    n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx["SettingsWindowToggle.tsx"]
+    n_src_middleware_tools_ActionTools_StoreFileControls_tsx["StoreFileControls.tsx"]
+    n_src_middleware_tools_MixedTools_LocaleToggle_tsx["LocaleToggle.tsx"]
+    n_src_middleware_tools_PopoverTools_ThemeMenu_tsx["ThemeMenu.tsx"]
+  end
+  subgraph sg6["Outside: Shared components"]
+    n_src_components_SettingsSection_tsx["SettingsSection.tsx"]
+    n_src_components_SolidChip_tsx["SolidChip.tsx"]
+  end
+  subgraph sg7["Outside: Pipeline nodes (stages)"]
+    n_src_main_StepperButtons_tsx["StepperButtons.tsx"]
+  end
+  subgraph sg8["Outside: State and hooks"]
+    n_src_context_settingsStore_ts["settingsStore.ts"]
+  end
+  n_src_layout_index_tsx --> n_src_middleware_windows_Header_tsx
+  n_src_layout_index_tsx --> n_src_middleware_windows_NewVersionWindow_tsx
+  n_src_layout_index_tsx --> n_src_middleware_windows_SettingsWindow_tsx
+  n_src_middleware_tools_PopoverTools_ThemeMenu_tsx --> n_src_middleware_windows_settings_components_SettingSelectRow_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_components_SolidChip_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_main_StepperButtons_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_middleware_tools_ActionTools_DarkLightStatus_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_middleware_tools_ActionTools_FullscreenToggle_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_middleware_tools_ActionTools_StoreFileControls_tsx
+  n_src_middleware_windows_NewVersionWindow_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_windows_NewVersionWindow_tsx --> n_src_middleware_windows_newVersion_NewVersionWindow_tsx
+  n_src_middleware_windows_SettingsWindow_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_windows_SettingsWindow_tsx --> n_src_middleware_windows_settings_SettingsContent_tsx
+  n_src_middleware_windows_newVersion_NewVersionWindow_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_components_SettingsSection_tsx
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_middleware_tools_ActionTools_DarkLightStatus_tsx
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_middleware_tools_MixedTools_LocaleToggle_tsx
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_middleware_tools_PopoverTools_ThemeMenu_tsx
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_middleware_windows_settings_components_SettingsComponentRow_tsx
+  n_src_middleware_windows_settings_SettingsContent_tsx --> n_src_middleware_windows_settings_LayoutPopover_tsx
+  click n_src_middleware_windows_Header_tsx "../../../src/middleware/windows/Header.tsx" "src/middleware/windows/Header.tsx"
+  click n_src_middleware_windows_NewVersionWindow_tsx "../../../src/middleware/windows/NewVersionWindow.tsx" "src/middleware/windows/NewVersionWindow.tsx"
+  click n_src_middleware_windows_SettingsWindow_tsx "../../../src/middleware/windows/SettingsWindow.tsx" "src/middleware/windows/SettingsWindow.tsx"
+  click n_src_middleware_windows_newVersion_NewVersionWindow_tsx "../../../src/middleware/windows/newVersion/NewVersionWindow.tsx" "src/middleware/windows/newVersion/NewVersionWindow.tsx"
+  click n_src_middleware_windows_settings_LayoutPopover_tsx "../../../src/middleware/windows/settings/LayoutPopover.tsx" "src/middleware/windows/settings/LayoutPopover.tsx"
+  click n_src_middleware_windows_settings_SettingsContent_tsx "../../../src/middleware/windows/settings/SettingsContent.tsx" "src/middleware/windows/settings/SettingsContent.tsx"
+  click n_src_middleware_windows_settings_components_SettingSelectRow_tsx "../../../src/middleware/windows/settings/components/SettingSelectRow.tsx" "src/middleware/windows/settings/components/SettingSelectRow.tsx"
+  click n_src_middleware_windows_settings_components_SettingsComponentRow_tsx "../../../src/middleware/windows/settings/components/SettingsComponentRow.tsx" "src/middleware/windows/settings/components/SettingsComponentRow.tsx"
+  click n_src_layout_index_tsx "app-shell.md" "src/layout/index.tsx (module: App shell and entry)"
+  click n_src_middleware_tools_ActionTools_DarkLightStatus_tsx "toolbars.md" "src/middleware/tools/ActionTools/DarkLightStatus.tsx (module: Toolbars)"
+  click n_src_middleware_tools_ActionTools_FullscreenToggle_tsx "toolbars.md" "src/middleware/tools/ActionTools/FullscreenToggle.tsx (module: Toolbars)"
+  click n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx "toolbars.md" "src/middleware/tools/ActionTools/SettingsWindowToggle.tsx (module: Toolbars)"
+  click n_src_middleware_tools_ActionTools_StoreFileControls_tsx "toolbars.md" "src/middleware/tools/ActionTools/StoreFileControls.tsx (module: Toolbars)"
+  click n_src_middleware_tools_MixedTools_LocaleToggle_tsx "toolbars.md" "src/middleware/tools/MixedTools/LocaleToggle.tsx (module: Toolbars)"
+  click n_src_middleware_tools_PopoverTools_ThemeMenu_tsx "toolbars.md" "src/middleware/tools/PopoverTools/ThemeMenu.tsx (module: Toolbars)"
+  click n_src_components_SettingsSection_tsx "shared-components.md" "src/components/SettingsSection.tsx (module: Shared components)"
+  click n_src_components_SolidChip_tsx "shared-components.md" "src/components/SolidChip.tsx (module: Shared components)"
+  click n_src_main_StepperButtons_tsx "pipeline-nodes.md" "src/main/StepperButtons.tsx (module: Pipeline nodes (stages))"
+  click n_src_context_settingsStore_ts "state-hooks.md" "src/context/settingsStore.ts (module: State and hooks)"
+  class n_src_layout_index_tsx,n_src_middleware_tools_ActionTools_DarkLightStatus_tsx,n_src_middleware_tools_ActionTools_FullscreenToggle_tsx,n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx,n_src_middleware_tools_ActionTools_StoreFileControls_tsx,n_src_middleware_tools_MixedTools_LocaleToggle_tsx,n_src_middleware_tools_PopoverTools_ThemeMenu_tsx,n_src_components_SettingsSection_tsx,n_src_components_SolidChip_tsx,n_src_main_StepperButtons_tsx,n_src_context_settingsStore_ts ext
+  linkStyle 2,13,18,20 stroke:#c62828,stroke-width:2px,color:#c62828
+  classDef mod fill:#e8f0fe,stroke:#3b6fb6,color:#000
+  classDef ext fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray:4 3,color:#333
+  classDef store fill:#fff7e0,stroke:#b58900,color:#000
+  classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
+  classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
+  classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000
+```
+
+**Imports and reverse dependencies (file level):**
+
+| File | Imports | Imported by |
+|---|---|---|
+| [Header.tsx](../../../src/middleware/windows/Header.tsx) | [SolidChip.tsx](../../../src/components/SolidChip.tsx), [StepperButtons.tsx](../../../src/main/StepperButtons.tsx), [DarkLightStatus.tsx](../../../src/middleware/tools/ActionTools/DarkLightStatus.tsx), [FullscreenToggle.tsx](../../../src/middleware/tools/ActionTools/FullscreenToggle.tsx), [SettingsWindowToggle.tsx](../../../src/middleware/tools/ActionTools/SettingsWindowToggle.tsx), [StoreFileControls.tsx](../../../src/middleware/tools/ActionTools/StoreFileControls.tsx) | [layout/index.tsx](../../../src/layout/index.tsx) |
+| [middleware/windows/NewVersionWindow.tsx](../../../src/middleware/windows/NewVersionWindow.tsx) | [settingsStore.ts](../../../src/context/settingsStore.ts), [middleware/windows/newVersion/NewVersionWindow.tsx](../../../src/middleware/windows/newVersion/NewVersionWindow.tsx) | [layout/index.tsx](../../../src/layout/index.tsx) |
+| [SettingsWindow.tsx](../../../src/middleware/windows/SettingsWindow.tsx) | [settingsStore.ts](../../../src/context/settingsStore.ts), [SettingsContent.tsx](../../../src/middleware/windows/settings/SettingsContent.tsx) | [layout/index.tsx](../../../src/layout/index.tsx) |
+| [middleware/windows/newVersion/NewVersionWindow.tsx](../../../src/middleware/windows/newVersion/NewVersionWindow.tsx) | [settingsStore.ts](../../../src/context/settingsStore.ts) | [middleware/windows/NewVersionWindow.tsx](../../../src/middleware/windows/NewVersionWindow.tsx) |
+| [LayoutPopover.tsx](../../../src/middleware/windows/settings/LayoutPopover.tsx) | [SettingsSection.tsx](../../../src/components/SettingsSection.tsx), [DarkLightStatus.tsx](../../../src/middleware/tools/ActionTools/DarkLightStatus.tsx), [LocaleToggle.tsx](../../../src/middleware/tools/MixedTools/LocaleToggle.tsx), [ThemeMenu.tsx](../../../src/middleware/tools/PopoverTools/ThemeMenu.tsx), [SettingsComponentRow.tsx](../../../src/middleware/windows/settings/components/SettingsComponentRow.tsx) | [SettingsContent.tsx](../../../src/middleware/windows/settings/SettingsContent.tsx) |
+| [SettingsContent.tsx](../../../src/middleware/windows/settings/SettingsContent.tsx) | [LayoutPopover.tsx](../../../src/middleware/windows/settings/LayoutPopover.tsx) | [SettingsWindow.tsx](../../../src/middleware/windows/SettingsWindow.tsx) |
+| [SettingSelectRow.tsx](../../../src/middleware/windows/settings/components/SettingSelectRow.tsx) | — | [ThemeMenu.tsx](../../../src/middleware/tools/PopoverTools/ThemeMenu.tsx) |
+| [SettingsComponentRow.tsx](../../../src/middleware/windows/settings/components/SettingsComponentRow.tsx) | — | [LayoutPopover.tsx](../../../src/middleware/windows/settings/LayoutPopover.tsx) |
+
+**Navigate:** [Index](../index.md) · [Overview](../overview.md) · [Components](../components.md) · [Hooks](../hooks.md) · [Cycles](../cycles.md)

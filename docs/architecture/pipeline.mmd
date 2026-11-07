@@ -1,0 +1,150 @@
+flowchart LR
+  subgraph sg0["Shared dependencies: src/components"]
+    n_src_components_SolidChip_tsx["SolidChip.tsx"]
+  end
+  subgraph sg1["Shared dependencies: src/context"]
+    n_src_context_settingsStore_ts["settingsStore.ts"]
+  end
+  subgraph sg2["Shared dependencies: src/layout"]
+    n_src_layout_index_tsx["layout/index.tsx"]
+  end
+  subgraph sg3["Shared dependencies: src/middleware/windows"]
+    n_src_middleware_windows_Header_tsx["Header.tsx"]
+  end
+  subgraph sg4["src/main"]
+    n_src_main_GdeltNews15Min_tsx["GdeltNews15Min.tsx"]
+    n_src_main_StepperButtons_tsx["StepperButtons.tsx"]
+    n_src_main_firstStage_tsx["firstStage.tsx"]
+    n_src_main_fourthStage_tsx["fourthStage.tsx"]
+    n_src_main_index_tsx["main/index.tsx"]
+    n_src_main_secondStage_tsx["secondStage.tsx"]
+    n_src_main_thirdStage_tsx["thirdStage.tsx"]
+  end
+  subgraph sg5["src/main/components"]
+    n_src_main_components_LibrettoPage_tsx["LibrettoPage.tsx"]
+    n_src_main_components_LibrettoPicker_tsx["LibrettoPicker.tsx"]
+    n_src_main_components_PDFComposer_tsx["PDFComposer.tsx"]
+    n_src_main_components_PDFPreviewPage_tsx["PDFPreviewPage.tsx"]
+    n_src_main_components_PanelWrapper_tsx["PanelWrapper.tsx"]
+    n_src_main_components_ReflowPreview_tsx["ReflowPreview.tsx"]
+    n_src_main_components_ReflowPreviewPdf_tsx["ReflowPreviewPdf.tsx"]
+    n_src_main_components_ReviewPage_tsx["ReviewPage.tsx"]
+    n_src_main_components_ReviewPicker_tsx["ReviewPicker.tsx"]
+    n_src_main_components_ScorePage_tsx["ScorePage.tsx"]
+    n_src_main_components_ScorePicker_tsx["ScorePicker.tsx"]
+  end
+  subgraph sg6["Settings keys shared by pipeline"]
+    k_pipelineStep["settings.pipelineStep"]
+    k_librettoPDF["settings.librettoPDF"]
+    k_scorePDF["settings.scorePDF"]
+    k_librettoPages["settings.librettoPages"]
+    k_scorePages["settings.scorePages"]
+    k_librettoPagesSource["settings.librettoPagesSource"]
+    k_scorePagesSource["settings.scorePagesSource"]
+    k_librettoPageSelections["settings.librettoPageSelections"]
+    k_librettoReflowSelections["settings.librettoReflowSelections"]
+    k_activePage["settings.activePage"]
+    k_activePageScrollPosition["settings.activePageScrollPosition"]
+  end
+  n_src_layout_index_tsx --> n_src_main_index_tsx
+  n_src_main_StepperButtons_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_LibrettoPage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_LibrettoPage_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_LibrettoPicker_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_LibrettoPicker_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_LibrettoPicker_tsx --> n_src_main_components_LibrettoPage_tsx
+  n_src_main_components_LibrettoPicker_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_components_PDFComposer_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_PDFComposer_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_components_PDFPreviewPage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_PanelWrapper_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ReflowPreview_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ReflowPreviewPdf_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ReviewPage_tsx --> n_src_main_components_ReflowPreviewPdf_tsx
+  n_src_main_components_ReviewPicker_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ReviewPicker_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ReviewPicker_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_components_ReviewPicker_tsx --> n_src_main_components_ReviewPage_tsx
+  n_src_main_components_ScorePage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ScorePage_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ScorePage_tsx --> n_src_main_components_ReflowPreviewPdf_tsx
+  n_src_main_components_ScorePage_tsx --> n_src_main_components_ReflowPreview_tsx
+  n_src_main_components_ScorePicker_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ScorePicker_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ScorePicker_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_components_ScorePicker_tsx --> n_src_main_components_ScorePage_tsx
+  n_src_main_firstStage_tsx --> n_src_context_settingsStore_ts
+  n_src_main_firstStage_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_firstStage_tsx --> n_src_main_GdeltNews15Min_tsx
+  n_src_main_fourthStage_tsx --> n_src_main_components_PDFComposer_tsx
+  n_src_main_fourthStage_tsx --> n_src_main_components_ReviewPicker_tsx
+  n_src_main_index_tsx --> n_src_context_settingsStore_ts
+  n_src_main_index_tsx --> n_src_main_fourthStage_tsx
+  n_src_main_index_tsx --> n_src_main_secondStage_tsx
+  n_src_main_index_tsx --> n_src_main_thirdStage_tsx
+  n_src_main_index_tsx --> n_src_main_firstStage_tsx
+  n_src_main_secondStage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_secondStage_tsx --> n_src_context_settingsStore_ts
+  n_src_main_secondStage_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_secondStage_tsx --> n_src_main_components_PDFPreviewPage_tsx
+  n_src_main_thirdStage_tsx --> n_src_main_components_LibrettoPicker_tsx
+  n_src_main_thirdStage_tsx --> n_src_main_components_ScorePicker_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_main_StepperButtons_tsx
+  n_src_main_StepperButtons_tsx -.-> k_pipelineStep
+  n_src_main_index_tsx -.-> k_pipelineStep
+  n_src_main_components_LibrettoPicker_tsx -.-> k_librettoPDF
+  n_src_main_components_PDFComposer_tsx -.-> k_librettoPDF
+  n_src_main_firstStage_tsx -.-> k_librettoPDF
+  n_src_main_secondStage_tsx -.-> k_librettoPDF
+  n_src_main_components_PDFComposer_tsx -.-> k_scorePDF
+  n_src_main_components_ReviewPicker_tsx -.-> k_scorePDF
+  n_src_main_components_ScorePicker_tsx -.-> k_scorePDF
+  n_src_main_firstStage_tsx -.-> k_scorePDF
+  n_src_main_secondStage_tsx -.-> k_scorePDF
+  n_src_main_components_LibrettoPicker_tsx -.-> k_librettoPages
+  n_src_main_components_PDFComposer_tsx -.-> k_librettoPages
+  n_src_main_secondStage_tsx -.-> k_librettoPages
+  n_src_main_components_PDFComposer_tsx -.-> k_scorePages
+  n_src_main_components_ReviewPicker_tsx -.-> k_scorePages
+  n_src_main_components_ScorePicker_tsx -.-> k_scorePages
+  n_src_main_secondStage_tsx -.-> k_scorePages
+  n_src_main_secondStage_tsx -.-> k_librettoPagesSource
+  n_src_main_secondStage_tsx -.-> k_scorePagesSource
+  n_src_main_components_LibrettoPage_tsx -.-> k_librettoPageSelections
+  n_src_main_components_LibrettoPage_tsx -.-> k_librettoReflowSelections
+  n_src_main_components_ScorePage_tsx -.-> k_librettoReflowSelections
+  n_src_main_components_LibrettoPage_tsx -.-> k_activePage
+  n_src_main_components_ReviewPicker_tsx -.-> k_activePage
+  n_src_main_components_ScorePage_tsx -.-> k_activePage
+  n_src_main_components_ScorePicker_tsx -.-> k_activePage
+  n_src_main_components_LibrettoPage_tsx -.-> k_activePageScrollPosition
+  n_src_main_components_ScorePage_tsx -.-> k_activePageScrollPosition
+  click n_src_components_SolidChip_tsx "../../src/components/SolidChip.tsx" "src/components/SolidChip.tsx"
+  click n_src_context_settingsStore_ts "../../src/context/settingsStore.ts" "src/context/settingsStore.ts"
+  click n_src_layout_index_tsx "../../src/layout/index.tsx" "src/layout/index.tsx"
+  click n_src_middleware_windows_Header_tsx "../../src/middleware/windows/Header.tsx" "src/middleware/windows/Header.tsx"
+  click n_src_main_GdeltNews15Min_tsx "../../src/main/GdeltNews15Min.tsx" "src/main/GdeltNews15Min.tsx"
+  click n_src_main_StepperButtons_tsx "../../src/main/StepperButtons.tsx" "src/main/StepperButtons.tsx"
+  click n_src_main_firstStage_tsx "../../src/main/firstStage.tsx" "src/main/firstStage.tsx"
+  click n_src_main_fourthStage_tsx "../../src/main/fourthStage.tsx" "src/main/fourthStage.tsx"
+  click n_src_main_index_tsx "../../src/main/index.tsx" "src/main/index.tsx"
+  click n_src_main_secondStage_tsx "../../src/main/secondStage.tsx" "src/main/secondStage.tsx"
+  click n_src_main_thirdStage_tsx "../../src/main/thirdStage.tsx" "src/main/thirdStage.tsx"
+  click n_src_main_components_LibrettoPage_tsx "../../src/main/components/LibrettoPage.tsx" "src/main/components/LibrettoPage.tsx"
+  click n_src_main_components_LibrettoPicker_tsx "../../src/main/components/LibrettoPicker.tsx" "src/main/components/LibrettoPicker.tsx"
+  click n_src_main_components_PDFComposer_tsx "../../src/main/components/PDFComposer.tsx" "src/main/components/PDFComposer.tsx"
+  click n_src_main_components_PDFPreviewPage_tsx "../../src/main/components/PDFPreviewPage.tsx" "src/main/components/PDFPreviewPage.tsx"
+  click n_src_main_components_PanelWrapper_tsx "../../src/main/components/PanelWrapper.tsx" "src/main/components/PanelWrapper.tsx"
+  click n_src_main_components_ReflowPreview_tsx "../../src/main/components/ReflowPreview.tsx" "src/main/components/ReflowPreview.tsx"
+  click n_src_main_components_ReflowPreviewPdf_tsx "../../src/main/components/ReflowPreviewPdf.tsx" "src/main/components/ReflowPreviewPdf.tsx"
+  click n_src_main_components_ReviewPage_tsx "../../src/main/components/ReviewPage.tsx" "src/main/components/ReviewPage.tsx"
+  click n_src_main_components_ReviewPicker_tsx "../../src/main/components/ReviewPicker.tsx" "src/main/components/ReviewPicker.tsx"
+  click n_src_main_components_ScorePage_tsx "../../src/main/components/ScorePage.tsx" "src/main/components/ScorePage.tsx"
+  click n_src_main_components_ScorePicker_tsx "../../src/main/components/ScorePicker.tsx" "src/main/components/ScorePicker.tsx"
+  class k_pipelineStep,k_librettoPDF,k_scorePDF,k_librettoPages,k_scorePages,k_librettoPagesSource,k_scorePagesSource,k_librettoPageSelections,k_librettoReflowSelections,k_activePage,k_activePageScrollPosition store
+  classDef mod fill:#e8f0fe,stroke:#3b6fb6,color:#000
+  classDef ext fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray:4 3,color:#333
+  classDef store fill:#fff7e0,stroke:#b58900,color:#000
+  classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
+  classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
+  classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000

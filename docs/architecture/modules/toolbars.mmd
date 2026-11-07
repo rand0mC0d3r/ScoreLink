@@ -1,0 +1,79 @@
+flowchart LR
+  subgraph sg0["src/middleware/tools/ActionTools"]
+    n_src_middleware_tools_ActionTools_DarkLightStatus_tsx["DarkLightStatus.tsx"]
+    n_src_middleware_tools_ActionTools_FullscreenToggle_tsx["FullscreenToggle.tsx"]
+    n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx["SettingsWindowToggle.tsx"]
+    n_src_middleware_tools_ActionTools_StoreFileControls_tsx["StoreFileControls.tsx"]
+  end
+  subgraph sg1["src/middleware/tools/MixedTools"]
+    n_src_middleware_tools_MixedTools_LocaleToggle_tsx["LocaleToggle.tsx"]
+  end
+  subgraph sg2["src/middleware/tools/PopoverTools"]
+    n_src_middleware_tools_PopoverTools_ThemeMenu_tsx["ThemeMenu.tsx"]
+  end
+  subgraph sg3["Outside: Shared components"]
+    n_src_components_generics_GenericToggleButton_tsx["GenericToggleButton.tsx"]
+    n_src_components_generics_GenericToggleButtonGroup_tsx["GenericToggleButtonGroup.tsx"]
+  end
+  subgraph sg4["Outside: State and hooks"]
+    n_src_context_settingsStore_ts["settingsStore.ts"]
+  end
+  subgraph sg5["Outside: Library and locales"]
+    n_src_lib_i18n_ts["i18n.ts"]
+  end
+  subgraph sg6["Outside: Discovery and themes"]
+    n_src_discovery_themeDiscovery_ts["themeDiscovery.ts"]
+    n_src_themes_index_ts["index.ts"]
+  end
+  subgraph sg7["Outside: Windows"]
+    n_src_middleware_windows_Header_tsx["Header.tsx"]
+    n_src_middleware_windows_settings_LayoutPopover_tsx["LayoutPopover.tsx"]
+    n_src_middleware_windows_settings_components_SettingSelectRow_tsx["SettingSelectRow.tsx"]
+  end
+  n_src_middleware_tools_ActionTools_DarkLightStatus_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_ActionTools_DarkLightStatus_tsx --> n_src_components_generics_GenericToggleButtonGroup_tsx
+  n_src_middleware_tools_ActionTools_DarkLightStatus_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_tools_ActionTools_FullscreenToggle_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_ActionTools_FullscreenToggle_tsx --> n_src_components_generics_GenericToggleButtonGroup_tsx
+  n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx --> n_src_components_generics_GenericToggleButtonGroup_tsx
+  n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_tools_ActionTools_StoreFileControls_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_ActionTools_StoreFileControls_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_tools_MixedTools_LocaleToggle_tsx --> n_src_components_generics_GenericToggleButton_tsx
+  n_src_middleware_tools_MixedTools_LocaleToggle_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_tools_MixedTools_LocaleToggle_tsx --> n_src_lib_i18n_ts
+  n_src_middleware_tools_PopoverTools_ThemeMenu_tsx --> n_src_context_settingsStore_ts
+  n_src_middleware_tools_PopoverTools_ThemeMenu_tsx --> n_src_discovery_themeDiscovery_ts
+  n_src_middleware_tools_PopoverTools_ThemeMenu_tsx --> n_src_middleware_windows_settings_components_SettingSelectRow_tsx
+  n_src_middleware_tools_PopoverTools_ThemeMenu_tsx --> n_src_themes_index_ts
+  n_src_middleware_windows_Header_tsx --> n_src_middleware_tools_ActionTools_DarkLightStatus_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_middleware_tools_ActionTools_FullscreenToggle_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx
+  n_src_middleware_windows_Header_tsx --> n_src_middleware_tools_ActionTools_StoreFileControls_tsx
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_middleware_tools_ActionTools_DarkLightStatus_tsx
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_middleware_tools_MixedTools_LocaleToggle_tsx
+  n_src_middleware_windows_settings_LayoutPopover_tsx --> n_src_middleware_tools_PopoverTools_ThemeMenu_tsx
+  click n_src_middleware_tools_ActionTools_DarkLightStatus_tsx "../../../src/middleware/tools/ActionTools/DarkLightStatus.tsx" "src/middleware/tools/ActionTools/DarkLightStatus.tsx"
+  click n_src_middleware_tools_ActionTools_FullscreenToggle_tsx "../../../src/middleware/tools/ActionTools/FullscreenToggle.tsx" "src/middleware/tools/ActionTools/FullscreenToggle.tsx"
+  click n_src_middleware_tools_ActionTools_SettingsWindowToggle_tsx "../../../src/middleware/tools/ActionTools/SettingsWindowToggle.tsx" "src/middleware/tools/ActionTools/SettingsWindowToggle.tsx"
+  click n_src_middleware_tools_ActionTools_StoreFileControls_tsx "../../../src/middleware/tools/ActionTools/StoreFileControls.tsx" "src/middleware/tools/ActionTools/StoreFileControls.tsx"
+  click n_src_middleware_tools_MixedTools_LocaleToggle_tsx "../../../src/middleware/tools/MixedTools/LocaleToggle.tsx" "src/middleware/tools/MixedTools/LocaleToggle.tsx"
+  click n_src_middleware_tools_PopoverTools_ThemeMenu_tsx "../../../src/middleware/tools/PopoverTools/ThemeMenu.tsx" "src/middleware/tools/PopoverTools/ThemeMenu.tsx"
+  click n_src_components_generics_GenericToggleButton_tsx "shared-components.md" "src/components/generics/GenericToggleButton.tsx (module: Shared components)"
+  click n_src_components_generics_GenericToggleButtonGroup_tsx "shared-components.md" "src/components/generics/GenericToggleButtonGroup.tsx (module: Shared components)"
+  click n_src_context_settingsStore_ts "state-hooks.md" "src/context/settingsStore.ts (module: State and hooks)"
+  click n_src_lib_i18n_ts "lib-locales.md" "src/lib/i18n.ts (module: Library and locales)"
+  click n_src_discovery_themeDiscovery_ts "discovery-themes.md" "src/discovery/themeDiscovery.ts (module: Discovery and themes)"
+  click n_src_themes_index_ts "discovery-themes.md" "src/themes/index.ts (module: Discovery and themes)"
+  click n_src_middleware_windows_Header_tsx "windows.md" "src/middleware/windows/Header.tsx (module: Windows)"
+  click n_src_middleware_windows_settings_LayoutPopover_tsx "windows.md" "src/middleware/windows/settings/LayoutPopover.tsx (module: Windows)"
+  click n_src_middleware_windows_settings_components_SettingSelectRow_tsx "windows.md" "src/middleware/windows/settings/components/SettingSelectRow.tsx (module: Windows)"
+  class n_src_components_generics_GenericToggleButton_tsx,n_src_components_generics_GenericToggleButtonGroup_tsx,n_src_context_settingsStore_ts,n_src_lib_i18n_ts,n_src_discovery_themeDiscovery_ts,n_src_themes_index_ts,n_src_middleware_windows_Header_tsx,n_src_middleware_windows_settings_LayoutPopover_tsx,n_src_middleware_windows_settings_components_SettingSelectRow_tsx ext
+  linkStyle 14,23 stroke:#c62828,stroke-width:2px,color:#c62828
+  classDef mod fill:#e8f0fe,stroke:#3b6fb6,color:#000
+  classDef ext fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray:4 3,color:#333
+  classDef store fill:#fff7e0,stroke:#b58900,color:#000
+  classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
+  classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
+  classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000

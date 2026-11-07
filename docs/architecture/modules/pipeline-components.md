@@ -1,0 +1,110 @@
+# Module: Pipeline components
+
+**Navigate:** [Index](../index.md) · [Overview](../overview.md) · [Pipeline](../pipeline.md) · [Components](../components.md) · [Stores](../stores.md)
+
+Reusable widgets used by the four pipeline stages (pickers, page views, composer).
+
+11 files. Cross-module edges: 7 incoming, 15 outgoing. Grey dashed nodes are files in other modules; clicking one opens that module's page.
+
+```mermaid
+flowchart LR
+  subgraph sg0["src/main/components"]
+    n_src_main_components_LibrettoPage_tsx["LibrettoPage.tsx"]
+    n_src_main_components_LibrettoPicker_tsx["LibrettoPicker.tsx"]
+    n_src_main_components_PDFComposer_tsx["PDFComposer.tsx"]
+    n_src_main_components_PDFPreviewPage_tsx["PDFPreviewPage.tsx"]
+    n_src_main_components_PanelWrapper_tsx["PanelWrapper.tsx"]
+    n_src_main_components_ReflowPreview_tsx["ReflowPreview.tsx"]
+    n_src_main_components_ReflowPreviewPdf_tsx["ReflowPreviewPdf.tsx"]
+    n_src_main_components_ReviewPage_tsx["ReviewPage.tsx"]
+    n_src_main_components_ReviewPicker_tsx["ReviewPicker.tsx"]
+    n_src_main_components_ScorePage_tsx["ScorePage.tsx"]
+    n_src_main_components_ScorePicker_tsx["ScorePicker.tsx"]
+  end
+  subgraph sg1["Outside: Shared components"]
+    n_src_components_SolidChip_tsx["SolidChip.tsx"]
+  end
+  subgraph sg2["Outside: State and hooks"]
+    n_src_context_settingsStore_ts["settingsStore.ts"]
+  end
+  subgraph sg3["Outside: Pipeline nodes (stages)"]
+    n_src_main_firstStage_tsx["firstStage.tsx"]
+    n_src_main_fourthStage_tsx["fourthStage.tsx"]
+    n_src_main_secondStage_tsx["secondStage.tsx"]
+    n_src_main_thirdStage_tsx["thirdStage.tsx"]
+  end
+  n_src_main_components_LibrettoPage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_LibrettoPage_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_LibrettoPicker_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_LibrettoPicker_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_LibrettoPicker_tsx --> n_src_main_components_LibrettoPage_tsx
+  n_src_main_components_LibrettoPicker_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_components_PDFComposer_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_PDFComposer_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_components_PDFPreviewPage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_PanelWrapper_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ReflowPreview_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ReflowPreviewPdf_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ReviewPage_tsx --> n_src_main_components_ReflowPreviewPdf_tsx
+  n_src_main_components_ReviewPicker_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ReviewPicker_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ReviewPicker_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_components_ReviewPicker_tsx --> n_src_main_components_ReviewPage_tsx
+  n_src_main_components_ScorePage_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ScorePage_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ScorePage_tsx --> n_src_main_components_ReflowPreviewPdf_tsx
+  n_src_main_components_ScorePage_tsx --> n_src_main_components_ReflowPreview_tsx
+  n_src_main_components_ScorePicker_tsx --> n_src_components_SolidChip_tsx
+  n_src_main_components_ScorePicker_tsx --> n_src_context_settingsStore_ts
+  n_src_main_components_ScorePicker_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_components_ScorePicker_tsx --> n_src_main_components_ScorePage_tsx
+  n_src_main_firstStage_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_fourthStage_tsx --> n_src_main_components_PDFComposer_tsx
+  n_src_main_fourthStage_tsx --> n_src_main_components_ReviewPicker_tsx
+  n_src_main_secondStage_tsx --> n_src_main_components_PanelWrapper_tsx
+  n_src_main_secondStage_tsx --> n_src_main_components_PDFPreviewPage_tsx
+  n_src_main_thirdStage_tsx --> n_src_main_components_LibrettoPicker_tsx
+  n_src_main_thirdStage_tsx --> n_src_main_components_ScorePicker_tsx
+  click n_src_main_components_LibrettoPage_tsx "../../../src/main/components/LibrettoPage.tsx" "src/main/components/LibrettoPage.tsx"
+  click n_src_main_components_LibrettoPicker_tsx "../../../src/main/components/LibrettoPicker.tsx" "src/main/components/LibrettoPicker.tsx"
+  click n_src_main_components_PDFComposer_tsx "../../../src/main/components/PDFComposer.tsx" "src/main/components/PDFComposer.tsx"
+  click n_src_main_components_PDFPreviewPage_tsx "../../../src/main/components/PDFPreviewPage.tsx" "src/main/components/PDFPreviewPage.tsx"
+  click n_src_main_components_PanelWrapper_tsx "../../../src/main/components/PanelWrapper.tsx" "src/main/components/PanelWrapper.tsx"
+  click n_src_main_components_ReflowPreview_tsx "../../../src/main/components/ReflowPreview.tsx" "src/main/components/ReflowPreview.tsx"
+  click n_src_main_components_ReflowPreviewPdf_tsx "../../../src/main/components/ReflowPreviewPdf.tsx" "src/main/components/ReflowPreviewPdf.tsx"
+  click n_src_main_components_ReviewPage_tsx "../../../src/main/components/ReviewPage.tsx" "src/main/components/ReviewPage.tsx"
+  click n_src_main_components_ReviewPicker_tsx "../../../src/main/components/ReviewPicker.tsx" "src/main/components/ReviewPicker.tsx"
+  click n_src_main_components_ScorePage_tsx "../../../src/main/components/ScorePage.tsx" "src/main/components/ScorePage.tsx"
+  click n_src_main_components_ScorePicker_tsx "../../../src/main/components/ScorePicker.tsx" "src/main/components/ScorePicker.tsx"
+  click n_src_components_SolidChip_tsx "shared-components.md" "src/components/SolidChip.tsx (module: Shared components)"
+  click n_src_context_settingsStore_ts "state-hooks.md" "src/context/settingsStore.ts (module: State and hooks)"
+  click n_src_main_firstStage_tsx "pipeline-nodes.md" "src/main/firstStage.tsx (module: Pipeline nodes (stages))"
+  click n_src_main_fourthStage_tsx "pipeline-nodes.md" "src/main/fourthStage.tsx (module: Pipeline nodes (stages))"
+  click n_src_main_secondStage_tsx "pipeline-nodes.md" "src/main/secondStage.tsx (module: Pipeline nodes (stages))"
+  click n_src_main_thirdStage_tsx "pipeline-nodes.md" "src/main/thirdStage.tsx (module: Pipeline nodes (stages))"
+  class n_src_components_SolidChip_tsx,n_src_context_settingsStore_ts,n_src_main_firstStage_tsx,n_src_main_fourthStage_tsx,n_src_main_secondStage_tsx,n_src_main_thirdStage_tsx ext
+  classDef mod fill:#e8f0fe,stroke:#3b6fb6,color:#000
+  classDef ext fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray:4 3,color:#333
+  classDef store fill:#fff7e0,stroke:#b58900,color:#000
+  classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
+  classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
+  classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000
+```
+
+**Imports and reverse dependencies (file level):**
+
+| File | Imports | Imported by |
+|---|---|---|
+| [LibrettoPage.tsx](../../../src/main/components/LibrettoPage.tsx) | [SolidChip.tsx](../../../src/components/SolidChip.tsx), [settingsStore.ts](../../../src/context/settingsStore.ts) | [LibrettoPicker.tsx](../../../src/main/components/LibrettoPicker.tsx) |
+| [LibrettoPicker.tsx](../../../src/main/components/LibrettoPicker.tsx) | [SolidChip.tsx](../../../src/components/SolidChip.tsx), [settingsStore.ts](../../../src/context/settingsStore.ts), [LibrettoPage.tsx](../../../src/main/components/LibrettoPage.tsx), [PanelWrapper.tsx](../../../src/main/components/PanelWrapper.tsx) | [thirdStage.tsx](../../../src/main/thirdStage.tsx) |
+| [PDFComposer.tsx](../../../src/main/components/PDFComposer.tsx) | [settingsStore.ts](../../../src/context/settingsStore.ts), [PanelWrapper.tsx](../../../src/main/components/PanelWrapper.tsx) | [fourthStage.tsx](../../../src/main/fourthStage.tsx) |
+| [PDFPreviewPage.tsx](../../../src/main/components/PDFPreviewPage.tsx) | [SolidChip.tsx](../../../src/components/SolidChip.tsx) | [secondStage.tsx](../../../src/main/secondStage.tsx) |
+| [PanelWrapper.tsx](../../../src/main/components/PanelWrapper.tsx) | [SolidChip.tsx](../../../src/components/SolidChip.tsx) | [LibrettoPicker.tsx](../../../src/main/components/LibrettoPicker.tsx), [PDFComposer.tsx](../../../src/main/components/PDFComposer.tsx), [ReviewPicker.tsx](../../../src/main/components/ReviewPicker.tsx), [ScorePicker.tsx](../../../src/main/components/ScorePicker.tsx), [firstStage.tsx](../../../src/main/firstStage.tsx), [secondStage.tsx](../../../src/main/secondStage.tsx) |
+| [ReflowPreview.tsx](../../../src/main/components/ReflowPreview.tsx) | [settingsStore.ts](../../../src/context/settingsStore.ts) | [ScorePage.tsx](../../../src/main/components/ScorePage.tsx) |
+| [ReflowPreviewPdf.tsx](../../../src/main/components/ReflowPreviewPdf.tsx) | [settingsStore.ts](../../../src/context/settingsStore.ts) | [ReviewPage.tsx](../../../src/main/components/ReviewPage.tsx), [ScorePage.tsx](../../../src/main/components/ScorePage.tsx) |
+| [ReviewPage.tsx](../../../src/main/components/ReviewPage.tsx) | [ReflowPreviewPdf.tsx](../../../src/main/components/ReflowPreviewPdf.tsx) | [ReviewPicker.tsx](../../../src/main/components/ReviewPicker.tsx) |
+| [ReviewPicker.tsx](../../../src/main/components/ReviewPicker.tsx) | [SolidChip.tsx](../../../src/components/SolidChip.tsx), [settingsStore.ts](../../../src/context/settingsStore.ts), [PanelWrapper.tsx](../../../src/main/components/PanelWrapper.tsx), [ReviewPage.tsx](../../../src/main/components/ReviewPage.tsx) | [fourthStage.tsx](../../../src/main/fourthStage.tsx) |
+| [ScorePage.tsx](../../../src/main/components/ScorePage.tsx) | [SolidChip.tsx](../../../src/components/SolidChip.tsx), [settingsStore.ts](../../../src/context/settingsStore.ts), [ReflowPreviewPdf.tsx](../../../src/main/components/ReflowPreviewPdf.tsx), [ReflowPreview.tsx](../../../src/main/components/ReflowPreview.tsx) | [ScorePicker.tsx](../../../src/main/components/ScorePicker.tsx) |
+| [ScorePicker.tsx](../../../src/main/components/ScorePicker.tsx) | [SolidChip.tsx](../../../src/components/SolidChip.tsx), [settingsStore.ts](../../../src/context/settingsStore.ts), [PanelWrapper.tsx](../../../src/main/components/PanelWrapper.tsx), [ScorePage.tsx](../../../src/main/components/ScorePage.tsx) | [thirdStage.tsx](../../../src/main/thirdStage.tsx) |
+
+**Navigate:** [Index](../index.md) · [Overview](../overview.md) · [Pipeline](../pipeline.md) · [Components](../components.md) · [Stores](../stores.md)
