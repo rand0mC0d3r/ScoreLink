@@ -32,31 +32,31 @@ const esc = s => String(s).replace(/"/g, "'");
 
 // ---------- modules ----------
 const MODULES = [
-  { id: 'pipeline-components', title: 'Pipeline components', test: p => p.startsWith('src/main/components/'),
+  { id: 'pipeline-components', title: 'Pipeline components', icon: '🧩', test: p => p.startsWith('src/main/components/'),
     intro: 'Reusable widgets used by the four pipeline stages (pickers, page views, composer).',
     related: [['Pipeline', 'pipeline'], ['Components', 'components'], ['Stores', 'stores']] },
-  { id: 'pipeline-nodes', title: 'Pipeline nodes (stages)', test: p => p.startsWith('src/main/'),
+  { id: 'pipeline-nodes', title: 'Pipeline nodes (stages)', icon: '🚦', test: p => p.startsWith('src/main/'),
     intro: 'The pipeline router (`index.tsx`), the step buttons, and the four stage screens.',
     related: [['Pipeline', 'pipeline'], ['Stores', 'stores'], ['Components', 'components']] },
-  { id: 'windows', title: 'Windows', test: p => p.startsWith('src/middleware/windows/'),
+  { id: 'windows', title: 'Windows', icon: '🪟', test: p => p.startsWith('src/middleware/windows/'),
     intro: 'Overlay windows (settings, new-version notice) and the header.',
     related: [['Components', 'components'], ['Hooks', 'hooks'], ['Cycles', 'cycles']] },
-  { id: 'toolbars', title: 'Toolbars', test: p => p.startsWith('src/middleware/tools/'),
+  { id: 'toolbars', title: 'Toolbars', icon: '🛠️', test: p => p.startsWith('src/middleware/tools/'),
     intro: 'Toolbar buttons and popovers (theme, locale, settings toggle).',
     related: [['Components', 'components'], ['Hooks', 'hooks'], ['Cycles', 'cycles']] },
-  { id: 'shared-components', title: 'Shared components', test: p => p.startsWith('src/components/'),
+  { id: 'shared-components', title: 'Shared components', icon: '🧱', test: p => p.startsWith('src/components/'),
     intro: 'Generic UI primitives (chips, toggles, settings section).',
     related: [['Components', 'components'], ['Hooks', 'hooks']] },
-  { id: 'state-hooks', title: 'State and hooks', test: p => /^src\/(context|hooks)\//.test(p),
+  { id: 'state-hooks', title: 'State and hooks', icon: '🗄️', test: p => /^src\/(context|hooks)\//.test(p),
     intro: 'The settings store, theme context, and custom hooks.',
     related: [['Stores', 'stores'], ['Hooks', 'hooks'], ['Cycles', 'cycles']] },
-  { id: 'discovery-themes', title: 'Discovery and themes', test: p => /^src\/(discovery|themes)\//.test(p),
+  { id: 'discovery-themes', title: 'Discovery and themes', icon: '🎨', test: p => /^src\/(discovery|themes)\//.test(p),
     intro: 'Glob-based discovery of theme definitions, and the registry used to load them.',
     related: [['Cycles', 'cycles'], ['Dependencies', 'dependencies']] },
-  { id: 'lib-locales', title: 'Library and locales', test: p => /^src\/(lib|locales)\//.test(p),
+  { id: 'lib-locales', title: 'Library and locales', icon: '🌐', test: p => /^src\/(lib|locales)\//.test(p),
     intro: 'Store factory, IndexedDB file storage, i18n loader, and locale JSON.',
     related: [['Stores', 'stores'], ['Dependencies', 'dependencies']] },
-  { id: 'app-shell', title: 'App shell and entry', test: () => true,
+  { id: 'app-shell', title: 'App shell and entry', icon: '🚀', test: () => true,
     intro: 'Entry point (`src/main.tsx`), providers, and the layout shell.',
     related: [['Overview', 'overview'], ['Cycles', 'cycles'], ['Dependencies', 'dependencies']] },
 ];
@@ -87,6 +87,25 @@ const sccs = g.cycles.staticValue.map(c => c.members);
 const sccIndex = new Map();
 sccs.forEach((m, i) => m.forEach(id => sccIndex.set(id, i)));
 const cycleEdge = e => runtime(e) && sccIndex.has(e.from) && sccIndex.get(e.from) === sccIndex.get(e.to);
+// Edge colour by import kind; a cycle edge overrides the kind colour.
+const EDGE_STYLE = {
+  cycle: 'stroke:#c62828,stroke-width:2px,color:#c62828',
+  hook: 'stroke:#e65100,stroke-width:1.5px,color:#e65100',
+  jsx: 'stroke:#2e7d32,stroke-width:1.5px,color:#2e7d32',
+  dynamic: 'stroke:#6a1b9a,stroke-width:2px,color:#6a1b9a',
+  reexport: 'stroke:#00838f,stroke-width:1.5px,color:#00838f',
+  value: 'stroke:#37474f,stroke-width:1px',
+  type: 'stroke:#9e9e9e,stroke-width:1px,color:#757575',
+};
+const EDGE_LEGEND = '**Edge colours:** red = circular · orange = hook use · green = JSX component · purple = dynamic `import()` or glob · teal = re-export · dark grey = value import · light grey dotted = type-only import.';
+const edgeStyle = e => {
+  if (cycleEdge(e)) return EDGE_STYLE.cycle;
+  if (e.kinds.includes('hook-use')) return EDGE_STYLE.hook;
+  if (e.kinds.includes('jsx')) return EDGE_STYLE.jsx;
+  if (e.kinds.includes('dynamic')) return EDGE_STYLE.dynamic;
+  if (e.kinds.includes('reexport')) return EDGE_STYLE.reexport;
+  return runtime(e) ? EDGE_STYLE.value : EDGE_STYLE.type;
+};
 
 function elementaryCycles(members, edges, cap = 500) {
   const set = new Set(members);
@@ -145,6 +164,7 @@ const CLASSDEFS = [
   'classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000',
   'classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000',
   'classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000',
+  'classDef pipe fill:#e3f2fd,stroke:#1565c0,color:#000',
 ];
 
 const groupByDir = fileIds => {
@@ -174,7 +194,7 @@ function makeDiagram(fromDepth) {
     }
   };
   const group = (title, nodeIds) => groups.push({ title, ids: nodeIds });
-  const link = (from, to, o = {}) => edges.push({ from, to, arrow: o.arrow || '-->', label: o.label, hl: !!o.hl });
+  const link = (from, to, o = {}) => edges.push({ from, to, arrow: o.arrow || '-->', label: o.label, style: o.style || (o.hl ? EDGE_STYLE.cycle : null) });
   const render = () => {
     const out = ['flowchart LR'];
     const inGroup = new Set();
@@ -188,16 +208,16 @@ function makeDiagram(fromDepth) {
       out.push('  end');
     });
     for (const [id, it] of items) if (!inGroup.has(id)) out.push('  ' + decl(it));
-    const hl = [];
+    const byStyle = new Map();
     edges.forEach((e, i) => {
       out.push(`  ${e.from} ${e.arrow}${e.label ? `|"${esc(e.label)}"|` : ''} ${e.to}`);
-      if (e.hl) hl.push(i);
+      if (e.style) byStyle.set(e.style, [...(byStyle.get(e.style) || []), i]);
     });
     for (const [id, it] of items) if (it.href) out.push(`  click ${id} "${it.href}" "${esc(it.tip)}"`);
     const byCls = {};
     for (const [id, it] of items) if (it.cls) (byCls[it.cls] ||= []).push(id);
     for (const c of Object.keys(byCls)) out.push(`  class ${byCls[c].join(',')} ${c}`);
-    if (hl.length) out.push(`  linkStyle ${hl.join(',')} stroke:#c62828,stroke-width:2px,color:#c62828`);
+    for (const [style, idxs] of byStyle) out.push(`  linkStyle ${idxs.join(',')} ${style}`);
     out.push(...CLASSDEFS.map(c => '  ' + c));
     return out.join('\n');
   };
@@ -244,7 +264,7 @@ const writePage = p => {
 {
   const d = makeDiagram('root');
   d.dirGroups(ids);
-  for (const e of fileEdges) d.link(nid(e.from), nid(e.to), { arrow: arrowOf(e), hl: cycleEdge(e) });
+  for (const e of fileEdges) d.link(nid(e.from), nid(e.to), { arrow: arrowOf(e), style: edgeStyle(e) });
   const cyc = fileEdges.filter(cycleEdge).length;
   writePage({
     slug: 'dependencies', depth: 'root', title: 'File dependency graph',
@@ -253,6 +273,8 @@ const writePage = p => {
     diagram: d.render(),
     notes: [
       '**Legend:** solid = runtime import (value, re-export, JSX, hook use) · dotted = type-only import · thick = dynamic `import()` or glob-expanded import.',
+      '',
+      EDGE_LEGEND,
       '',
       '**Dynamic and glob imports:**',
       '',
@@ -271,7 +293,7 @@ const writePage = p => {
   const d = makeDiagram('root');
   const involved = [...new Set(jsxEdges.flatMap(e => [e.from, e.to]))];
   d.dirGroups(involved);
-  for (const e of jsxEdges) d.link(nid(e.from), nid(e.to), { hl: false });
+  for (const e of jsxEdges) d.link(nid(e.from), nid(e.to), { style: edgeStyle(e) });
   const rows = [...new Map(g.jsx.map(j => [j.from + '|' + j.to + '|' + j.component, j])).values()]
     .sort((a, b) => a.from.localeCompare(b.from) || a.component.localeCompare(b.component));
   writePage({
@@ -294,7 +316,7 @@ const writePage = p => {
   const d = makeDiagram('root');
   const involved = [...new Set(hookEdges.flatMap(e => [e.from, e.to]))];
   d.dirGroups(involved, id => (hookDefs.has(id) ? 'hookdef' : undefined));
-  for (const e of hookEdges) d.link(nid(e.from), nid(e.to), { label: hookNamesFor(e.from, e.to).sort().join(', ') });
+  for (const e of hookEdges) d.link(nid(e.from), nid(e.to), { label: hookNamesFor(e.from, e.to).sort().join(', '), style: edgeStyle(e) });
   const defs = g.hookUses.length ? [...new Set(g.hookUses.map(h => h.hook))].sort() : [];
   writePage({
     slug: 'hooks', depth: 'root', title: 'Custom hooks',
@@ -446,7 +468,7 @@ for (const m of MODULES) {
 {
   const d = makeDiagram('root');
   const modNode = m => {
-    return d.custom(`m_${m.id.replace(/-/g, '_')}`, `${m.title} (${moduleStats[m.id].files})`, { href: rel('root', `modules/${m.id}`), tip: m.title, cls: 'mod' });
+    return d.custom(`m_${m.id.replace(/-/g, '_')}`, `${m.icon} ${m.title} (${moduleStats[m.id].files})`, { href: rel('root', `modules/${m.id}`), tip: m.title, cls: 'mod' });
   };
   const nodes = Object.fromEntries(MODULES.map(m => [m.id, modNode(m)]));
   const storeLs = d.custom('ov_localstorage', 'localStorage: settings', { shape: 'db', cls: 'store', href: rel('root', 'stores'), tip: 'Settings store' });
@@ -473,7 +495,7 @@ for (const m of MODULES) {
   const rows = MODULES.map(m => `| [${m.title}](${rel('root', `modules/${m.id}`)}) | ${moduleStats[m.id].files} | ${moduleStats[m.id].incoming} | ${moduleStats[m.id].outgoing} | ${m.intro} |`);
   writePage({
     slug: 'overview', depth: 'root', title: 'Architecture overview',
-    related: [['Dependencies', 'dependencies'], ['Components', 'components'], ['Hooks', 'hooks'], ['Stores', 'stores'], ['Pipeline', 'pipeline'], ['Cycles', 'cycles']],
+    related: [['Dependencies', 'dependencies'], ['Complete map', 'all'], ['Components', 'components'], ['Hooks', 'hooks'], ['Stores', 'stores'], ['Pipeline', 'pipeline'], ['Cycles', 'cycles']],
     intro: `High-level view. Entry point: [src/main.tsx](${srcHref('src/main.tsx', 'root')}) mounts providers and the layout shell. Red edges are part of a circular dependency between modules.`,
     diagram: d.render(),
     notes: [
@@ -482,6 +504,39 @@ for (const m of MODULES) {
       ...rows,
       '',
       '**Major data flows:** the settings store (`localStorage`) drives `pipelineStep` and the pipeline stages; PDF files are kept in IndexedDB; theme definitions are discovered through globs and loaded into the theme context.',
+    ].join('\n'),
+  });
+}
+
+// ---------- 7b. complete map (all files and edges, with roles marked) ----------
+{
+  const d = makeDiagram('root');
+  const storeFiles = new Set(['src/context/settingsStore.ts', 'src/lib/fileStorage.ts'].filter(id => ids.includes(id)));
+  const roleOf = id => {
+    if (id === 'src/main.tsx') return 'entry';
+    if (storeFiles.has(id)) return 'store';
+    if (pipelineFiles.includes(id)) return 'pipe';
+    if (hookDefs.has(id)) return 'hookdef';
+    return undefined;
+  };
+  for (const m of MODULES) {
+    const members = ids.filter(id => modOf.get(id) === m.id);
+    if (members.length) d.group(`${m.icon} ${m.title} (${members.length})`, members.map(id => d.file(id, roleOf(id))));
+  }
+  for (const e of fileEdges) d.link(nid(e.from), nid(e.to), { arrow: arrowOf(e), style: edgeStyle(e) });
+  writePage({
+    slug: 'all', depth: 'root', title: 'Complete architecture map',
+    related: [['Overview', 'overview'], ['Dependencies', 'dependencies'], ['Components', 'components'], ['Hooks', 'hooks'], ['Stores', 'stores'], ['Pipeline', 'pipeline'], ['Cycles', 'cycles']],
+    intro: `Single large map of all ${ids.length} analysed files and ${fileEdges.length} file-level edges, combining the component, hook, store, and pipeline views. Use the focused pages for detail.`,
+    diagram: d.render(),
+    notes: [
+      '**Roles:** green = entry point (`src/main.tsx`) · amber = store and persistence files · blue = pipeline files (`src/main/`) · cyan = custom hook definitions.',
+      '',
+      '**Groups:** one subgraph per functional module, the same modules as the [module pages](./modules/).',
+      '',
+      EDGE_LEGEND,
+      '',
+      '**Line styles:** solid = runtime import · dotted = type-only import · thick = dynamic `import()` or glob-expanded import.',
     ].join('\n'),
   });
 }
@@ -527,6 +582,7 @@ for (const m of MODULES) {
       '## Diagrams', '',
       '| Diagram | What it shows |', '|---|---|',
       `| [Overview](${rel('root', 'overview')}) | Entry point, modules, module relationships, state and storage boundaries, data flows. |`,
+      `| [Complete map](${rel('root', 'all')}) | Every file and edge in one map, with entry, store, pipeline, and hook roles marked. |`,
       `| [File dependencies](${rel('root', 'dependencies')}) | All ${ids.length} files and ${fileEdges.length} edges, grouped by directory. |`,
       `| [React components](${rel('root', 'components')}) | JSX component usage between files. |`,
       `| [Hooks](${rel('root', 'hooks')}) | Custom hook definitions and consumers. |`,

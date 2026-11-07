@@ -1,27 +1,27 @@
 # Architecture overview
 
-**Navigate:** [Index](index.md) · [Dependencies](dependencies.md) · [Components](components.md) · [Hooks](hooks.md) · [Stores](stores.md) · [Pipeline](pipeline.md) · [Cycles](cycles.md)
+**Navigate:** [Index](index.md) · [Dependencies](dependencies.md) · [Complete map](all.md) · [Components](components.md) · [Hooks](hooks.md) · [Stores](stores.md) · [Pipeline](pipeline.md) · [Cycles](cycles.md)
 
 High-level view. Entry point: [src/main.tsx](../../src/main.tsx) mounts providers and the layout shell. Red edges are part of a circular dependency between modules.
 
 ```mermaid
 flowchart LR
   subgraph sg0["Entry"]
-    m_app_shell["App shell and entry (6)"]
+    m_app_shell["🚀 App shell and entry (6)"]
   end
   subgraph sg1["Pipeline"]
-    m_pipeline_nodes["Pipeline nodes (stages) (7)"]
-    m_pipeline_components["Pipeline components (11)"]
+    m_pipeline_nodes["🚦 Pipeline nodes (stages) (6)"]
+    m_pipeline_components["🧩 Pipeline components (11)"]
   end
   subgraph sg2["Shell UI"]
-    m_windows["Windows (8)"]
-    m_toolbars["Toolbars (6)"]
-    m_shared_components["Shared components (6)"]
+    m_windows["🪟 Windows (8)"]
+    m_toolbars["🛠️ Toolbars (6)"]
+    m_shared_components["🧱 Shared components (6)"]
   end
   subgraph sg3["State and data"]
-    m_state_hooks["State and hooks (6)"]
-    m_discovery_themes["Discovery and themes (16)"]
-    m_lib_locales["Library and locales (5)"]
+    m_state_hooks["🗄️ State and hooks (6)"]
+    m_discovery_themes["🎨 Discovery and themes (16)"]
+    m_lib_locales["🌐 Library and locales (5)"]
     ov_localstorage[("localStorage: settings")]
     ov_indexeddb[("IndexedDB: PDF files")]
   end
@@ -69,6 +69,7 @@ flowchart LR
   classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
   classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
   classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000
+  classDef pipe fill:#e3f2fd,stroke:#1565c0,color:#000
 ```
 
 **Modules** (click to open each diagram):
@@ -76,7 +77,7 @@ flowchart LR
 | Module | Files | In | Out | Purpose |
 |---|---|---|---|---|
 | [Pipeline components](modules/pipeline-components.md) | 11 | 7 | 15 | Reusable widgets used by the four pipeline stages (pickers, page views, composer). |
-| [Pipeline nodes (stages)](modules/pipeline-nodes.md) | 7 | 2 | 12 | The pipeline router (`index.tsx`), the step buttons, and the four stage screens. |
+| [Pipeline nodes (stages)](modules/pipeline-nodes.md) | 6 | 2 | 12 | The pipeline router (`index.tsx`), the step buttons, and the four stage screens. |
 | [Windows](modules/windows.md) | 8 | 4 | 13 | Overlay windows (settings, new-version notice) and the header. |
 | [Toolbars](modules/toolbars.md) | 6 | 7 | 17 | Toolbar buttons and popovers (theme, locale, settings toggle). |
 | [Shared components](modules/shared-components.md) | 6 | 18 | 0 | Generic UI primitives (chips, toggles, settings section). |
@@ -87,4 +88,4 @@ flowchart LR
 
 **Major data flows:** the settings store (`localStorage`) drives `pipelineStep` and the pipeline stages; PDF files are kept in IndexedDB; theme definitions are discovered through globs and loaded into the theme context.
 
-**Navigate:** [Index](index.md) · [Dependencies](dependencies.md) · [Components](components.md) · [Hooks](hooks.md) · [Stores](stores.md) · [Pipeline](pipeline.md) · [Cycles](cycles.md)
+**Navigate:** [Index](index.md) · [Dependencies](dependencies.md) · [Complete map](all.md) · [Components](components.md) · [Hooks](hooks.md) · [Stores](stores.md) · [Pipeline](pipeline.md) · [Cycles](cycles.md)

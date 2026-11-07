@@ -88,12 +88,14 @@ flowchart LR
   click n_src_middleware_windows_SettingsWindow_tsx "../../src/middleware/windows/SettingsWindow.tsx" "src/middleware/windows/SettingsWindow.tsx"
   click n_src_middleware_windows_newVersion_NewVersionWindow_tsx "../../src/middleware/windows/newVersion/NewVersionWindow.tsx" "src/middleware/windows/newVersion/NewVersionWindow.tsx"
   class n_src_context_settingsStore_ts,n_src_hooks_useLocaleSync_ts hookdef
+  linkStyle 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 stroke:#e65100,stroke-width:1.5px,color:#e65100
   classDef mod fill:#e8f0fe,stroke:#3b6fb6,color:#000
   classDef ext fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray:4 3,color:#333
   classDef store fill:#fff7e0,stroke:#b58900,color:#000
   classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
   classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
   classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000
+  classDef pipe fill:#e3f2fd,stroke:#1565c0,color:#000
 ```
 
 | Hook | Defined in | Consumers |

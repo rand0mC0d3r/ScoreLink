@@ -54,6 +54,7 @@ flowchart LR
   classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
   classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
   classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000
+  classDef pipe fill:#e3f2fd,stroke:#1565c0,color:#000
 ```
 
 **Elementary cycles** (runtime edges: value, JSX, re-export, hook use; type-only and dynamic imports excluded):

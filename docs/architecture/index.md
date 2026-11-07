@@ -9,7 +9,8 @@ Start here. Every page links back to this index. Diagrams are generated from sou
 | Diagram | What it shows |
 |---|---|
 | [Overview](overview.md) | Entry point, modules, module relationships, state and storage boundaries, data flows. |
-| [File dependencies](dependencies.md) | All 71 files and 127 edges, grouped by directory. |
+| [Complete map](all.md) | Every file and edge in one map, with entry, store, pipeline, and hook roles marked. |
+| [File dependencies](dependencies.md) | All 70 files and 126 edges, grouped by directory. |
 | [React components](components.md) | JSX component usage between files. |
 | [Hooks](hooks.md) | Custom hook definitions and consumers. |
 | [Stores](stores.md) | The settings store, its exports, consumers, and keys. |
@@ -21,7 +22,7 @@ Start here. Every page links back to this index. Diagrams are generated from sou
 | Module | Files | Purpose |
 |---|---|---|
 | [Pipeline components](modules/pipeline-components.md) | 11 | Reusable widgets used by the four pipeline stages (pickers, page views, composer). |
-| [Pipeline nodes (stages)](modules/pipeline-nodes.md) | 7 | The pipeline router (`index.tsx`), the step buttons, and the four stage screens. |
+| [Pipeline nodes (stages)](modules/pipeline-nodes.md) | 6 | The pipeline router (`index.tsx`), the step buttons, and the four stage screens. |
 | [Windows](modules/windows.md) | 8 | Overlay windows (settings, new-version notice) and the header. |
 | [Toolbars](modules/toolbars.md) | 6 | Toolbar buttons and popovers (theme, locale, settings toggle). |
 | [Shared components](modules/shared-components.md) | 6 | Generic UI primitives (chips, toggles, settings section). |
@@ -32,8 +33,8 @@ Start here. Every page links back to this index. Diagrams are generated from sou
 
 ## Analysis summary
 
-- Files analysed: 71 (52 with imports), under `src/`.
-- File-level dependency edges: 127 (value 113, type-only 5, re-export 1, dynamic 9, JSX 61, hook use 21).
+- Files analysed: 70 (52 with imports), under `src/`.
+- File-level dependency edges: 126 (value 112, type-only 5, re-export 1, dynamic 9, JSX 60, hook use 21).
 - Glob-expanded imports: 16 (theme and locale loaders).
 - Barrel-resolved edges: 0.
 - Circular dependencies: 1 static-value cycle component(s) with 9 files; 1 elementary cycle(s). See [Circular dependencies](cycles.md).

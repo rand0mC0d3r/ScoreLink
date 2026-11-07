@@ -2,7 +2,7 @@
 
 **Navigate:** [Index](index.md) · [Overview](overview.md) · [Index](index.md) · [Cycles](cycles.md) · [Components](components.md) · [Hooks](hooks.md) · [Stores](stores.md) · [Pipeline](pipeline.md)
 
-All 71 analysed files (grouped by directory) and 127 file-level edges. Red edges are part of a circular dependency (9 edges). Per-module views with reverse dependencies are in the [module pages](./modules/).
+All 70 analysed files (grouped by directory) and 126 file-level edges. Red edges are part of a circular dependency (9 edges). Per-module views with reverse dependencies are in the [module pages](./modules/).
 
 ```mermaid
 flowchart LR
@@ -54,7 +54,6 @@ flowchart LR
     n_src_locales_en_json["en.json"]
   end
   subgraph sg9["src/main"]
-    n_src_main_GdeltNews15Min_tsx["GdeltNews15Min.tsx"]
     n_src_main_StepperButtons_tsx["StepperButtons.tsx"]
     n_src_main_firstStage_tsx["firstStage.tsx"]
     n_src_main_fourthStage_tsx["fourthStage.tsx"]
@@ -185,7 +184,6 @@ flowchart LR
   n_src_main_components_ScorePicker_tsx --> n_src_main_components_ScorePage_tsx
   n_src_main_firstStage_tsx --> n_src_context_settingsStore_ts
   n_src_main_firstStage_tsx --> n_src_main_components_PanelWrapper_tsx
-  n_src_main_firstStage_tsx --> n_src_main_GdeltNews15Min_tsx
   n_src_main_fourthStage_tsx --> n_src_main_components_PDFComposer_tsx
   n_src_main_fourthStage_tsx --> n_src_main_components_ReviewPicker_tsx
   n_src_main_index_tsx --> n_src_context_settingsStore_ts
@@ -271,7 +269,6 @@ flowchart LR
   click n_src_lib_i18n_ts "../../src/lib/i18n.ts" "src/lib/i18n.ts"
   click n_src_locales_de_json "../../src/locales/de.json" "src/locales/de.json"
   click n_src_locales_en_json "../../src/locales/en.json" "src/locales/en.json"
-  click n_src_main_GdeltNews15Min_tsx "../../src/main/GdeltNews15Min.tsx" "src/main/GdeltNews15Min.tsx"
   click n_src_main_StepperButtons_tsx "../../src/main/StepperButtons.tsx" "src/main/StepperButtons.tsx"
   click n_src_main_firstStage_tsx "../../src/main/firstStage.tsx" "src/main/firstStage.tsx"
   click n_src_main_fourthStage_tsx "../../src/main/fourthStage.tsx" "src/main/fourthStage.tsx"
@@ -313,16 +310,25 @@ flowchart LR
   click n_src_themes_solarized_theme_ts "../../src/themes/solarized.theme.ts" "src/themes/solarized.theme.ts"
   click n_src_themes_tokyoNight_theme_ts "../../src/themes/tokyoNight.theme.ts" "src/themes/tokyoNight.theme.ts"
   click n_src_themes_utils_ts "../../src/themes/utils.ts" "src/themes/utils.ts"
-  linkStyle 11,13,29,33,37,98,110,115,117 stroke:#c62828,stroke-width:2px,color:#c62828
+  linkStyle 0,1,2,3,4,30,31,32,39,43,45,47,48,50,51,52,55,56,58,59,60,62,63,64,66,67,69,70,71,73,74,75,76,77,79,80,81,82,84,87,89,91,93,98,100,101,102,103,104,105,107,111,112,113,115 stroke:#2e7d32,stroke-width:1.5px,color:#2e7d32
+  linkStyle 5,6,27,42,44,46,49,54,57,61,65,68,72,78,85,90,94,96,106,108,110 stroke:#e65100,stroke-width:1.5px,color:#e65100
+  linkStyle 7,8,9,15,16,24,28,36,38,40,41,53,83,86,88,92,95,99,117,118,119,120,121,122,123,124,125 stroke:#37474f,stroke-width:1px
+  linkStyle 10,14,25,26 stroke:#9e9e9e,stroke-width:1px,color:#757575
+  linkStyle 11,13,29,33,37,97,109,114,116 stroke:#c62828,stroke-width:2px,color:#c62828
+  linkStyle 12 stroke:#00838f,stroke-width:1.5px,color:#00838f
+  linkStyle 17,18,19,20,21,22,23,34,35 stroke:#6a1b9a,stroke-width:2px,color:#6a1b9a
   classDef mod fill:#e8f0fe,stroke:#3b6fb6,color:#000
   classDef ext fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray:4 3,color:#333
   classDef store fill:#fff7e0,stroke:#b58900,color:#000
   classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
   classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
   classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000
+  classDef pipe fill:#e3f2fd,stroke:#1565c0,color:#000
 ```
 
 **Legend:** solid = runtime import (value, re-export, JSX, hook use) · dotted = type-only import · thick = dynamic `import()` or glob-expanded import.
+
+**Edge colours:** red = circular · orange = hook use · green = JSX component · purple = dynamic `import()` or glob · teal = re-export · dark grey = value import · light grey dotted = type-only import.
 
 **Dynamic and glob imports:**
 

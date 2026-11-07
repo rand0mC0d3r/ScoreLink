@@ -4,12 +4,11 @@
 
 The pipeline router (`index.tsx`), the step buttons, and the four stage screens.
 
-7 files. Cross-module edges: 2 incoming, 12 outgoing. Grey dashed nodes are files in other modules; clicking one opens that module's page.
+6 files. Cross-module edges: 2 incoming, 12 outgoing. Grey dashed nodes are files in other modules; clicking one opens that module's page.
 
 ```mermaid
 flowchart LR
   subgraph sg0["src/main"]
-    n_src_main_GdeltNews15Min_tsx["GdeltNews15Min.tsx"]
     n_src_main_StepperButtons_tsx["StepperButtons.tsx"]
     n_src_main_firstStage_tsx["firstStage.tsx"]
     n_src_main_fourthStage_tsx["fourthStage.tsx"]
@@ -41,7 +40,6 @@ flowchart LR
   n_src_main_StepperButtons_tsx --> n_src_context_settingsStore_ts
   n_src_main_firstStage_tsx --> n_src_context_settingsStore_ts
   n_src_main_firstStage_tsx --> n_src_main_components_PanelWrapper_tsx
-  n_src_main_firstStage_tsx --> n_src_main_GdeltNews15Min_tsx
   n_src_main_fourthStage_tsx --> n_src_main_components_PDFComposer_tsx
   n_src_main_fourthStage_tsx --> n_src_main_components_ReviewPicker_tsx
   n_src_main_index_tsx --> n_src_context_settingsStore_ts
@@ -56,7 +54,6 @@ flowchart LR
   n_src_main_thirdStage_tsx --> n_src_main_components_LibrettoPicker_tsx
   n_src_main_thirdStage_tsx --> n_src_main_components_ScorePicker_tsx
   n_src_middleware_windows_Header_tsx --> n_src_main_StepperButtons_tsx
-  click n_src_main_GdeltNews15Min_tsx "../../../src/main/GdeltNews15Min.tsx" "src/main/GdeltNews15Min.tsx"
   click n_src_main_StepperButtons_tsx "../../../src/main/StepperButtons.tsx" "src/main/StepperButtons.tsx"
   click n_src_main_firstStage_tsx "../../../src/main/firstStage.tsx" "src/main/firstStage.tsx"
   click n_src_main_fourthStage_tsx "../../../src/main/fourthStage.tsx" "src/main/fourthStage.tsx"
@@ -80,15 +77,15 @@ flowchart LR
   classDef sym fill:#f3e8ff,stroke:#7e57c2,color:#000
   classDef hookdef fill:#e0f7fa,stroke:#00838f,color:#000
   classDef entry fill:#e6f4ea,stroke:#2e7d32,color:#000
+  classDef pipe fill:#e3f2fd,stroke:#1565c0,color:#000
 ```
 
 **Imports and reverse dependencies (file level):**
 
 | File | Imports | Imported by |
 |---|---|---|
-| [GdeltNews15Min.tsx](../../../src/main/GdeltNews15Min.tsx) | — | [firstStage.tsx](../../../src/main/firstStage.tsx) |
 | [StepperButtons.tsx](../../../src/main/StepperButtons.tsx) | [settingsStore.ts](../../../src/context/settingsStore.ts) | [Header.tsx](../../../src/middleware/windows/Header.tsx) |
-| [firstStage.tsx](../../../src/main/firstStage.tsx) | [settingsStore.ts](../../../src/context/settingsStore.ts), [PanelWrapper.tsx](../../../src/main/components/PanelWrapper.tsx), [GdeltNews15Min.tsx](../../../src/main/GdeltNews15Min.tsx) | [main/index.tsx](../../../src/main/index.tsx) |
+| [firstStage.tsx](../../../src/main/firstStage.tsx) | [settingsStore.ts](../../../src/context/settingsStore.ts), [PanelWrapper.tsx](../../../src/main/components/PanelWrapper.tsx) | [main/index.tsx](../../../src/main/index.tsx) |
 | [fourthStage.tsx](../../../src/main/fourthStage.tsx) | [PDFComposer.tsx](../../../src/main/components/PDFComposer.tsx), [ReviewPicker.tsx](../../../src/main/components/ReviewPicker.tsx) | [main/index.tsx](../../../src/main/index.tsx) |
 | [main/index.tsx](../../../src/main/index.tsx) | [settingsStore.ts](../../../src/context/settingsStore.ts), [fourthStage.tsx](../../../src/main/fourthStage.tsx), [secondStage.tsx](../../../src/main/secondStage.tsx), [thirdStage.tsx](../../../src/main/thirdStage.tsx), [firstStage.tsx](../../../src/main/firstStage.tsx) | [layout/index.tsx](../../../src/layout/index.tsx) |
 | [secondStage.tsx](../../../src/main/secondStage.tsx) | [SolidChip.tsx](../../../src/components/SolidChip.tsx), [settingsStore.ts](../../../src/context/settingsStore.ts), [PanelWrapper.tsx](../../../src/main/components/PanelWrapper.tsx), [PDFPreviewPage.tsx](../../../src/main/components/PDFPreviewPage.tsx) | [main/index.tsx](../../../src/main/index.tsx) |
