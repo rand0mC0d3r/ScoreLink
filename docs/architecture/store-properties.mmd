@@ -1,0 +1,145 @@
+flowchart LR
+  nav_index["🧭 Index"]
+  nav_stores["🗄️ Stores"]
+  click nav_index "./index.md" "Architecture index"
+  click nav_stores "./stores.md" "State stores"
+
+  subgraph ls["💾 localStorage under settingsStore"]
+    p_pipelineStep["pipelineStep"]
+    p_librettoPages["librettoPages"]
+    p_scorePages["scorePages"]
+    p_librettoPagesSource["librettoPagesSource"]
+    p_scorePagesSource["scorePagesSource"]
+    p_librettoPageSelections["librettoPageSelections"]
+    p_librettoReflowSelections["librettoReflowSelections"]
+    p_activePage["activePage"]
+    p_activePageScrollPosition["activePageScrollPosition"]
+    p_newVersion["newVersion"]
+    p_themeMode["themeMode"]
+    p_themeId["themeId"]
+    p_previewPhotoObj["previewPhotoObj ⚠️ no reader"]
+    p_showSettings["showSettings"]
+    p_locale["locale"]
+  end
+
+  subgraph idb["🗃️ IndexedDB via file keys"]
+    p_librettoPDF["librettoPDF"]
+    p_scorePDF["scorePDF"]
+  end
+
+  subgraph pipe["🚦 Pipeline"]
+    f_StepperButtons["StepperButtons.tsx"]
+    f_index["index.tsx"]
+    f_firstStage["firstStage.tsx"]
+    f_secondStage["secondStage.tsx"]
+    f_LibrettoPicker["LibrettoPicker.tsx"]
+    f_ScorePicker["ScorePicker.tsx"]
+    f_ReviewPicker["ReviewPicker.tsx"]
+    f_PDFComposer["PDFComposer.tsx"]
+    f_LibrettoPage["LibrettoPage.tsx"]
+    f_ScorePage["ScorePage.tsx"]
+  end
+
+  subgraph win["🪟 Windows and tools"]
+    f_SettingsWindowToggle["SettingsWindowToggle.tsx"]
+    f_SettingsWindow["SettingsWindow.tsx"]
+    f_NewVersionWindow["NewVersionWindow.tsx"]
+    f_NewVersionDialog["newVersion/NewVersionWindow.tsx"]
+    f_DarkLightStatus["DarkLightStatus.tsx"]
+    f_ThemeMenu["ThemeMenu.tsx"]
+    f_LocaleToggle["LocaleToggle.tsx"]
+  end
+
+  subgraph app["🚀 App shell and 🎨 themes"]
+    f_main["main.tsx"]
+    f_ThemeContext["ThemeContext.tsx"]
+    f_useLocaleSync["useLocaleSync.ts"]
+  end
+
+  %% writers
+  f_StepperButtons --> p_pipelineStep
+  f_firstStage --> p_librettoPDF
+  f_firstStage --> p_scorePDF
+  f_secondStage --> p_librettoPages
+  f_secondStage --> p_scorePages
+  f_secondStage --> p_librettoPagesSource
+  f_secondStage --> p_scorePagesSource
+  f_LibrettoPage --> p_librettoPageSelections
+  f_LibrettoPage --> p_librettoReflowSelections
+  f_ScorePage --> p_librettoReflowSelections
+  f_ScorePage --> p_activePage
+  f_ScorePage --> p_activePageScrollPosition
+  f_main --> p_newVersion
+  f_NewVersionDialog --> p_newVersion
+  f_DarkLightStatus --> p_themeMode
+  f_ThemeContext --> p_themeMode
+  f_ThemeContext --> p_themeId
+  f_ThemeMenu --> p_themeId
+  f_SettingsWindowToggle --> p_showSettings
+  f_SettingsWindow --> p_showSettings
+  f_LocaleToggle --> p_locale
+
+  %% readers
+  p_pipelineStep -.-> f_StepperButtons
+  p_pipelineStep -.-> f_index
+  p_librettoPDF -.-> f_firstStage
+  p_librettoPDF -.-> f_LibrettoPicker
+  p_librettoPDF -.-> f_PDFComposer
+  p_librettoPDF -.-> f_secondStage
+  p_scorePDF -.-> f_firstStage
+  p_scorePDF -.-> f_ScorePicker
+  p_scorePDF -.-> f_PDFComposer
+  p_scorePDF -.-> f_secondStage
+  p_librettoPages -.-> f_ScorePicker
+  p_librettoPages -.-> f_ReviewPicker
+  p_librettoPages -.-> f_PDFComposer
+  p_librettoPages -.-> f_secondStage
+  p_scorePages -.-> f_ScorePicker
+  p_scorePages -.-> f_ReviewPicker
+  p_scorePages -.-> f_PDFComposer
+  p_scorePages -.-> f_secondStage
+  p_librettoPagesSource -.-> f_secondStage
+  p_scorePagesSource -.-> f_secondStage
+  p_librettoPageSelections -.-> f_LibrettoPage
+  p_librettoReflowSelections -.-> f_ScorePage
+  p_activePage -.-> f_ScorePage
+  p_activePage -.-> f_LibrettoPage
+  p_activePage -.-> f_ReviewPicker
+  p_activePage -.-> f_ScorePicker
+  p_activePageScrollPosition -.-> f_ScorePage
+  p_activePageScrollPosition -.-> f_LibrettoPage
+  p_activePageScrollPosition -.-> f_ReviewPicker
+  p_activePageScrollPosition -.-> f_ScorePicker
+  p_newVersion -.-> f_NewVersionWindow
+  p_themeMode -.-> f_ThemeContext
+  p_themeMode -.-> f_DarkLightStatus
+  p_themeId -.-> f_ThemeContext
+  p_themeId -.-> f_ThemeMenu
+  p_showSettings -.-> f_SettingsWindowToggle
+  p_showSettings -.-> f_SettingsWindow
+  p_locale -.-> f_useLocaleSync
+  p_locale -.-> f_LocaleToggle
+
+  click f_StepperButtons "../../src/main/StepperButtons.tsx" "src/main/StepperButtons.tsx"
+  click f_index "../../src/main/index.tsx" "src/main/index.tsx"
+  click f_firstStage "../../src/main/firstStage.tsx" "src/main/firstStage.tsx"
+  click f_secondStage "../../src/main/secondStage.tsx" "src/main/secondStage.tsx"
+  click f_LibrettoPicker "../../src/main/components/LibrettoPicker.tsx" "src/main/components/LibrettoPicker.tsx"
+  click f_ScorePicker "../../src/main/components/ScorePicker.tsx" "src/main/components/ScorePicker.tsx"
+  click f_ReviewPicker "../../src/main/components/ReviewPicker.tsx" "src/main/components/ReviewPicker.tsx"
+  click f_PDFComposer "../../src/main/components/PDFComposer.tsx" "src/main/components/PDFComposer.tsx"
+  click f_LibrettoPage "../../src/main/components/LibrettoPage.tsx" "src/main/components/LibrettoPage.tsx"
+  click f_ScorePage "../../src/main/components/ScorePage.tsx" "src/main/components/ScorePage.tsx"
+  click f_SettingsWindowToggle "../../src/middleware/tools/ActionTools/SettingsWindowToggle.tsx" "SettingsWindowToggle.tsx"
+  click f_SettingsWindow "../../src/middleware/windows/SettingsWindow.tsx" "SettingsWindow.tsx"
+  click f_NewVersionWindow "../../src/middleware/windows/NewVersionWindow.tsx" "NewVersionWindow.tsx"
+  click f_NewVersionDialog "../../src/middleware/windows/newVersion/NewVersionWindow.tsx" "newVersion/NewVersionWindow.tsx"
+  click f_DarkLightStatus "../../src/middleware/tools/ActionTools/DarkLightStatus.tsx" "DarkLightStatus.tsx"
+  click f_ThemeMenu "../../src/middleware/tools/PopoverTools/ThemeMenu.tsx" "ThemeMenu.tsx"
+  click f_LocaleToggle "../../src/middleware/tools/MixedTools/LocaleToggle.tsx" "LocaleToggle.tsx"
+  click f_main "../../src/main.tsx" "src/main.tsx"
+  click f_ThemeContext "../../src/context/ThemeContext.tsx" "src/context/ThemeContext.tsx"
+  click f_useLocaleSync "../../src/hooks/useLocaleSync.ts" "src/hooks/useLocaleSync.ts"
+
+  classDef dead stroke-dasharray: 4 3,fill:#fff3cd,stroke:#b58900
+  class p_previewPhotoObj dead

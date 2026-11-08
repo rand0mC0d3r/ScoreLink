@@ -1,0 +1,36 @@
+flowchart LR
+  nav_index["🧭 Index"]
+  nav_overview["🗺️ Overview"]
+  click nav_index "../../docs/architecture/index.md" "Architecture index"
+  click nav_overview "../../docs/architecture/overview.md" "Architecture overview"
+
+  subgraph up["🚀 App shell"]
+    f_index["index.tsx"]
+  end
+
+  subgraph focus["🚦 thirdStage.tsx (focus)"]
+    f_thirdStage["thirdStage.tsx"]
+    ThirdStage["ThirdStage (default export)"]
+  end
+
+  subgraph pipeline["🧩 Pipeline components"]
+    f_ScorePicker["ScorePicker.tsx"]
+    f_LibrettoPicker["LibrettoPicker.tsx"]
+  end
+
+  subgraph ext["📦 External"]
+    ext_mui["@mui/material (Box)"]
+  end
+
+  f_index --> ThirdStage
+  ThirdStage --> f_ScorePicker
+  ThirdStage --> f_LibrettoPicker
+  ThirdStage --> ext_mui
+
+  click f_thirdStage "./thirdStage.tsx" "src/main/thirdStage.tsx"
+  click f_index "./index.tsx" "src/main/index.tsx"
+  click f_ScorePicker "./components/ScorePicker.tsx" "src/main/components/ScorePicker.tsx"
+  click f_LibrettoPicker "./components/LibrettoPicker.tsx" "src/main/components/LibrettoPicker.tsx"
+
+  classDef main fill:#ffe08a,stroke:#b58900,stroke-width:3px,color:#000
+  class f_thirdStage main

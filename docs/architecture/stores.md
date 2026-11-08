@@ -1,6 +1,6 @@
 # State stores
 
-**Navigate:** [Index](index.md) · [Overview](overview.md) · [Hooks](hooks.md) · [Pipeline](pipeline.md) · [Overview](overview.md)
+**Navigate:** [Index](index.md) · [Overview](overview.md) · [Hooks](hooks.md) · [Pipeline](pipeline.md) · [Store properties](store-properties.md)
 
 One store: `settingsStore` (created by `createLocalStorageStoreNg`). Persistence is `localStorage`; PDFs go to IndexedDB through `fileStorage`. Symbols are exports of `settingsStore.ts`; consumer edges point at the symbols they import.
 
@@ -184,4 +184,4 @@ flowchart LR
 | `showSettings` | — |
 | `locale` | — |
 
-**Navigate:** [Index](index.md) · [Overview](overview.md) · [Hooks](hooks.md) · [Pipeline](pipeline.md) · [Overview](overview.md)
+**Navigate:** [Index](index.md) · [Overview](overview.md) · [Hooks](hooks.md) · [Pipeline](pipeline.md) · [Store properties](store-properties.md)

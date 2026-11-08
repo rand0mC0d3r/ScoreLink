@@ -1,0 +1,36 @@
+flowchart LR
+  nav_index["🧭 Index"]
+  nav_overview["🗺️ Overview"]
+  click nav_index "../../docs/architecture/index.md" "Architecture index"
+  click nav_overview "../../docs/architecture/overview.md" "Architecture overview"
+
+  subgraph up["🚀 App shell"]
+    f_index["index.tsx"]
+  end
+
+  subgraph focus["🚦 fourthStage.tsx (focus)"]
+    f_fourthStage["fourthStage.tsx"]
+    FourthStage["FourthStage (default export)"]
+  end
+
+  subgraph pipeline["🧩 Pipeline components"]
+    f_ReviewPicker["ReviewPicker.tsx"]
+    f_PDFComposer["PDFComposer.tsx"]
+  end
+
+  subgraph ext["📦 External"]
+    ext_mui["@mui/material (Box)"]
+  end
+
+  f_index --> FourthStage
+  FourthStage --> f_ReviewPicker
+  FourthStage --> f_PDFComposer
+  FourthStage --> ext_mui
+
+  click f_fourthStage "./fourthStage.tsx" "src/main/fourthStage.tsx"
+  click f_index "./index.tsx" "src/main/index.tsx"
+  click f_ReviewPicker "./components/ReviewPicker.tsx" "src/main/components/ReviewPicker.tsx"
+  click f_PDFComposer "./components/PDFComposer.tsx" "src/main/components/PDFComposer.tsx"
+
+  classDef main fill:#ffe08a,stroke:#b58900,stroke-width:3px,color:#000
+  class f_fourthStage main

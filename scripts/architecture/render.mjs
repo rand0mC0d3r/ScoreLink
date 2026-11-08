@@ -367,7 +367,7 @@ const writePage = p => {
   const keyRows = storeKeys.map(k => `| \`${k}\` | ${(keyRefs.get(k) || []).map(f => srcLink(f, 'root')).join(', ') || '—'} |`);
   writePage({
     slug: 'stores', depth: 'root', title: 'State stores',
-    related: [['Hooks', 'hooks'], ['Pipeline', 'pipeline'], ['Overview', 'overview']],
+    related: [['Hooks', 'hooks'], ['Pipeline', 'pipeline'], ['Store properties', 'store-properties']],
     intro: 'One store: `settingsStore` (created by `createLocalStorageStoreNg`). Persistence is `localStorage`; PDFs go to IndexedDB through `fileStorage`. Symbols are exports of `settingsStore.ts`; consumer edges point at the symbols they import.',
     diagram: d.render(),
     notes: [
@@ -587,6 +587,8 @@ for (const m of MODULES) {
       `| [React components](${rel('root', 'components')}) | JSX component usage between files. |`,
       `| [Hooks](${rel('root', 'hooks')}) | Custom hook definitions and consumers. |`,
       `| [Stores](${rel('root', 'stores')}) | The settings store, its exports, consumers, and keys. |`,
+      `| [Store properties](${rel('root', 'store-properties')}) | Hand-written table and diagram of every settings store property with readers, writers, and persistence. Not regenerated. |`,
+      `| [secondStage.tsx focus](./focus/secondStage.md) | Hand-written view centred on \`src/main/secondStage.tsx\`: imports, renders, settings keys, and parent. Not regenerated. |`,
       `| [Pipeline](${rel('root', 'pipeline')}) | Pipeline stages, shared components, and settings keys. |`,
       `| [Circular dependencies](${rel('root', 'cycles')}) | ${sccs.length} cycle component(s), ${elementary} elementary cycle(s). |`,
       '',

@@ -14,6 +14,8 @@ Start here. Every page links back to this index. Diagrams are generated from sou
 | [React components](components.md) | JSX component usage between files. |
 | [Hooks](hooks.md) | Custom hook definitions and consumers. |
 | [Stores](stores.md) | The settings store, its exports, consumers, and keys. |
+| [Store properties](store-properties.md) | Hand-written table and diagram of every settings store property with readers, writers, and persistence. Not regenerated. |
+| [secondStage.tsx focus](./focus/secondStage.md) | Hand-written view centred on `src/main/secondStage.tsx`: imports, renders, settings keys, and parent. Not regenerated. |
 | [Pipeline](pipeline.md) | Pipeline stages, shared components, and settings keys. |
 | [Circular dependencies](cycles.md) | 1 cycle component(s), 1 elementary cycle(s). |
 

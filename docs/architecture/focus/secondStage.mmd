@@ -1,0 +1,64 @@
+flowchart LR
+  nav_index["🧭 Index"]
+  nav_overview["🗺️ Overview"]
+  click nav_index "../index.md" "Architecture index"
+  click nav_overview "../overview.md" "Architecture overview"
+
+  subgraph up["🚀 App shell"]
+    f_index["index.tsx"]
+  end
+
+  subgraph focus["🚦 secondStage.tsx (focus)"]
+    f_secondStage["secondStage.tsx"]
+    SecondStage["SecondStage (default export)"]
+    PdfPreview["PdfPreview"]
+    extractPdfPages["extractPdfPages"]
+    getFileSource["getFileSource"]
+  end
+
+  subgraph shared["🧱 Shared components"]
+    f_PanelWrapper["PanelWrapper.tsx"]
+    f_PDFPreviewPage["PDFPreviewPage.tsx"]
+    f_SolidChip["SolidChip.tsx"]
+  end
+
+  subgraph store["🗄️ State"]
+    f_settingsStore["settingsStore.ts"]
+    k_scorePDF["scorePDF (read)"]
+    k_librettoPDF["librettoPDF (read)"]
+    k_scorePages["scorePages"]
+    k_librettoPages["librettoPages"]
+    k_scorePagesSource["scorePagesSource"]
+    k_librettoPagesSource["librettoPagesSource"]
+  end
+
+  ext_pdflib["📦 pdf-lib (external)"]
+
+  f_index --> SecondStage
+  SecondStage --> PdfPreview
+  SecondStage --> getFileSource
+  SecondStage --> extractPdfPages
+  extractPdfPages --> ext_pdflib
+  PdfPreview --> f_PanelWrapper
+  PdfPreview --> f_PDFPreviewPage
+  PdfPreview --> f_SolidChip
+
+  SecondStage -.-> f_settingsStore
+  k_scorePDF -.-> SecondStage
+  k_librettoPDF -.-> SecondStage
+  SecondStage <--> k_scorePages
+  SecondStage <--> k_librettoPages
+  SecondStage <--> k_scorePagesSource
+  SecondStage <--> k_librettoPagesSource
+
+  click f_secondStage "../../../src/main/secondStage.tsx" "src/main/secondStage.tsx"
+  click f_index "../../../src/main/index.tsx" "src/main/index.tsx"
+  click f_PanelWrapper "../../../src/main/components/PanelWrapper.tsx" "src/main/components/PanelWrapper.tsx"
+  click f_PDFPreviewPage "../../../src/main/components/PDFPreviewPage.tsx" "src/main/components/PDFPreviewPage.tsx"
+  click f_SolidChip "../../../src/components/SolidChip.tsx" "src/components/SolidChip.tsx"
+  click f_settingsStore "../../../src/context/settingsStore.ts" "src/context/settingsStore.ts"
+
+  classDef main fill:#ffe08a,stroke:#b58900,stroke-width:3px,color:#000
+  classDef store fill:#363a3f,stroke:#1f6fb4
+  class f_secondStage main
+  class k_scorePDF,k_librettoPDF,k_scorePages,k_librettoPages,k_scorePagesSource,k_librettoPagesSource store

@@ -1,0 +1,55 @@
+flowchart LR
+  nav_index["🧭 Index"]
+  nav_overview["🗺️ Overview"]
+  click nav_index "../../../docs/architecture/index.md" "Architecture index"
+  click nav_overview "../../../docs/architecture/overview.md" "Architecture overview"
+
+  subgraph up["🚦 Pipeline nodes"]
+    f_thirdStage["thirdStage.tsx"]
+  end
+
+  subgraph focus["🧩 ScorePicker.tsx (focus)"]
+    f_ScorePicker["ScorePicker.tsx"]
+    ScorePicker["ScorePicker (default export)"]
+  end
+
+  subgraph components["🧩 Pipeline components"]
+    f_PanelWrapper["PanelWrapper.tsx"]
+    f_ScorePage["ScorePage.tsx"]
+  end
+
+  subgraph shared["🧱 Shared components"]
+    f_SolidChip["SolidChip.tsx"]
+  end
+
+  subgraph store["🗄️ State"]
+    f_settingsStore["settingsStore.ts"]
+    k_scorePDF["scorePDF (read)"]
+    k_scorePages["scorePages (read)"]
+    k_activePage["activePage (read)"]
+  end
+
+  ext_mui["📦 @mui/material (external)"]
+
+  f_thirdStage --> ScorePicker
+  ScorePicker --> f_PanelWrapper
+  ScorePicker --> f_ScorePage
+  ScorePicker --> f_SolidChip
+  ScorePicker --> ext_mui
+
+  ScorePicker -.-> f_settingsStore
+  k_scorePDF -.-> ScorePicker
+  k_scorePages -.-> ScorePicker
+  k_activePage -.-> ScorePicker
+
+  click f_ScorePicker "./ScorePicker.tsx" "src/main/components/ScorePicker.tsx"
+  click f_thirdStage "../thirdStage.tsx" "src/main/thirdStage.tsx"
+  click f_PanelWrapper "./PanelWrapper.tsx" "src/main/components/PanelWrapper.tsx"
+  click f_ScorePage "./ScorePage.tsx" "src/main/components/ScorePage.tsx"
+  click f_SolidChip "../../components/SolidChip.tsx" "src/components/SolidChip.tsx"
+  click f_settingsStore "../../context/settingsStore.ts" "src/context/settingsStore.ts"
+
+  classDef main fill:#ffe08a,stroke:#b58900,stroke-width:3px,color:#000
+  classDef store fill:#363a3f,stroke:#1f6fb4
+  class f_ScorePicker main
+  class k_scorePDF,k_scorePages,k_activePage store
